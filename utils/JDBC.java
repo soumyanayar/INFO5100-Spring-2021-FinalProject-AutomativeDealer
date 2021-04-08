@@ -2,9 +2,18 @@ package utils;
 
 import java.sql.*;
 
+
+/***
+* Connection Values :
+*	Server Type : Database Engine
+*	Server Name : is-swang01.ischool.uw.edu
+* 	Authentication : SQL Server Authentication
+* 	Login : INFO6210
+*	Password : NEUHusky!
+**/
+
 public class JDBC {
   
-    //Credentials to NEU MS SQL DB Server
     private static final String URL
             = "jdbc:sqlserver://is-swang01.ischool.uw.edu:1433;databaseName=NAMEOFYOURDB";
     private static final String USERNAME = "INFO6210";
