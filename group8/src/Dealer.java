@@ -9,11 +9,13 @@
  * @author jasmineshin
  */
 public class Dealer {
+    private String dealerID;
     private String name;
-    private long num;
+    private long num; //phonenumber
     private Inventory inventory;
     
-    public Dealer(String name, long num){
+    public Dealer(String dealerID, String name, long num){
+        this.dealerID = dealerID;
         this.name = name;
         this.num = num;
         inventory = new Inventory(this);
