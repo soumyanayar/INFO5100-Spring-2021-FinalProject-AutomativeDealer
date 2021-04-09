@@ -1,5 +1,7 @@
 package group6.main;
 
+import group8.Main.Dealer;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,7 +11,6 @@ import java.util.List;
  */
 public class FormActionDirectory {
     private List<Dealer> dealers;
-
 
     /**
      * should not be none args,

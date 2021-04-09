@@ -1,6 +1,9 @@
 package group6.main;
 
-
+/**
+ * @author Anupama Singh
+ * @date: 04/09/2021
+ */
 public class User {
     private String firstName, lastName, eMail, phoneNumber, zipCode;
     private FormAction form;
