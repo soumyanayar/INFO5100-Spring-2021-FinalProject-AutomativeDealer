@@ -28,10 +28,6 @@ public class LeadModel {
         BUSINESS, PERSONAL;
     }
 
-    public static void main(String[] args) {
-
-    }
-
 }
 
 
