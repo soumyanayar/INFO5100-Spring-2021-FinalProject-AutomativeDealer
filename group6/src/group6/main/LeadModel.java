@@ -1,3 +1,5 @@
+package group6.main;
+
 public class LeadModel {
     private String messageText;
 
@@ -26,7 +28,9 @@ public class LeadModel {
         BUSINESS, PERSONAL;
     }
 
+    public static void main(String[] args) {
 
+    }
 
 }
 

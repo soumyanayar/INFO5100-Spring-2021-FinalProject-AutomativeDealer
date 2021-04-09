@@ -1,3 +1,5 @@
+package group6.main;
+
 public class User {
     private String firstName, lastName, eMail, phoneNumber, zipCode;
 
