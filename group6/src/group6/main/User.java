@@ -1,7 +1,9 @@
 package group6.main;
 
+
 public class User {
     private String firstName, lastName, eMail, phoneNumber, zipCode;
+    private FormAction form;
 
     public User(String firstName, String lastName, String eMail, String phoneNumber, String zipCode) {
         this.firstName = firstName;
@@ -49,5 +51,17 @@ public class User {
 
     public void setZipCode(String zipCode) {
         this.zipCode = zipCode;
+    }
+
+    /**
+     * connect form and user
+     * @param formAction
+     */
+    public void assignForm(FormAction formAction) {
+        this.form = formAction;
+    }
+
+    public FormAction getForm() {
+        return form;
     }
 }
