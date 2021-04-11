@@ -23,7 +23,7 @@ public class LeadModel {
 
     private UseType userType;
     private User user;
-    private Car car;
+    //private Car car;
     public LeadModel(String messageText, UseType userType, User user){
         this.messageText = messageText;
         this.userType = userType;
