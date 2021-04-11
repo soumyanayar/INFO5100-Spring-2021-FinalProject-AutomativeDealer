@@ -39,7 +39,23 @@ Agenda
 04- Divide the tasks among the members
 05- Understand the scope of the map - {park for now}
 
-i. DealerSearch class - fetching data + search logic/algorithm: Lakshmi;
-ii. MainGUI class - GUI and user interaction design: Tejaswi + Yun;
-iii. Map class - implementing map and calling google maps API: Chang; 
+
+----------------------------------------------------------------------------------------------------------------
+04/10/2021
+Agenda
+01- Group Meeting with Team 8
+02- Discussing the data structure (size)
+03- Applying the data atributes to Team 8
+04- Asking Professor for searching method
+
+Yun- Dividing tasks & making sure that data from team 8 had includes Dealer names, street address, state, zipcode, sales tel, service tel.
+  i. DealerSearch class - fetching data + search logic/algorithm: Lakshmi;
+  ii. MainGUI class - GUI and user interaction design: Tejaswi + Yun;
+  iii. Map class - implementing map and calling google maps API: Chang; 
+
+Chang- Arranging the meeting & questions for the data preparing and explaining our case and purpose.
+Lakshmi- Engaging the meeting & questions for dealer address depending on cities, states or zipcode & sending the data attributes to Team 8 (Jasmine).
+
+
+
 
