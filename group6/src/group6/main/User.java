@@ -1,7 +1,12 @@
 package group6.main;
 
+/**
+ * @author Anupama Singh
+ * @date: 04/09/2021
+ */
 public class User {
     private String firstName, lastName, eMail, phoneNumber, zipCode;
+    private FormAction form;
 
     public User(String firstName, String lastName, String eMail, String phoneNumber, String zipCode) {
         this.firstName = firstName;
@@ -27,11 +32,11 @@ public class User {
         this.lastName = lastName;
     }
 
-    public String geteMail() {
+    public String getMail() {
         return eMail;
     }
 
-    public void seteMail(String eMail) {
+    public void setMail(String eMail) {
         this.eMail = eMail;
     }
 
@@ -49,5 +54,17 @@ public class User {
 
     public void setZipCode(String zipCode) {
         this.zipCode = zipCode;
+    }
+
+    /**
+     * connect form and user
+     * @param formAction
+     */
+    public void assignForm(FormAction formAction) {
+        this.form = formAction;
+    }
+
+    public FormAction getForm() {
+        return form;
     }
 }
