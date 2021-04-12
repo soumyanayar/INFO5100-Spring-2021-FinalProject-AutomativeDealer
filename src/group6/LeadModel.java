@@ -8,7 +8,15 @@ import group8.*;
  */
 public class LeadModel {
     private String messageText;
-
+    private UseType userType;
+    private User user;
+    private Car car;
+    
+    public LeadModel(String messageText, UseType userType, User user){
+        this.messageText = messageText;
+        this.userType = userType;
+        this.user = user;
+    }
     public String getMessageText() {
         return messageText;
     }
@@ -19,15 +27,6 @@ public class LeadModel {
 
     public User getUser() {
         return user;
-    }
-
-    private UseType userType;
-    private User user;
-    //private Car car;
-    public LeadModel(String messageText, UseType userType, User user){
-        this.messageText = messageText;
-        this.userType = userType;
-        this.user = user;
     }
 
     public enum UseType {
