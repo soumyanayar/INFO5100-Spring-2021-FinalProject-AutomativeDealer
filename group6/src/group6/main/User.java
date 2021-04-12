@@ -7,6 +7,9 @@ package group6.main;
 public class User {
     private String firstName, lastName, eMail, phoneNumber, zipCode;
     private FormAction form;
+    // optional
+    private Integer useType;
+    private String messageText;
 
     public User(String firstName, String lastName, String eMail, String phoneNumber, String zipCode) {
         this.firstName = firstName;
@@ -32,14 +35,6 @@ public class User {
         this.lastName = lastName;
     }
 
-    public String getMail() {
-        return eMail;
-    }
-
-    public void setMail(String eMail) {
-        this.eMail = eMail;
-    }
-
     public String getPhoneNumber() {
         return phoneNumber;
     }
@@ -56,15 +51,40 @@ public class User {
         this.zipCode = zipCode;
     }
 
-    /**
-     * connect form and user
-     * @param formAction
-     */
-    public void assignForm(FormAction formAction) {
+    public void setForm(FormAction formAction) {
         this.form = formAction;
     }
-
     public FormAction getForm() {
         return form;
+    }
+
+    public String geteMail() {
+        return eMail;
+    }
+
+    public void seteMail(String eMail) {
+        this.eMail = eMail;
+    }
+
+    // optional
+    public String getMessageText() {
+        return messageText;
+    }
+
+    public void setMessageText(String messageText) {
+        this.messageText = messageText;
+    }
+
+    // optional
+    public void setUseType(Integer useType) {
+        this.useType = useType;
+    }
+
+
+    public String getUseType() {
+        if (this.useType == null) {
+            return "Empty";
+        }
+        return useType == 0 ? "Business" : "Personal";
     }
 }
