@@ -10,7 +10,7 @@ public class Demo3 extends JFrame {
         setTitle("Test image");
         JPanel panel = new JPanel();
         JLabel label = new JLabel();
-        ImageIcon img = new ImageIcon("group2/images/demo2.jpeg");
+        ImageIcon img = new ImageIcon("group2/images/demo3.jpeg");
         label.setIcon(img);
         panel.add(label);
         add(panel);
