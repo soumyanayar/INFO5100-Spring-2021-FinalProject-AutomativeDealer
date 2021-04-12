@@ -21,12 +21,14 @@ public class FormActionDirectory {
         User user= new User(firstName, lastName, eMail, phoneNumber, zipCode);
         FormAction form = new FormAction(user);
         form.setId(id++);
+        return form;
+    }
+    public void submit(FormAction form) {
         if (forms == null) {
             forms = new ArrayList<>();
         }
         forms.add(form);
-        return form;
-    }
+    } 
 
     public Car getCar() {
         return car;
