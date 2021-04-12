@@ -44,7 +44,7 @@
                       </grid>
                     </constraints>
                     <properties>
-                      <text value="Label"/>
+                      <text value="Image View"/>
                     </properties>
                   </component>
                   <grid id="c3fe0" layout-manager="GridLayoutManager" row-count="5" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
@@ -122,7 +122,7 @@
                       <text value="First Name *"/>
                     </properties>
                   </component>
-                  <component id="a58f" class="javax.swing.JTextField" binding="textField1" default-binding="true">
+                  <component id="a58f" class="javax.swing.JTextField" binding="fName">
                     <constraints>
                       <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                         <preferred-size width="150" height="-1"/>
@@ -152,7 +152,7 @@
                       <text value="Last Name *"/>
                     </properties>
                   </component>
-                  <component id="d6257" class="javax.swing.JTextField" default-binding="true">
+                  <component id="d6257" class="javax.swing.JTextField" binding="lName">
                     <constraints>
                       <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                         <preferred-size width="150" height="-1"/>
@@ -180,7 +180,7 @@
                       <text value="Email*"/>
                     </properties>
                   </component>
-                  <component id="ee03f" class="javax.swing.JTextField" default-binding="true">
+                  <component id="ee03f" class="javax.swing.JTextField" binding="eMail">
                     <constraints>
                       <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                         <preferred-size width="150" height="-1"/>
@@ -208,7 +208,7 @@
                       <text value="Phone No*"/>
                     </properties>
                   </component>
-                  <component id="31a4c" class="javax.swing.JTextField" default-binding="true">
+                  <component id="31a4c" class="javax.swing.JTextField" binding="ph_No">
                     <constraints>
                       <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                         <preferred-size width="150" height="-1"/>
@@ -236,7 +236,7 @@
                       <text value="Zip Code"/>
                     </properties>
                   </component>
-                  <component id="1ab50" class="javax.swing.JTextField" default-binding="true">
+                  <component id="1ab50" class="javax.swing.JTextField" binding="zipCode">
                     <constraints>
                       <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                         <preferred-size width="150" height="-1"/>
@@ -294,11 +294,13 @@
                         <preferred-size width="150" height="50"/>
                       </grid>
                     </constraints>
-                    <properties/>
+                    <properties>
+                      <lineWrap value="true"/>
+                    </properties>
                   </component>
                 </children>
               </grid>
-              <component id="2cc05" class="javax.swing.JTextArea" binding="bySubmittingYourTextArea" default-binding="true">
+              <component id="2cc05" class="javax.swing.JTextArea" binding="agreement">
                 <constraints>
                   <grid row="10" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
                     <preferred-size width="150" height="50"/>
