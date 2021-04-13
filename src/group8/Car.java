@@ -17,89 +17,108 @@ public class Car {
     private String model;
     private int year;
     private double msrp;
-    private boolean used;
     private String color;
     private String location;
     private int mileage;
-    private double discount = 1.0;
+    private String dealerId;
+    private CarCategory carCategory;
 
     //engine
     //picture
     
-    public Car(String id, String make, String model, int year, double msrp, boolean used,
-                String color, String location, int mileage){
+    public Car(String id, String make, String model, int year, double msrp,
+                String color, String location, int mileage, String dealerId, CarCategory carCategory){
         this.id = id;
         this.make = make;
         this.model = model;
         this.year = year;
         this.msrp = msrp;
-        this.used = used;
         this.color = color;
         this.location = location;
         this.mileage = mileage;
+        this.dealerId = dealerId;
+        this.carCategory = carCategory;
     }
     
-    /*******************  GETTER  *******************/
-    public String getID(){
-        return id;
+    /*******************  GETTERS  *******************/
+    public String getID() {
+        return this.id;
     }
+
     public String getMake(){
-        return make;
+        return this.make;
     }
+
     public String getModel(){
-        return model;
+        return this.model;
     }
+
     public int getYear(){
-        return year;
+        return this.year;
     }
+
     public double getMSRP(){
-        return msrp;
+        return this.msrp;
     }
-    public boolean isUsed(){
-        return used;
-    }
+
     public String getColor(){
-        return color;
+        return this.color;
     }
+
     public String getLocation(){
-        return location;
+        return this.location;
     }
+
     public int getMileage(){
-        return mileage;
+        return this.mileage;
     }
-    public double getPriceAfterDiscount(){
-        return msrp * discount;
+
+    public String getDealerId() {
+        return this.dealerId;
     }
-    
-    /*******************  SETTER  *******************/
+
+    public CarCategory getCarCategory() {
+        return this.carCategory;
+    }
+
+    /*******************  SETTERS  *******************/
     public void setID(String id){
         this.id = id;
     }
+
     public void setMake(String make){
         this.make = make;
     }
+
     public void setModel(String model){
         this.model = model;
     }
+
     public void setYear(int year){
         this.year = year;
     }
+
     public void setMSRP(double msrp){
         this.msrp = msrp;
     }
-    public void setUsed(boolean used){
-        this.used = used;
-    }
+
     public void setColor(String color){
         this.color = color;
     }
+
     public void setLocation(String location){
         this.location = location;
     }
+
     public void setMileage(int mileage){
         this.mileage =  mileage;
     }
-    public void setDiscount(double discount){
-        this.discount = discount;
+
+    public void setCarCategory(CarCategory carCategory) {
+        this.carCategory = carCategory;
+    }
+
+    public void setDealerId() {
+        this.dealerId = dealerId;
     }
 }
