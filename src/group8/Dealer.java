@@ -9,7 +9,6 @@ public class Dealer {
     private String state;
     private String zipcode;
     private String phoneNumber;
-    private Inventory inventory;
 
     public Dealer() {}
 
@@ -23,7 +22,6 @@ public class Dealer {
         this.state = state;
         this.zipcode = zipcode;
         this.phoneNumber = phoneNumber;
-        this.inventory = inventory;
     }
 
     /*******************  GETTER  *******************/
@@ -53,10 +51,6 @@ public class Dealer {
 
     public String getPhoneNumber() {
         return phoneNumber;
-    }
-
-    public Inventory getInventory() {
-        return inventory;
     }
 
     public String getName() {
@@ -95,10 +89,6 @@ public class Dealer {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
-    }
-
-    public void setInventory(Inventory inventory) {
-        this.inventory = inventory;
     }
 
     /*******************  METHODS  *******************/
