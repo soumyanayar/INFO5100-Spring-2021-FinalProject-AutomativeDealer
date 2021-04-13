@@ -17,16 +17,16 @@ public class Base64Test {
 
     public static void main(String[] args) {
 
-        String strImg = GetImageStr();
+        String strImg = GetImageStr("src/group2/images/demo2.jpeg");
         System.out.println(strImg);
-        GenerateImage(strImg);
+        GenerateImage(strImg, "src/group2/images/demo4.jpeg");
     }
 
     //  base64
 
-    public static String GetImageStr() {//  Base64
+    public static String GetImageStr(String imgFile) {//  Base64
 
-        String imgFile = "src/group2/images/demo2.jpeg";//
+        //
 
         InputStream in = null;
         byte[] data = null;
@@ -48,7 +48,7 @@ public class Base64Test {
 
     //base64
 
-    public static boolean GenerateImage(String imgStr) {   //  Base64
+    public static boolean GenerateImage(String imgStr, String imgFilePath) {   //  Base64
 
         if (imgStr == null) //
             return false;
@@ -63,7 +63,6 @@ public class Base64Test {
                 }
             }
             //  jpeg
-            String imgFilePath = "src/group2/images/demo3.jpeg";//
             OutputStream out = new FileOutputStream(imgFilePath);
             out.write(b);
             out.flush();
