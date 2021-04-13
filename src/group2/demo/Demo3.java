@@ -1,4 +1,4 @@
-package group2.demo;
+package src.group2.demo;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
