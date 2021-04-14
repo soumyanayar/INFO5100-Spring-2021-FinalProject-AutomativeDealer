@@ -1,0 +1,40 @@
+ModelName,ModelId,MakeId
+"A4        ",1,1
+"A5        ",2,1
+"FPACE     ",3,2
+"Sedona    ",4,3
+"EX        ",5,3
+"Evoque    ",6,4
+"V8        ",7,4
+"Mazda3    ",8,5
+"CX9       ",9,5
+"XC40      ",10,6
+"S90       ",11,6
+"F150      ",12,7
+"Fiesta    ",13,7
+"X6        ",14,8
+"Patriot   ",15,9
+"Model S   ",16,10
+"Cayenne   ",17,11
+"ILX       ",18,12
+"TLX       ",19,12
+"DB9       ",20,13
+"Civic LX  ",21,14
+"Trax      ",22,15
+"Express   ",23,15
+Berlinetta,24,16
+California,25,16
+"ATS       ",26,17
+"Q40       ",27,18
+"G35       ",28,18
+"Jetta     ",29,19
+"eGolf     ",30,19
+"Impreza   ",31,20
+"Ascent    ",32,20
+"Versa     ",33,21
+"Armada    ",34,21
+"GLC300    ",35,22
+Highlander,36,23
+"Camry     ",37,23
+"Corolla   ",38,23
+"LaCrosse  ",39,24

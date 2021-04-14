@@ -1,0 +1,101 @@
+IncentiveId,Title,Description,Disclaimer,StartDate,EndDate,DiscountValue,DiscountType,DealerId,IsDeleted,FilterList,VehicleIdList
+12,Big Sale,Sale on Car,Valid for 10 days,2020-03-14,2020-04-04,200,Cash Back,7,1,1,1
+21,Early Bird Discount,Sale on Car,Valid for 10 days,2020-03-20,2020-04-10,100,Cash Back,16,0,123,123
+35,sf,car on sale,valid for 15 days,2020-04-23,2020-04-30,23,Cash Back,1,1,sdfsf,123
+36,sf,car on sale,valid for 15 days,2020-04-23,2020-04-30,23,Cash Back,1,1,sdfsf,sdfsf
+37,covid,car on sale,valid for 15 days,2020-04-15,2020-04-30,19,Cash Back,1,1,virus,virus
+38,srijan,car on sale,valid for 15 days,2020-04-15,2020-04-30,23,Cash Back,1,1,ad,ad
+39,sri,car on sale,valid for 15 days,2020-04-15,2020-04-30,12,Cash Back,1,1,new,new
+40,hello,car on sale,valid for 15 days,2020-04-23,2020-04-30,22,Cash Back,1,1,11,11
+41,Check,car on sale,valid for 15 days,2020-04-02,2020-04-16,12,Cash Back,1,1,22,22
+52,zehong test,car on sale,valid for 15 days,2020-04-14,2020-04-29,10,Cash Back,8,0,,
+55,123,132,123,2020-04-01,2020-04-23,123,Cash Back,5,0,,
+56,wenhao,234,234,2020-04-02,2020-04-24,200,Cash Back,5,0,,
+57,wenhao,123,123,2020-04-03,2020-04-29,111111,Cash Back,5,0,,
+58,234,234,423,2020-04-08,2020-04-24,234,Cash Back,5,0,,
+59,111111111,3123,123,2020-04-02,2020-04-23,111111,Cash Back,5,0,,
+60,222222,3123,123,2020-04-01,2020-04-22,12312,Cash Back,5,0,,
+61,1111231,123,123,2020-04-02,2020-04-09,123,Cash Back,5,0,,
+63,qew,a,fsd,2020-04-01,2020-04-21,2,Cash Back,5,0,,
+64,1111,32,123,2020-04-10,2020-04-29,23,Cash Back,5,0,,
+65,222222,22,222,2020-04-03,2020-04-17,2222,Cash Back,5,0,,
+66,2156,222,22,2020-04-02,2020-04-29,222222,Cash Back,5,0,,
+68,2213,123,123,2020-04-02,2020-04-29,123,Cash Back,2,0,,
+71,wenhao,qweq,qwe,2020-04-03,2020-04-30,22222,Cash Back,5,0,null,null
+72,wenhao,qweq,qwe,2020-04-03,2020-04-30,22222,Cash Back,5,0,null,null
+73,12,123,123,2020-04-02,2020-04-23,200,Cash Back,5,0,null,null
+74,qqqqq,123,123,2020-04-02,2020-04-23,200,Cash Back,5,0,null,null
+75,31231313,qqqqqqqqq,aaaaaaaaaaaa,2020-04-03,2020-04-30,22312323,Cash Back,5,0,null,null
+76,qeq,1231,2312,2020-04-11,2020-04-29,200,Cash Back,5,0,null,null
+77,title,asdaDF,Fasdasdasd,2020-04-10,2020-04-30,100,Cash Back,5,0,null,null
+78,today,qwee,qwe,2020-04-02,2020-04-23,111111,Cash Back,5,0,null,null
+79,today,qwee,qwe,2020-04-02,2020-04-23,2222,Cash Back,5,0,null,null
+80,today,qwee,qwe,2020-04-02,2020-04-23,111111,Cash Back,5,0,null,null
+81,123,123,312,2020-04-10,2020-04-30,123,Cash Back,5,0,null,null
+82,123,123,312,2020-04-10,2020-04-30,123,Cash Back,5,0,null,null
+83,1222,3dasda,sgsfDASD,2020-04-03,2020-04-30,2222,Cash Back,5,0,null,null
+84,1001,1001,1001,2020-04-01,2020-04-30,1001,Cash Back,5,0,null,null
+85,1001,1234,1234,2020-04-18,2020-04-30,1234,Cash Back,5,0,null,null
+86,hjkhjkj,1234,1234,2020-04-18,2020-04-30,1234,Cash Back,5,0,null,null
+87,313124,1234,1234,2020-04-18,2020-04-30,1234,Cash Back,5,0,null,null
+88,1002,1002,1002,2020-04-24,2020-04-30,1002,Cash Back,5,0,null,null
+98,1001,test apply,asefdaedr,2020-04-03,2020-04-30,100,Cash Back,5,0,null,null
+99,1001,test apply,asefdaedr,2020-04-03,2020-04-30,100,Cash Back,5,0,null,null
+100,12121,asdasd,sad,2020-04-03,2020-04-22,3333,Cash Back,5,1,null,null
+101,Buick New,12345677654321,122334,2020-04-10,2020-04-30,1000,Cash Back,5,0,null,null
+102,Buick New,12345677654321,122334,2020-04-10,2020-04-30,1000,Cash Back,5,0,null,null
+103,New,324,sda,2020-04-03,2020-04-30,30,Percentage,5,0,null,null
+104,rrtrt,rer,ere,2020-04-01,2020-04-30,24,Cash Back,5,0,null,null
+105,>123,dfasasdsd,dealerID: 31,2020-04-04,2020-04-30,23134,Cash Back,31,0,null,null
+106,123,23123123123,12312312312312312312,2020-04-04,2020-04-30,1231231,Cash Back,31,0,null,null
+107,wew,qwqw,qweqw,2020-04-14,2020-04-25,333,Cash Back,5,1,null,null
+108,3423423,dasasd,ead,2020-04-03,2020-04-30,3333,Cash Back,31,0,null,null
+109,asd,asdasd,asdasd,2020-04-10,2020-04-23,0,Cash Back,31,0,,
+110,adf,ads,asd,2020-04-03,2020-04-30,0,Cash Back,31,1,,
+111,qweqwe,qweqwe,qewqweqweqwe,2020-04-03,2020-04-30,123,Cash Back,31,0,,
+112,asd,ads,scd,2020-04-03,2020-04-30,231,Cash Back,31,1,,
+113,asdasdasd,asdasd,sdaasd,2020-04-10,2020-04-30,423,Cash Back,31,1,,
+114,test 1001,1111,1111,2020-04-24,2020-04-30,1111,Cash Back,31,0,1001   Default false false,
+115,11,11,11,2020-04-10,2020-04-30,11,Cash Back,31,0,1111 null null Default false false,
+116,1212,adsdasd,asdas,2020-04-03,2020-04-23,23213,Cash Back,31,0,null 100 1000000 Default false false,
+117,test 19,1111,1111,2020-04-24,2020-04-30,1111,Cash Back,19,0,null 1000 1000000 Default true false,
+118,test vin,sdasd,asd,2020-04-17,2020-04-30,123,Cash Back,19,0,1003 null null Default false false,
+119,test group,sdasd,asd,2020-04-17,2020-04-30,123,Cash Back,19,0,null 123 1312312 Default true false,
+120,,ads,afaf,2020-04-17,2020-04-30,12,Cash Back,1,1,ads,ads
+121,test,new check,buy one,2020-04-24,2020-04-09,19,Cash Back,1,1,new check,new check
+129,32132,sasdas,asdasd,2020-04-10,2020-04-30,23123,Cash Back,19,1,null null null null null null,
+133,offer 1919,sdfsd,sdfasd,2020-04-24,2020-04-30,1919,Cash Back,19,1,null 123 123344 Default true false,
+134,ser,werf,sf,2020-04-16,2020-04-30,4444,Cash Back,5,1,null,null
+135,test group,asdas,asdasd,2020-04-10,2020-04-30,2323,Cash Back,19,0,null 100 100000 Default true false,
+136,,,,2020-04-10,2020-04-30,2323,Cash Back,19,1,1003 null null Default false false,
+137,test,Test,Test,2020-04-01,2020-04-25,20,Percentage,19,0,null 100 100000 Default true false,
+138,sef,sfd,asdf,2020-04-10,2020-04-30,2323,Cash Back,19,0,null 100 100000 Default true false,
+139,,,,2020-04-08,2020-04-30,133,Cash Back,19,1,null null null null null null,
+140,Discount,Early Bird Disount,Testing,2020-04-01,2020-04-30,20,Percentage,19,0,null 100 100000 Default true false,
+141,asd,asdf,sdef,2020-04-16,2020-04-30,123,Cash Back,19,0,null null null null null null,
+142,asd,asdf,sdef,2020-04-16,2020-04-30,123,Cash Back,19,0,null dwa sda Default false false,
+143,xcz,zxc,zxc,2020-04-10,2020-04-30,23123,Cash Back,19,0,null 123 sdasd Default true false,
+144,asd,asd,asd,2020-04-03,2020-04-30,213,Cash Back,19,0,null null null null null null,
+145,asdsda,asd,asd,2020-04-03,2020-04-30,213,Cash Back,19,0,null asd asd Default false false,
+146,123,asd,asd,2020-04-03,2020-04-30,213,Cash Back,19,0,null 123123123 22 Default false false,
+147,asdsda,asd,asd,2020-04-03,2020-04-30,213,Cash Back,19,0,null null -1 Default false false,
+148,asdsda,asd,asd,2020-04-03,2020-04-30,213,Cash Back,19,0,null asd qwe Default false false,
+150,asd,sda,asd,2020-04-17,2020-04-30,23,Cash Back,19,0,null null null null null null,
+151,231,sda,asd,2020-04-17,2020-04-30,23,Cash Back,19,0,null asdasd sdasad Default false false,
+154,test value,asd,asd,2020-04-10,2020-04-30,231,Cash Back,19,0,null null null null null null,
+156,test vin,qweqweqweqw,asd,2020-04-10,2020-04-30,123,Cash Back,19,0,null null null null null null,
+158,test 1003,asd,asd,2020-04-10,2020-04-30,123,Cash Back,19,0,1003 null null Default false false,
+159,test new&used,asd,asd,2020-04-10,2020-04-30,123,Cash Back,19,0,1003 null null Default false false,
+160,1003,1003,1003,2020-04-11,2020-04-30,1003,Cash Back,19,0,null null null null null null,
+161,111,111,111,2020-04-24,2020-04-30,111,Cash Back,19,1,null null null null null null,
+162,1003 vehicle,ws,sda,2020-04-03,2020-04-30,11,Cash Back,19,0,null null null null null null,
+165,ajsdg,dsfas,,2020-04-18,2020-04-30,23,Cash Back,1,1,dsfas,dsfas
+166,ajsdg,,,2020-04-18,2020-04-30,23,Cash Back,1,1,,
+167,test incentive,cool guy,for the world,2020-04-11,2020-04-18,333,Cash Back,19,0,null 0 50000 Toyota true true,
+171,Test 1019,Edited,asdadasds,2020-04-01,2020-04-30,122,Cash Back,1,1,1019 null null Default false false,
+182,newTest,test,test,2020-04-09,2020-04-30,500,Cash Back,1,1,1020 null null Default false false,
+183,d4,5,5,2020-04-23,2020-04-29,555,Cash Back,4,0,1013 null null Default false false,
+184,1019,5,5,2020-04-23,2020-04-30,555,Cash Back,1,1,1019 null null Default false false,
+185,sdg,asd,asd,2020-04-17,2020-04-30,2132,Cash Back,1,0,1019 null null Default false false,
+186,sdg222,asd,asd,2020-04-17,2020-04-30,22,Percentage,1,0,null 100 100000000 Default false false,
+187,New Car,"This vehicel gets 10% 	",Limited time offer,2020-04-01,2020-04-27,10,Percentage,3,0,1039 null null Default false false,
