@@ -1,5 +1,6 @@
 package group8;
 
+import group1.model.State;
 import group8.data.NewJDBC;
 
 import java.sql.ResultSet;
@@ -9,6 +10,8 @@ import java.util.List;
 
 public class DealerDirectory {
 
+    public static final String STATE = "State";
+    public static final String STATE_CODE = "StateCode";
     private NewJDBC jdbcInstance;
 
     public DealerDirectory() {
@@ -24,6 +27,9 @@ public class DealerDirectory {
         List<Dealer> dealers = dealerDirectory.getDealerByStateOrStateId("WA");
         System.out.println(dealers.size());
         System.out.println(dealerDirectory.getDealerByZipCode("98032"));
+        dealerDirectory.getUniqueStates().forEach(item -> {
+            System.out.println(String.format("%s, %s", item.getName(), item.getCode()));
+        });
     }
 
 
@@ -51,14 +57,26 @@ public class DealerDirectory {
         return dealers;
     }
 
+    public List<State> getUniqueStates() throws SQLException {
+        List<State> states = new ArrayList<>();
+        String query = "SELECT DISTINCT State, StateCode FROM DealerWithState";
+        ResultSet resultSet = jdbcInstance.query(query, new String[]{});
+        while (resultSet.next()) {
+            String name = resultSet.getString(STATE);
+            String code = resultSet.getString(STATE_CODE);
+            states.add(new State(name, code));
+        }
+        return states;
+    }
+
     private Dealer getDealer(ResultSet resultSet) throws SQLException {
         Dealer dealer = new Dealer();
         dealer.setDealerID(resultSet.getString("DealerId"));
         dealer.setName(resultSet.getString("DealerName"));
         dealer.setStreetAddress(resultSet.getString("DealerAddress"));
         dealer.setCity(resultSet.getString("City"));
-        dealer.setStateID(resultSet.getString("StateCode"));
-        dealer.setState(resultSet.getString("State"));
+        dealer.setStateID(resultSet.getString(STATE_CODE));
+        dealer.setState(resultSet.getString(STATE));
         dealer.setZipcode(resultSet.getString("ZipCode"));
         dealer.setPhoneNumber(resultSet.getString("PhoneNumber"));
         dealer.setLatitude(resultSet.getDouble("Latitude"));
