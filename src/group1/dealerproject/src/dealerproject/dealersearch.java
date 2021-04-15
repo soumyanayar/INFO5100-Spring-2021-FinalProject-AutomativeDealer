@@ -39,9 +39,9 @@ public class dealersearch extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jTextField1.setText("jTextField1");
+        jTextField1.setText("Zipcode or State Code");
 
-        jButton1.setText("jButton1");
+        jButton1.setText("Submit");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -90,7 +90,7 @@ public class dealersearch extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(54, 54, 54)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 301, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -106,23 +106,20 @@ public class dealersearch extends javax.swing.JFrame {
         Statement stmt = null;
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/project?serverTimezone=UTC", "root", "password2");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/project?serverTimezone=UTC", "root", "yourpasswd");
             stmt = con.createStatement();
             String queryString = jTextField1.getText();
-            System.out.println("isItZipCode: " + isItZipCode(queryString));
-//            String query = "SELECT* FROM dealer;";
 
             boolean isZipCode = isItZipCode(queryString);
             String query = String.format("SELECT * FROM dealer WHERE state_code='%s'",queryString);
             if (isZipCode) {
-                query = String.format("SELECT * FROM dealer WHERE zipcode=%s",queryString);
+                query = String.format("SELECT * FROM dealer WHERE zipcode=%s",queryString);  
             }
-
-            System.out.println(query + " :query");
+            
             ResultSet rs = stmt.executeQuery(query);
             model.setRowCount(0);
             int size = 0;
-
+            
             while (rs.next()) {
                 String name = rs.getString("name");
                 String phone_number = rs.getString("phone_number");
@@ -152,7 +149,7 @@ public class dealersearch extends javax.swing.JFrame {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
@@ -195,7 +192,12 @@ public class dealersearch extends javax.swing.JFrame {
             return false;
         }
         Matcher m = p.matcher(givenValue);
-
+        
         return m.matches();
     }
 }
+
+
+
+
+
