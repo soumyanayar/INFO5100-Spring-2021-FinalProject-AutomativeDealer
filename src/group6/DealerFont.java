@@ -12,7 +12,10 @@ public class DealerFont {
     static int DESCRIPTION_FONT_SIZE = 12;
 
     static Font getHeaderFont() {
-        return new Font(FONT_NAME, Font.PLAIN, HEADER_FONT_SIZE);
+        Font font = new Font(FONT_NAME, Font.PLAIN, HEADER_FONT_SIZE);
+        GraphicsEnvironment genv = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        genv.registerFont(font);
+        return font;
     }
 
     static Font getTitleFont() {
@@ -24,10 +27,16 @@ public class DealerFont {
     }
 
     static Font getDescriptionFont() {
-        return new Font(FONT_NAME, Font.PLAIN, DESCRIPTION_FONT_SIZE);
+        Font font = new Font(FONT_NAME, Font.PLAIN, DESCRIPTION_FONT_SIZE);
+        GraphicsEnvironment genv = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        genv.registerFont(font);
+        return font;
     }
 
     static Font getNormalFont() {
-        return new Font(FONT_NAME, Font.PLAIN, NORMAL_FONT_SIZE);
+        Font font = new Font(FONT_NAME, Font.PLAIN, NORMAL_FONT_SIZE);
+        GraphicsEnvironment genv = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        genv.registerFont(font);
+        return font.deriveFont(Font.PLAIN, 12f);
     }
 }

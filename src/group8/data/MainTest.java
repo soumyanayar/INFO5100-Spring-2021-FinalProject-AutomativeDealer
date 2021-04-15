@@ -1,6 +1,8 @@
 package group8.data;
 
+import group8.Car;
 import java.sql.SQLException;
+import java.util.List;
 
 /**
  * @author Guiyu Liu
@@ -10,6 +12,14 @@ public class MainTest {
 
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
         DbDealerStorage dbDealerStorage = new DbDealerStorage();
-        System.out.println(dbDealerStorage.getDealerById("2").getName());
+        dbDealerStorage.printAll();
+        //dbDealerStorage.printNumRow();
+        //dbDealerStorage.printNumCol();
+        //dbDealerStorage.printColInfo();
+        List<Car> res = dbDealerStorage.getAllCarsByDealerId("18");
+        for(Car c : res){
+            System.out.println(c.getMake());
+        }
+        //System.out.println(dbDealerStorage.getDealerById("testId").getName());
     }
 }

@@ -37,6 +37,40 @@ public class NewJDBC {
         }
         return stmt;
     }
+    
+    public void getAllRows() throws SQLException{
+        ResultSet rs = stmt.executeQuery("select * from NewVehicleData");
+        while(rs.next()){
+            for(int i = 1; i <= rs.getMetaData().getColumnCount(); i++){
+                if(i == 11){
+                    continue;
+                }
+                System.out.print(rs.getString(i) + "  ");
+            }
+            System.out.println();
+        }
+    }
+    
+    public int getNumColumns() throws SQLException{
+        ResultSet rs = stmt.executeQuery("select * from Dealers");
+        return rs.getMetaData().getColumnCount();
+    }
+    
+    public void printColumnInfo() throws SQLException{
+        ResultSet rs = stmt.executeQuery("select * from NewVehicleData");
+        ResultSetMetaData metadata = rs.getMetaData();
+        for(int col = 1; col <= metadata.getColumnCount(); col++){
+            String colName = metadata.getColumnName(col);
+            String type = metadata.getColumnTypeName(col);
+            System.out.println(colName + " has data type " + type);
+        }
+    }
+    
+    public void getNumRows() throws SQLException{
+        ResultSet rs = stmt.executeQuery("select count(*) from Dealers");
+        rs.next();
+        System.out.println("Dealer Table has " + rs.getInt(1) + " rows");
+    }
 
     public ResultSet query(String sql, String[] params) throws SQLException {
         return prepareStatement(sql, params).executeQuery();

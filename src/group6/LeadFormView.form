@@ -10,7 +10,7 @@
     <children>
       <scrollpane id="cc41f">
         <constraints>
-          <grid row="0" column="0" row-span="12" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+          <grid row="0" column="0" row-span="12" col-span="1" vsize-policy="3" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties/>
         <border type="none"/>
@@ -150,6 +150,7 @@
                     </constraints>
                     <properties>
                       <text value="Last Name *"/>
+                      <toolTipText value=""/>
                     </properties>
                   </component>
                   <component id="d6257" class="javax.swing.JTextField" binding="lName">
@@ -158,7 +159,9 @@
                         <preferred-size width="150" height="-1"/>
                       </grid>
                     </constraints>
-                    <properties/>
+                    <properties>
+                      <toolTipText value="Last Name"/>
+                    </properties>
                   </component>
                 </children>
               </grid>
@@ -178,6 +181,7 @@
                     </constraints>
                     <properties>
                       <text value="Email*"/>
+                      <toolTipText value=""/>
                     </properties>
                   </component>
                   <component id="ee03f" class="javax.swing.JTextField" binding="eMail">
@@ -186,7 +190,9 @@
                         <preferred-size width="150" height="-1"/>
                       </grid>
                     </constraints>
-                    <properties/>
+                    <properties>
+                      <toolTipText value="Email"/>
+                    </properties>
                   </component>
                 </children>
               </grid>
@@ -206,6 +212,7 @@
                     </constraints>
                     <properties>
                       <text value="Phone No*"/>
+                      <toolTipText value=""/>
                     </properties>
                   </component>
                   <component id="31a4c" class="javax.swing.JTextField" binding="ph_No">
@@ -214,7 +221,9 @@
                         <preferred-size width="150" height="-1"/>
                       </grid>
                     </constraints>
-                    <properties/>
+                    <properties>
+                      <toolTipText value="Phone No"/>
+                    </properties>
                   </component>
                 </children>
               </grid>
@@ -242,7 +251,9 @@
                         <preferred-size width="150" height="-1"/>
                       </grid>
                     </constraints>
-                    <properties/>
+                    <properties>
+                      <toolTipText value="Zip Code"/>
+                    </properties>
                   </component>
                 </children>
               </grid>
@@ -300,17 +311,6 @@
                   </component>
                 </children>
               </grid>
-              <component id="2cc05" class="javax.swing.JTextArea" binding="agreement">
-                <constraints>
-                  <grid row="10" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
-                    <preferred-size width="150" height="50"/>
-                  </grid>
-                </constraints>
-                <properties>
-                  <editable value="false"/>
-                  <text value="By submitting your."/>
-                </properties>
-              </component>
               <grid id="f0625" layout-manager="GridLayoutManager" row-count="1" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
                 <margin top="0" left="0" bottom="0" right="0"/>
                 <constraints>
@@ -339,6 +339,15 @@
                   </hspacer>
                 </children>
               </grid>
+              <component id="c3139" class="javax.swing.JLabel" binding="termsConditionLabel">
+                <constraints>
+                  <grid row="10" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <font name="Helvetica" size="12" style="0"/>
+                  <text value=""/>
+                </properties>
+              </component>
             </children>
           </grid>
         </children>

@@ -1,6 +1,11 @@
 package group8.data;
 
+import group8.Car;
+import group8.CarCategory;
 import group8.Dealer;
+import group8.IDataProvider;
+import group8.Incentive;
+import java.sql.Blob;
 
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
@@ -9,12 +14,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.sql.rowset.serial.SerialBlob;
 
 /**
  * @author Guiyu Liu
  * Apr 13, 2021.
  */
-public class DbDealerStorage {
+public class DbDealerStorage implements IDataProvider{
+    
     private NewJDBC db;
 
     public DbDealerStorage() throws SQLException, ClassNotFoundException {
@@ -22,7 +29,7 @@ public class DbDealerStorage {
     }
 
     public Dealer getDealerById(String id) {
-        String sql = "select * from Dealer where dealerID = ?";
+        String sql = "select * from Dealers where dealerID = ?";
         try {
             String [] aStrParams = new String[1];
             aStrParams[0] = id;
@@ -34,6 +41,21 @@ public class DbDealerStorage {
             System.out.println("No result for Dealer with Id : " + id);
             return null;
         }
+    }
+    
+    public void printColInfo() throws SQLException{
+        db.printColumnInfo();
+    }
+    
+    public void printNumCol() throws SQLException{
+        System.out.println("There are " + db.getNumColumns() + " columns in ");
+    }
+    public void printAll() throws SQLException{
+        db.getAllRows();
+    }
+    
+    public void printNumRow() throws SQLException{
+        db.getNumRows();
     }
 
     private List<Map<String, Object>> resultSetToList(ResultSet rs) throws SQLException {
@@ -53,16 +75,76 @@ public class DbDealerStorage {
     public Dealer mapRow(ResultSet rs) throws SQLException {
 
         Dealer dealer = new Dealer();
-        if (rs.next()) {
-            dealer.setDealerID(rs.getString("DealerID"));
-            dealer.setName(rs.getString("DealerName"));
-            dealer.setCity(rs.getString("City"));
-            dealer.setPhoneNumber(rs.getString("PhoneNumber"));
-            dealer.setStreetAddress(rs.getString("DealerAddress"));
-            dealer.setZipcode(rs.getString("ZipCode"));
-            dealer.setCountry(rs.getString("Country"));
-        }
+        rs.next();
+        dealer.setDealerID(rs.getString("dealerID"));
+        dealer.setName(rs.getString("name"));
+        dealer.setCity(rs.getString("city"));
+        dealer.setPhoneNumber(rs.getString("phoneNumber"));
+        dealer.setState(rs.getString("state"));
+        dealer.setStateID(rs.getString("stateID"));
+        dealer.setStreetAddress(rs.getString("streetAddress"));
+        dealer.setZipcode(rs.getString("zipcode"));
 
         return dealer;
+    }
+
+    @Override
+    public List<Car> getAllCarsByDealerId(String dealerId) {
+        List<Car> result = new ArrayList<>();
+        String query = "Select * from NewVehicleData where DealerId = ?" ;
+        try {
+            String [] aStrParams = new String[1];
+            aStrParams[0] = dealerId;
+            ResultSet resultSet = db.query(query, aStrParams);
+            while(resultSet.next()){
+//                Car(String stockID, String VIN, String dealerID, String make, String model,
+//                int year, CarCategory category, double price, String color, int mileage,
+//                Blob img, String incentiveID, String discountPrice, int rating)
+                String stockID = resultSet.getString(1);
+                String VIN = resultSet.getString(2);
+                String dealerID = resultSet.getString(3);
+                String make = resultSet.getString(4);
+                String model = resultSet.getString(5);
+                int year = resultSet.getInt(6);
+                CarCategory category = resultSet.getString(7).equals("New") ? CarCategory.NEW : CarCategory.USED;
+                double msrp = resultSet.getDouble(8);
+                String color = resultSet.getString(9);
+                int miles = resultSet.getInt(10);
+                String img = resultSet.getString(11);
+                byte[] content = img.getBytes();
+                Blob blob = new SerialBlob(content);
+                String incentiveId = resultSet.getString(12);
+                String discountPrice = resultSet.getString(13);
+                int rating = resultSet.getInt(14);
+                Car c = new Car(stockID, VIN, dealerID, make, model, year, category, msrp, color, miles, blob, incentiveId, discountPrice, rating);
+                result.add(c);
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e);
+            System.out.println("No result for Dealer with Id : " + dealerId);
+            return null;
+        }
+        return result;
+    }
+
+    @Override
+    public List<Car> getAllCars() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public List<Incentive> getAllIncentivesByDealerId(String dealerId) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public List<Incentive> getAllIncentives() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void persistIncentive(Incentive incentive) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

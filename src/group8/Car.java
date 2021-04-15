@@ -1,5 +1,7 @@
 package group8;
 
+import java.sql.Blob;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -11,7 +13,8 @@ package group8;
  * @author jasmineshin
  */
 public class Car {
-
+    
+    // instance variables
     private String stockNum;
     private String dealerId;
     private CarCategory carCategory;
@@ -20,7 +23,7 @@ public class Car {
     private double msrp;
     private String VIN;
     private String color;
-    private String rating;
+    private int rating;
     private String description;
     private String transmission;
     private String engine;
@@ -30,20 +33,41 @@ public class Car {
     private String model;
     private String type;
     private String location;
-    //image
-
-
-
+    private Blob image;
+    
+    // default constructor
+    public Car(){
+    }
+    
+    // constructor for MySQL query
+    public Car(String stockID, String VIN, String dealerID, String make, String model,
+                int year, CarCategory category, double price, String color, int mileage,
+                Blob img, String incentiveID, String discountPrice, int rating){
+        
+        this.stockNum = stockID;
+        this.VIN = VIN;
+        this.dealerId = dealerID;
+        this.make = make;
+        this.model = model;
+        this.year = year;
+        this.carCategory = category;
+        this.msrp = price;
+        this.color = color;
+        this.mileage = mileage;
+        this.image = img;
+        this.rating = rating;
+    }
+    
     public Car(String stockNum , String make, String model, int year, double msrp,
-               String color, String location, int mileage, String dealerId,
-               CarCategory carCategory, int seatCount, String VIN, String rating,
-               String description, String transmission, String engine, String fuel, String type){
+                String color, String location, int mileage, String dealerId, 
+                CarCategory carCategory, int seatCount, String VIN, int rating, 
+                String description, String transmission, String engine, String fuel, String type){
         this.stockNum = stockNum;
         this.make = make;
         this.seatCount = seatCount;
         this.VIN = VIN;
         this.rating = rating;
-        this.description =description;
+        this.description = description;
         this.transmission = transmission;
         this.engine = engine;
         this.fuel = fuel;
@@ -57,35 +81,49 @@ public class Car {
         this.dealerId = dealerId;
         this.carCategory = carCategory;
     }
-
+    
     /*******************  GETTERS  *******************/
+    
     public String getstockNum() {
         return this.stockNum;
     }
+    
+    public Blob getImage(){
+        return this.image;
+    }
+    
     public int getSeatCount(){
         return seatCount;
     }
+    
     public String getVIN(){
         return this.VIN;
     }
-    public String getRating(){
+    
+    public int getRating(){
         return this.rating;
     }
+    
     public String getDescription(){
         return this.description;
-    }
+    }   
+    
     public String getTransmission(){
         return this.transmission;
     }
+    
     public String getEngine(){
         return this.engine;
     }
+    
     public String getFuel(){
         return this.fuel;
     }
+    
     public String getType(){
         return this.type;
     }
+    
     public String getMake(){
         return this.make;
     }
@@ -168,12 +206,12 @@ public class Car {
     public void setVIN(String VIN){
         this.VIN = VIN;
     }
-    public void setRating(String rating){
+    public void setRating(int rating){
         this.rating = rating;
     }
     public void setDescription(String  description){
         this.description = description;
-    }
+    }          
     public void setTransmission(String transmission){
         this.transmission = transmission;
     }
