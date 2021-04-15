@@ -9,11 +9,12 @@ public class Dealer {
     private String state;
     private String zipcode;
     private String phoneNumber;
+    private String country;
 
     public Dealer() {}
 
     public Dealer(String dealerID, String name, String streetAddress, String city, String stateID, String state,
-                  String zipcode, String phoneNumber, Inventory inventory) {
+                  String zipcode, String phoneNumber, String country, Inventory inventory) {
         this.dealerID = dealerID;
         this.name = name;
         this.streetAddress = streetAddress;
@@ -22,6 +23,7 @@ public class Dealer {
         this.state = state;
         this.zipcode = zipcode;
         this.phoneNumber = phoneNumber;
+        this.country = country;
     }
 
     /*******************  GETTER  *******************/
@@ -57,6 +59,10 @@ public class Dealer {
         return name;
     }
 
+    public String getCountry() {
+        return country;
+    }
+
     /*******************  SETTER  *******************/
 
     public void setDealerID(String dealerID) {
@@ -89,6 +95,10 @@ public class Dealer {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
     }
 
     /*******************  METHODS  *******************/

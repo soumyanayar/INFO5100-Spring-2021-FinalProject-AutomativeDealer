@@ -22,7 +22,7 @@ public class DbDealerStorage {
     }
 
     public Dealer getDealerById(String id) {
-        String sql = "select * from Dealers where dealerID = ?";
+        String sql = "select * from Dealer where dealerID = ?";
         try {
             String [] aStrParams = new String[1];
             aStrParams[0] = id;
@@ -53,15 +53,15 @@ public class DbDealerStorage {
     public Dealer mapRow(ResultSet rs) throws SQLException {
 
         Dealer dealer = new Dealer();
-        rs.next();
-        dealer.setDealerID(rs.getString("dealerID"));
-        dealer.setName(rs.getString("name"));
-        dealer.setCity(rs.getString("city"));
-        dealer.setPhoneNumber(rs.getString("phoneNumber"));
-        dealer.setState(rs.getString("state"));
-        dealer.setStateID(rs.getString("stateID"));
-        dealer.setStreetAddress(rs.getString("streetAddress"));
-        dealer.setZipcode(rs.getString("zipcode"));
+        if (rs.next()) {
+            dealer.setDealerID(rs.getString("DealerID"));
+            dealer.setName(rs.getString("DealerName"));
+            dealer.setCity(rs.getString("City"));
+            dealer.setPhoneNumber(rs.getString("PhoneNumber"));
+            dealer.setStreetAddress(rs.getString("DealerAddress"));
+            dealer.setZipcode(rs.getString("ZipCode"));
+            dealer.setCountry(rs.getString("Country"));
+        }
 
         return dealer;
     }

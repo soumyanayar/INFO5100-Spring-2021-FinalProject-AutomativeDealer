@@ -10,6 +10,6 @@ public class MainTest {
 
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
         DbDealerStorage dbDealerStorage = new DbDealerStorage();
-        System.out.println(dbDealerStorage.getDealerById("testId").getName());
+        System.out.println(dbDealerStorage.getDealerById("2").getName());
     }
 }
