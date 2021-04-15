@@ -1,18 +1,16 @@
-package group8;
+package entities;
 
 import java.util.Date;
-import java.util.List;
+import java.util.HashSet;
 
 public class CashDiscountIncentive extends Incentive {
     private double value;
     private CashDiscountType cashDiscountType;
 
-    public CashDiscountIncentive(String id, String dealerId, Date startDate, Date endDate, String title,
-                                 String description, String disclaimer, List<PaymentType> validPaymentTypes,
-                                 CarCategory carCategory, String make, String model, String startYear,
-                                 String endYear, String thresholdMiles, double value, CashDiscountType cashDiscountType) {
-        super(id, dealerId, startDate, endDate, title, description, disclaimer, validPaymentTypes, carCategory, make,
-                model, startYear, endYear, thresholdMiles);
+    public CashDiscountIncentive(String id, IncentiveType incentiveType, String dealerId, Date startDate, Date endDate,
+                                 String title, String description, String disclaimer, CarCategory carCategory,
+                                 HashSet<String> carVINs, double value, CashDiscountType cashDiscountType) {
+        super(id, incentiveType, dealerId, startDate, endDate, title, description, disclaimer, carCategory, carVINs);
         this.value = value;
         this.cashDiscountType = cashDiscountType;
     }
