@@ -1,33 +1,23 @@
 package group8;
 
 import java.util.Date;
-import java.util.List;
+import java.util.HashMap;
+import java.util.HashSet;
 
 public class RebateIncentive extends Incentive{
-    private String type;
-    private double amount;
-
-    public RebateIncentive(String id, String dealerId, Date startDate, Date endDate, String title, String description,
-                           String disclaimer, List<PaymentType> validPaymentTypes, CarCategory carCategory, String make,
-                           String model, String startYear, String endYear, String thresholdMiles, String type, double amount) {
-        super(id, dealerId, startDate, endDate, title, description, disclaimer, validPaymentTypes, carCategory, make, model, startYear, endYear, thresholdMiles);
-        this.type = type;
-        this.amount = amount;
+    public HashMap<String, Double> getRebateMap() {
+        return rebateMap;
     }
 
-    public String getType() {
-        return type;
+    public void setRebateMap(HashMap<String, Double> rebateMap) {
+        this.rebateMap = rebateMap;
     }
 
-    public void setType(String type) {
-        this.type = type;
-    }
+    private HashMap<String, Double> rebateMap;
 
-    public double getAmount() {
-        return amount;
-    }
-
-    public void setAmount(double amount) {
-        this.amount = amount;
+    public RebateIncentive(String id, IncentiveType incentiveType, String dealerId, Date startDate, Date endDate, String title, String description,
+                           String disclaimer, CarCategory carCategory, String startYear, String endYear, HashSet<String> carVINs, HashMap<String, Double> rebateMap) {
+        super(id, incentiveType, dealerId, startDate, endDate, title, description, disclaimer, carCategory, carVINs);
+        this.rebateMap = rebateMap;
     }
 }

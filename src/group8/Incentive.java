@@ -1,41 +1,34 @@
 package group8;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 public abstract class Incentive {
     private String id;
+    private IncentiveType incentiveType;
     private String dealerId;
     private Date startDate;
     private Date endDate;
     private String title;
     private String description;
     private String disclaimer;
-    private List<PaymentType> validPaymentTypes;
     private CarCategory carCategory;
-    private String make;
-    private String model;
-    private String startYear;
-    private String endYear;
-    private String thresholdMiles;
+    private HashSet<String> carVINs;
 
-    public Incentive(String id, String dealerId, Date startDate, Date endDate, String title, String description,
-                     String disclaimer, List<PaymentType> validPaymentTypes, CarCategory carCategory, String make,
-                     String model, String startYear, String endYear, String thresholdMiles) {
+    public Incentive(String id, IncentiveType incentiveType, String dealerId, Date startDate, Date endDate, String title, String description,
+                     String disclaimer, CarCategory carCategory, HashSet<String> carVINs) {
         this.id = id;
+        this.incentiveType = incentiveType;
         this.dealerId = dealerId;
         this.startDate = startDate;
         this.endDate = endDate;
         this.title = title;
         this.description = description;
         this.disclaimer = disclaimer;
-        this.validPaymentTypes = validPaymentTypes;
         this.carCategory = carCategory;
-        this.make = make;
-        this.model = model;
-        this.startYear = startYear;
-        this.endYear = endYear;
-        this.thresholdMiles = thresholdMiles;
+        this.carVINs = carVINs;
     }
 
     public String getId() {
@@ -44,6 +37,14 @@ public abstract class Incentive {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public IncentiveType getIncentiveType() {
+        return incentiveType;
+    }
+
+    public void getIncentiveType(IncentiveType incentiveType) {
+        this.incentiveType = incentiveType;
     }
 
     public String getDealerId() {
@@ -94,14 +95,6 @@ public abstract class Incentive {
         this.disclaimer = disclaimer;
     }
 
-    public List<PaymentType> getValidPaymentTypes() {
-        return validPaymentTypes;
-    }
-
-    public void setValidPaymentTypes(List<PaymentType> validPaymentTypes) {
-        this.validPaymentTypes = validPaymentTypes;
-    }
-
     public CarCategory getCarCategory() {
         return carCategory;
     }
@@ -110,43 +103,15 @@ public abstract class Incentive {
         this.carCategory = carCategory;
     }
 
-    public String getMake() {
-        return make;
+    public void setIncentiveType(IncentiveType incentiveType) {
+        this.incentiveType = incentiveType;
     }
 
-    public void setMake(String make) {
-        this.make = make;
+    public HashSet<String> getCarVINList() {
+        return carVINs;
     }
 
-    public String getModel() {
-        return model;
-    }
-
-    public void setModel(String model) {
-        this.model = model;
-    }
-
-    public String getStartYear() {
-        return startYear;
-    }
-
-    public void setStartYear(String startYear) {
-        this.startYear = startYear;
-    }
-
-    public String getEndYear() {
-        return endYear;
-    }
-
-    public void setEndYear(String endYear) {
-        this.endYear = endYear;
-    }
-
-    public String getThresholdMiles() {
-        return thresholdMiles;
-    }
-
-    public void setThresholdMiles(String thresholdMiles) {
-        this.thresholdMiles = thresholdMiles;
+    public void setCarVINList(HashSet<String> carVINs) {
+        this.carVINs = carVINs;
     }
 }
