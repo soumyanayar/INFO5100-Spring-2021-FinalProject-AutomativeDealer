@@ -17,12 +17,18 @@ public class FormActionDirectory {
     public FormActionDirectory(Car car) {
         this.car = car;
     }
+
     public FormAction newForm(String firstName, String lastName, String eMail, String phoneNumber, String zipCode) {
         User user= new User(firstName, lastName, eMail, phoneNumber, zipCode);
+        return newForm(user);
+    }
+
+    public FormAction newForm(User user) {
         FormAction form = new FormAction(user);
         form.setId(id++);
         return form;
     }
+
     public void submit(FormAction form) {
         if (forms == null) {
             forms = new ArrayList<>();

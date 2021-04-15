@@ -1,10 +1,20 @@
 package group6;
 
 import group8.*;
+
+import java.io.IOException;
+import java.net.URL;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.awt.image.BufferedImage;
+import java.net.URL;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+
+import static group8.CarCategory.NEW;
 
 public class LeadFormView extends JFrame{
     private JPanel mainPanel;
@@ -19,7 +29,6 @@ public class LeadFormView extends JFrame{
     private JRadioButton personalUseRadioButton;
     private JRadioButton businessUseRadioButton;
     private JTextArea textArea1;
-    private JTextArea agreement;
     private JLabel commentLabel;
     private JLabel zipCodeLabel;
     private JLabel phoneNo;
@@ -31,6 +40,8 @@ public class LeadFormView extends JFrame{
     private JTextField eMail;
     private JTextField ph_No;
     private JTextField zipCode;
+    private JLabel termsConditionLabel;
+    private JLabel errorLabel = new JLabel();
     Car car;
 
     public JPanel getMainPanel() {
@@ -41,6 +52,7 @@ public class LeadFormView extends JFrame{
         this.car = car;
         this.setValue();
         setSize(new Dimension(500, 800));
+        setMaximumSize(new Dimension(500, 800));
         fName.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {
@@ -58,7 +70,8 @@ public class LeadFormView extends JFrame{
             public void focusLost(FocusEvent e) {
                 super.focusLost(e);
                 if(!isValidEmail(eMail.getText())){
-                    showErrorMessage("Enter a valid E-mail ");
+                    showErrorMessage("Enter a valid E-mail ", eMail.getParent());
+                    eMail.setBorder(BorderFactory.createLineBorder(Color.RED));
                 }
             }
         });
@@ -113,34 +126,43 @@ public class LeadFormView extends JFrame{
         textArea1.setFont(DealerFont.getNormalFont());
         personalUseRadioButton.setFont(DealerFont.getNormalFont());
         businessUseRadioButton.setFont(DealerFont.getNormalFont());
-        agreement.setFont(DealerFont.getDescriptionFont());
         submitButton.setFont(DealerFont.getSubTitleFont());
         // TODO: remove this
         imageLabel.setBackground(Color.BLUE);
+        termsConditionLabel.setFont(DealerFont.getDescriptionFont());
 
     }
 
     private void setValue(){
         carModelLabel.setText(car.getYear()+" "+car.getMake()+" "+car.getModel());
-        carColorLabel.setText(car.getColor());
-        instructionLabel.setText("<html>Fill out the contact form below and one of our friendly<br>helpful sales staff will answer any questions you have about this vehicle.</html>");
+        carColorLabel.setText("Color: " + car.getColor());
+        carStockLabel.setText("Price: $" + car.getMSRP());
+        carVinLabel.setText("Type: " + car.getCarCategory().name());
+        instructionLabel.setText("<html>Fill out the contact form below and one of our friendly helpful sales <br/> staff will answer any questions you have about this vehicle.</html>");
         setProperties();
+        termsConditionLabel.setText("<html><strong>" +"By submitting your request, you consent to be contacted at the <br/> phone number you provided-which may include auto-dials,<br/> text messages and/or pre-recorded calls.By subscribing to receive <br/> recurring SMS offers, you consent to receive text messages sent <br/> through an automatic telephone dialing system, and message <br/> and data rates may apply. This consent is not a condition of <br/> purchase. You may opt out at any time by replying STOP to <br/> a text message, or calling (206) 241-1888 to have your <br/> telephone number removed from our system.</strong></html>");
+
+        String path = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSC4vdqyjdI2Zz713z7WWoiEjPK3nzO9FSUM3vJQZgaB-Hc9l6qe_hNcKMWkHVX3MvJ3ow&usqp=CAU";
+
+
+        try {
+            URL url = new URL(path);
+            BufferedImage image = null;
+            image = ImageIO.read(url);
+            ImageIcon icon = new ImageIcon(image);
+            imageLabel.setIcon(icon);
+            imageLabel.setText("");
+        } catch (IOException ioException) {
+            ioException.printStackTrace();
+        }
 
     }
-    private void showErrorMessage(String error){
-        JOptionPane.showMessageDialog(null,error);
-    }
-
-    public static void main(String[] args) {
-        JFrame frame = new JFrame("Request Quote");
-        Car car = new Car("1", "BMW", "QC2", 2020, 222, false, "Green", "Seattle", 12);
-        Car car2 = new Car("1", "AUDI", "QC2", 2020, 222, false, "Green", "Seattle", 12);
-        frame.setContentPane(new LeadFormView(car).mainPanel);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.pack();
-        frame.setVisible(true);
-
-
-
+    private void showErrorMessage(String error, Container container){
+//        errorLabel.setText(error);
+//        this.add(errorLabel);
+//        this.revalidate();
+//        this.repaint();
+//        this.pack();
+       JOptionPane.showMessageDialog(null,error);
     }
 }
