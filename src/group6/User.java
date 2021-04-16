@@ -8,7 +8,7 @@ public class User {
     private String firstName, lastName, eMail, phoneNumber, zipCode;
     private FormAction form;
     // optional
-    private Integer useType;
+    private String useType;
     private String messageText;
 
     public User(String firstName, String lastName, String eMail, String phoneNumber, String zipCode) {
@@ -77,15 +77,15 @@ public class User {
     }
 
     // optional
-    public void setUseType(Integer useType) {
+    public void setUseType(String useType) {
         this.useType = useType;
     }
 
 
     public String getUseType() {
         if (this.useType == null) {
-            return "Empty";
+            return " ";
         }
-        return useType == 0 ? "Business" : "Personal";
+        return useType == " " ? "Business" : "Personal";
     }
 }
