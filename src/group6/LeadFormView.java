@@ -2,6 +2,8 @@ package group6;
 
 import group8.*;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.net.URL;
 import javax.imageio.ImageIO;
@@ -43,7 +45,7 @@ public class LeadFormView extends JFrame{
     private JLabel termsConditionLabel;
     private JLabel errorLabel = new JLabel();
     Car car;
-
+    LeadFormController controller;
     public JPanel getMainPanel() {
         return mainPanel;
     }
@@ -57,6 +59,9 @@ public class LeadFormView extends JFrame{
             @Override
             public void focusLost(FocusEvent e) {
                 super.focusLost(e);
+                if(fName == null){
+
+                }
             }
         });
         lName.addFocusListener(new FocusAdapter() {
@@ -75,20 +80,60 @@ public class LeadFormView extends JFrame{
                 }
             }
         });
+        eMail.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                super.focusGained(e);
+                eMail.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
+            }
+        });
         ph_No.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {
                 super.focusLost(e);
-                isValidPhone(phoneNo.getText());
+                if(!isValidPhone(ph_No.getText())){
+                   showErrorMessage("Enter a valid Phone No", ph_No.getParent());
+                   ph_No.setBorder(BorderFactory.createLineBorder(Color.RED));
+                }
+            }
+        });
+        ph_No.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                super.focusGained(e);
+                ph_No.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
             }
         });
         zipCode.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {
                 super.focusLost(e);
-                isValidZipCode(zipCode.getText());
+                if(!isValidZipCode(zipCode.getText())){
+                    showErrorMessage("Enter a valid Zip Code", zipCode.getParent());
+                    zipCode.setBorder(BorderFactory.createLineBorder(Color.RED));
+                }
             }
         });
+        zipCode.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                super.focusGained(e);
+                zipCode.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
+            }
+        });
+        submitButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+//                (String firstName, String lastName, String eMail, String phoneNumber, String zipCode)
+                User user = new User(fName.getText(), lName.getText(), eMail.getText(), phoneNo.getText(), zipCode.getText());
+                if (textArea1.getText() != null) {
+                    user.setMessageText(textArea1.getText());
+                }
+
+                controller.submitLeadForm(user);
+            }
+        });
+
     }
     static boolean isValidEmail(String eMail) {
         String regex = "^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$";
@@ -99,7 +144,7 @@ public class LeadFormView extends JFrame{
         return phoneNo.matches(regex);
     }
     static boolean isValidZipCode(String zipCode) {
-        String regex = "\\d{5}(-\\d{4})?";
+        String regex = "\\d{5}";
         return zipCode.matches(regex);
     }
 

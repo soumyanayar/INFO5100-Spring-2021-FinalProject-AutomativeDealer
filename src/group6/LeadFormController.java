@@ -21,6 +21,7 @@ public class LeadFormController {
 
     public void showLeadForm() {
         LeadFormView formView = new LeadFormView(car);
+        formView.controller = this;
         formView.setVisible(true);
         formView.setContentPane(formView.getMainPanel());
         formView.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -28,9 +29,14 @@ public class LeadFormController {
     }
 
     public void submitLeadForm(User user) {
+
+        System.out.println(user.toString());
         FormActionDirectory formActionDirectory = new FormActionDirectory(car);
         FormAction formAction =  formActionDirectory.newForm(user);
         formActionDirectory.submit(formAction);
+        for (FormAction form: formActionDirectory.getForms()) {
+            System.out.println(form.getUser());
+        }
     }
 
     public static void main(String[] args) {
@@ -43,11 +49,14 @@ public class LeadFormController {
                 "Bell",
                 234,
                 "12",
-                NEW);
+                NEW, 5,"3746534857",
+                "4.5", "Good",
+                " Auto", "Auto", "Petrol", "Type");
         LeadFormController leadFormController = new LeadFormController(car);
         leadFormController.showLeadForm();
 
     }
+
 
     public void readCarData() {
         List<List<String>> records = new ArrayList<>();

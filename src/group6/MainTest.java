@@ -10,7 +10,7 @@ import static group8.CarCategory.NEW;
  */
 public class MainTest {
     public static void main(String[] args) {
-        Car bmw =  new Car("1",
+     Car car = new Car("1",
                 "BMW",
                 "Q7",
                 2022,
@@ -19,8 +19,10 @@ public class MainTest {
                 "Bell",
                 234,
                 "12",
-                NEW);
-        FormActionDirectory contactUs = new FormActionDirectory(bmw);
+                NEW, 5,"3746534857",
+                "4.5", "Good",
+                " Auto", "Auto", "Petrol", "Type");
+        FormActionDirectory contactUs = new FormActionDirectory(car);
         FormAction form = contactUs.newForm("JiaQi", "Chen", "dhasjdh@neu.com", "9900", "321");
         User user = form.getUser();
         System.out.println(user.geteMail());
