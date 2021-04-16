@@ -17,11 +17,10 @@ import java.util.Map;
 import javax.sql.rowset.serial.SerialBlob;
 
 /**
- * @author Guiyu Liu
- * Apr 13, 2021.
+ * @author Guiyu Liu Apr 13, 2021.
  */
-public class DbDealerStorage implements IDataProvider{
-    
+public class DbDealerStorage implements IDataProvider {
+
     private NewJDBC db;
 
     public DbDealerStorage() throws SQLException, ClassNotFoundException {
@@ -31,7 +30,7 @@ public class DbDealerStorage implements IDataProvider{
     public Dealer getDealerById(String id) {
         String sql = "select * from Dealers where dealerID = ?";
         try {
-            String [] aStrParams = new String[1];
+            String[] aStrParams = new String[1];
             aStrParams[0] = id;
             ResultSet resultSet = db.query(sql, aStrParams);
             return mapRow(resultSet);
@@ -42,19 +41,20 @@ public class DbDealerStorage implements IDataProvider{
             return null;
         }
     }
-    
-    public void printColInfo() throws SQLException{
+
+    public void printColInfo() throws SQLException {
         db.printColumnInfo();
     }
-    
-    public void printNumCol() throws SQLException{
+
+    public void printNumCol() throws SQLException {
         System.out.println("There are " + db.getNumColumns() + " columns in ");
     }
-    public void printAll() throws SQLException{
+
+    public void printAll() throws SQLException {
         db.getAllRows();
     }
-    
-    public void printNumRow() throws SQLException{
+
+    public void printNumRow() throws SQLException {
         db.getNumRows();
     }
 
@@ -62,9 +62,9 @@ public class DbDealerStorage implements IDataProvider{
         ResultSetMetaData md = rs.getMetaData();
         int columns = md.getColumnCount();
         List<Map<String, Object>> rows = new ArrayList<Map<String, Object>>();
-        while (rs.next()){
+        while (rs.next()) {
             Map<String, Object> row = new HashMap<String, Object>(columns);
-            for(int i = 1; i <= columns; ++i){
+            for (int i = 1; i <= columns; ++i) {
                 row.put(md.getColumnName(i), rs.getObject(i));
             }
             rows.add(row);
@@ -91,15 +91,15 @@ public class DbDealerStorage implements IDataProvider{
     @Override
     public List<Car> getAllCarsByDealerId(String dealerId) {
         List<Car> result = new ArrayList<>();
-        String query = "Select * from NewVehicleData where DealerId = ?" ;
+        String query = "Select * from NewVehicleData where DealerId = ?";
         try {
-            String [] aStrParams = new String[1];
+            String[] aStrParams = new String[1];
             aStrParams[0] = dealerId;
             ResultSet resultSet = db.query(query, aStrParams);
-            while(resultSet.next()){
-//                Car(String stockID, String VIN, String dealerID, String make, String model,
-//                int year, CarCategory category, double price, String color, int mileage,
-//                Blob img, String incentiveID, String discountPrice, int rating)
+            while (resultSet.next()) {
+                // Car(String stockID, String VIN, String dealerID, String make, String model,
+                // int year, CarCategory category, double price, String color, int mileage,
+                // Blob img, String incentiveID, String discountPrice, int rating)
                 String stockID = resultSet.getString(1);
                 String VIN = resultSet.getString(2);
                 String dealerID = resultSet.getString(3);
@@ -116,7 +116,8 @@ public class DbDealerStorage implements IDataProvider{
                 String incentiveId = resultSet.getString(12);
                 String discountPrice = resultSet.getString(13);
                 int rating = resultSet.getInt(14);
-                Car c = new Car(stockID, VIN, dealerID, make, model, year, category, msrp, color, miles, blob, incentiveId, discountPrice, rating);
+                Car c = new Car(stockID, VIN, dealerID, make, model, year, category, msrp, color, miles, blob,
+                        incentiveId, discountPrice, rating);
                 result.add(c);
             }
 
@@ -130,21 +131,43 @@ public class DbDealerStorage implements IDataProvider{
 
     @Override
     public List<Car> getAllCars() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Not supported yet."); // To change body of generated methods, choose
+                                                                       // Tools | Templates.
     }
 
     @Override
     public List<Incentive> getAllIncentivesByDealerId(String dealerId) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Not supported yet."); // To change body of generated methods, choose
+                                                                       // Tools | Templates.
     }
 
     @Override
     public List<Incentive> getAllIncentives() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Not supported yet."); // To change body of generated methods, choose
+                                                                       // Tools | Templates.
     }
 
     @Override
     public void persistIncentive(Incentive incentive) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        String sql = " insert into Incentives (IncentiveId, Title, Description, Disclaimer, StartDate, EndDate, DiscountValue, DiscountType, DealerId, IsDeleted, FilterList, VehicleIdList)"
+                + " values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        try {
+            String[] aStrParams = new String[12];
+            aStrParams[0] = incentive.getId();
+            aStrParams[1] = incentive.getTitle();
+            aStrParams[2] = incentive.getDescription();
+            aStrParams[3] = incentive.getDisclaimer();
+            aStrParams[4] = incentive.getStartDate();
+            aStrParams[5] = incentive.getEndDate();
+            aStrParams[6] = null;
+            aStrParams[7] = incentive.getIncentiveType();
+            aStrParams[8] = incentive.getDealerId();
+            aStrParams[9] = null;
+            aStrParams[10] = null;
+            aStrParams[11] = incentive.getCarVINList();
+        } catch (SQLException e) {
+            System.out.println(e);
+            System.out.println("The incentive with id: " + incentive.getId() + " save failed!");
+        }
     }
 }
