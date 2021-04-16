@@ -1,5 +1,8 @@
 package group8;
 
+import group1.model.State;
+import group8.data.NewJDBC;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -7,14 +10,26 @@ import java.util.List;
 
 public class DealerDirectory {
 
-    private utils.JDBC jdbcInstance;
+    public static final String STATE = "State";
+    public static final String STATE_CODE = "StateCode";
+    private NewJDBC jdbcInstance;
 
     public DealerDirectory() {
         try {
-            jdbcInstance = utils.JDBC.getInstance();
-        } catch (SQLException exception) {
+            jdbcInstance = NewJDBC.getInstance();
+        } catch (SQLException | ClassNotFoundException exception) {
             exception.printStackTrace();
         }
+    }
+
+    public static void main(String[] args) throws SQLException {
+        DealerDirectory dealerDirectory = new DealerDirectory();
+        List<Dealer> dealers = dealerDirectory.getDealerByStateOrStateId("WA");
+        System.out.println(dealers.size());
+        System.out.println(dealerDirectory.getDealerByZipCode("98032"));
+        dealerDirectory.getUniqueStates().forEach(item -> {
+            System.out.println(String.format("%s, %s", item.getName(), item.getCode()));
+        });
     }
 
 
@@ -22,21 +37,50 @@ public class DealerDirectory {
 
     public List<Dealer> getDealerByStateOrStateId(String stateOrStateId) throws SQLException {
         List<Dealer> dealers = new ArrayList<>();
-        String query = "select * from dealer where state = ? or state_id = ?";
+        String query = "select * from DealerWithState where State = ? or StateCode = ?";
         String[] params = new String[]{stateOrStateId, stateOrStateId};
         ResultSet resultSet = jdbcInstance.query(query, params);
-        while(resultSet.next()){
-            Dealer dealer = new Dealer();
-            dealer.setDealerID(resultSet.getString("id"));
-            dealer.setName(resultSet.getString("name"));
-            dealer.setStreetAddress(resultSet.getString("street_address"));
-            dealer.setCity(resultSet.getString("city"));
-            dealer.setStateID(resultSet.getString("state_id"));
-            dealer.setState(resultSet.getString("state"));
-            dealer.setZipcode(resultSet.getString("zipcode"));
-            dealer.setPhoneNumber(resultSet.getString("phone_number"));
-            dealers.add(dealer);
+        while (resultSet.next()) {
+            dealers.add(getDealer(resultSet));
         }
         return dealers;
+    }
+
+    public List<Dealer> getDealerByZipCode(String zipcode) throws SQLException {
+        List<Dealer> dealers = new ArrayList<>();
+        String query = "select * from DealerWithState where ZipCode = ?";
+        String[] params = new String[]{zipcode};
+        ResultSet resultSet = jdbcInstance.query(query, params);
+        while (resultSet.next()) {
+            dealers.add(getDealer(resultSet));
+        }
+        return dealers;
+    }
+
+    public List<State> getUniqueStates() throws SQLException {
+        List<State> states = new ArrayList<>();
+        String query = "SELECT DISTINCT State, StateCode FROM DealerWithState";
+        ResultSet resultSet = jdbcInstance.query(query, new String[]{});
+        while (resultSet.next()) {
+            String name = resultSet.getString(STATE);
+            String code = resultSet.getString(STATE_CODE);
+            states.add(new State(name, code));
+        }
+        return states;
+    }
+
+    private Dealer getDealer(ResultSet resultSet) throws SQLException {
+        Dealer dealer = new Dealer();
+        dealer.setDealerID(resultSet.getString("DealerId"));
+        dealer.setName(resultSet.getString("DealerName"));
+        dealer.setStreetAddress(resultSet.getString("DealerAddress"));
+        dealer.setCity(resultSet.getString("City"));
+        dealer.setStateID(resultSet.getString(STATE_CODE));
+        dealer.setState(resultSet.getString(STATE));
+        dealer.setZipcode(resultSet.getString("ZipCode"));
+        dealer.setPhoneNumber(resultSet.getString("PhoneNumber"));
+        dealer.setLatitude(resultSet.getDouble("Latitude"));
+        dealer.setLongitude(resultSet.getDouble("Longitude"));
+        return dealer;
     }
 }

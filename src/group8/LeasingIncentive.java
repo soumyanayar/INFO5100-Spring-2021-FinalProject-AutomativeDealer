@@ -1,6 +1,7 @@
 package group8;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 
 public class LeasingIncentive extends Incentive{
@@ -8,12 +9,10 @@ public class LeasingIncentive extends Incentive{
     private double signingPay;
     private double monthlyPay;
 
-    public LeasingIncentive(String id, String dealerId, Date startDate, Date endDate, String title, String description,
-                            String disclaimer, List<PaymentType> validPaymentTypes, CarCategory carCategory, String make,
-                            String model, String startYear, String endYear, String thresholdMiles, int months,
+    public LeasingIncentive(String id, String dealerId, Date startDate, Date endDate,
+                            String title, String description, String disclaimer, HashSet<String> carVINs, int months,
                             double signingPay, double monthlyPay) {
-        super(id, dealerId, startDate, endDate, title, description, disclaimer, validPaymentTypes, carCategory,
-                make, model, startYear, endYear, thresholdMiles);
+        super(id, IncentiveType.LEASE, dealerId, startDate, endDate, title, description, disclaimer, carVINs);
         this.months = months;
         this.signingPay = signingPay;
         this.monthlyPay = monthlyPay;

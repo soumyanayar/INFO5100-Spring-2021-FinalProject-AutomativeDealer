@@ -7,7 +7,7 @@ import javax.swing.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-public class LeadForm extends JFrame implements MouseListener {
+public class LeadForm extends JComponent implements MouseListener {
     private JPanel mainPanel;
     private JFrame mainFrame;
     private JTextField textField1;
@@ -27,12 +27,32 @@ public class LeadForm extends JFrame implements MouseListener {
     private JButton respondShort;
     private boolean isExpanded;
 
-    public void init(JFrame mainFrame) {
+    public void init(JFrame mainFrame, Lead lead) {
         isExpanded = true;
         this.mainFrame = mainFrame;
         label1.addMouseListener(this);
+        textField1.setText(lead.firstName);
+        textField2.setText(lead.lastName);
+        textField3.setText(lead.email);
+        textField4.setText(lead.phoneNumber);
+        textField5.setText(lead.carModel);
+        textField6.setText(lead.carYear);
+        textField7.setText(lead.carColor);
+        textArea1.setText(lead.message);
         mouseClicked(null);
     }
+
+    public JTextField getFirstName() {
+        return textField1;
+    }
+
+    public JTextField getLastName() {
+        return textField2;
+    }
+    public JTextField getEmail() {
+        return textField3;
+    }
+
 
     JPanel getMainPanel() {
         return mainPanel;
@@ -40,7 +60,7 @@ public class LeadForm extends JFrame implements MouseListener {
     public static void main(String[] args) {
         JFrame frame = new JFrame("Leads List");
         LeadForm leadForm = new LeadForm();
-        leadForm.init(null);
+        leadForm.init(null, null);
         frame.setContentPane(leadForm.mainPanel);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
@@ -64,12 +84,12 @@ public class LeadForm extends JFrame implements MouseListener {
         if (isExpanded == false) {
             //mainPanel.setSize(700, 100);
             if (mainFrame != null) {
-                mainFrame.setSize(750, 200);
+                mainFrame.setSize(750, -300);
             }
         } else {
             //mainPanel.setSize(700, 400);
             if (mainFrame != null) {
-                mainFrame.setSize(750, 500);
+                mainFrame.setSize(750, 300);
             }
         }
         mainPanel.updateUI();
@@ -90,5 +110,6 @@ public class LeadForm extends JFrame implements MouseListener {
     @Override
     public void mouseReleased(MouseEvent e) {
     }
+
 
 }
