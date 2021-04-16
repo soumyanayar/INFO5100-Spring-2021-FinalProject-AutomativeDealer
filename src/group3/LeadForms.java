@@ -7,16 +7,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
-<<<<<<< HEAD
-
-public class LeadForms extends JPanel {
-    public static void main(String[] args) {
-        JFrame frame = new JFrame("Leads List");
-        LeadForm leadForm1 = new LeadForm();
-        leadForm1.init(frame);
-        LeadForm leadForm2 = new LeadForm();
-        leadForm2.init(frame);
-=======
 public class LeadForms extends JFrame {
     private int numberOfLeads;
     private int height;
@@ -30,7 +20,6 @@ public class LeadForms extends JFrame {
     public void init(List<Lead> leads) {
         this.numberOfLeads = leads.size();
         height = numberOfLeads * 400;
->>>>>>> 60cb75b69e33c4f14c19d2a6ca06e77dc9cdb29b
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new GridLayout(numberOfLeads, 1));
 //        super.setContentPane(mainPanel);
