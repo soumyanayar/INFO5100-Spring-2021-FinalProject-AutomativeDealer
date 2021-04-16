@@ -20,7 +20,7 @@ import java.awt.GridLayout;
 
 
 
-public class Dealer {
+public class LeadList {
 
 	
 		public static void main(String[] args) {
