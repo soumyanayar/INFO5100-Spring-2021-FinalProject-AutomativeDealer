@@ -33,18 +33,20 @@ public class LeadFormController {
      * @param user
      */
     public void submitLeadForm(User user) {
-        System.out.println(user.toString());
+        //System.out.println(user.toString());
+
         FormAction formAction =  formActionDirectory.newForm(user);
         formActionDirectory.submit(formAction);
         System.out.println("There are " + formActionDirectory.getForms().size() + " customers");
         for (FormAction form: formActionDirectory.getForms()) {
             System.out.println("FirstName: " + form.getUser().getFirstName());
             System.out.println("LastName:" + form.getUser().getLastName());
+            System.out.println("Email: " + form.getUser().geteMail());
             System.out.println("PhoneNum: " + form.getUser().getPhoneNumber());
-            System.out.println(form.getUser().geteMail());
+            System.out.println("Zipcode: " + form.getUser().getZipCode());
             if (form.getUser().getOptional() != null) {
-                System.out.println("Text Message(optional): " + form.getUser().getOptional().getMessageText());
-                System.out.println("UseType(optional): " + form.getUser().getOptional().getUserType());
+                System.out.println("UseType: " + form.getUser().getOptional().getUserType());
+                System.out.println("Text Message: " + form.getUser().getOptional().getMessageText());
             }
         }
         System.out.println("-------------next user--------------");
