@@ -8,8 +8,9 @@ public class User {
     private String firstName, lastName, eMail, phoneNumber, zipCode;
     private FormAction form;
     // optional
-    private String useType;
-    private String messageText;
+    private LeadModel optional;
+    /*private String useType;
+    private String messageText;*/
 
     public User(String firstName, String lastName, String eMail, String phoneNumber, String zipCode) {
         this.firstName = firstName;
@@ -67,7 +68,14 @@ public class User {
         this.eMail = eMail;
     }
 
-    // optional
+    public LeadModel getOptional() {
+        return optional;
+    }
+
+    public void setOptional(LeadModel optional) {
+        this.optional = optional;
+    }
+    /*// optional
     public String getMessageText() {
         return messageText;
     }
@@ -84,8 +92,22 @@ public class User {
 
     public String getUseType() {
         if (this.useType == null) {
-            return " ";
+            return "";
         }
-        return useType == " " ? "Business" : "Personal";
-    }
+        return useType == "" ? "Business" : "Personal";
+    }*/
+
+    /*@Override
+    public String toString() {
+        return "User{" +
+                "firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", eMail='" + eMail + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", zipCode='" + zipCode + '\'' +
+                ", form=" + form +
+                ", useType='" + useType + '\'' +
+                ", messageText='" + messageText + '\'' +
+                '}';
+    }*/
 }

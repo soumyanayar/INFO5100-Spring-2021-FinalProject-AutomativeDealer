@@ -25,6 +25,7 @@ public class FormActionDirectory {
 
     public FormAction newForm(User user) {
         FormAction form = new FormAction(user);
+        form.setFd(this);
         form.setId(id++);
         return form;
     }
@@ -46,6 +47,11 @@ public class FormActionDirectory {
 
     public List<FormAction> getForms() {
         return forms;
+    }
+
+    public void generateForm(Car car) {
+        LeadFormController leadFormController = new LeadFormController(car, this);
+        leadFormController.showLeadForm();
     }
     /**
      * get user by form

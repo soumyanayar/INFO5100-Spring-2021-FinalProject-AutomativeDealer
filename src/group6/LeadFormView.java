@@ -46,11 +46,12 @@ public class LeadFormView extends JFrame{
     private JLabel errorLabel = new JLabel();
     Car car;
     LeadFormController controller;
+
     public JPanel getMainPanel() {
         return mainPanel;
     }
 
-    public LeadFormView(Car car){
+    public LeadFormView(Car car, FormActionDirectory formActionDirectory){
         this.car = car;
         this.setValue();
         setSize(new Dimension(500, 800));
@@ -125,15 +126,25 @@ public class LeadFormView extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
 //                (String firstName, String lastName, String eMail, String phoneNumber, String zipCode)
-                User user = new User(fName.getText(), lName.getText(), eMail.getText(), phoneNo.getText(), zipCode.getText());
+                User user = new User(fName.getText(), lName.getText(), eMail.getText(), ph_No.getText(), zipCode.getText());
+                /**
+                 * Add optional information to User
+                 */
+                String message = "";
+                LeadModel optional = null;
                 if (textArea1.getText() != null) {
-                    user.setMessageText(textArea1.getText());
+                    message = textArea1.getText();
                 }
+                if (personalUseRadioButton.isSelected())
+                    optional = new LeadModel(message, LeadModel.UseType.PERSONAL, user);
+                else if (businessUseRadioButton.isSelected())
+                    optional = new LeadModel(message, LeadModel.UseType.BUSINESS, user);
+                user.setOptional(optional);
 
                 controller.submitLeadForm(user);
+                System.exit(0);
             }
         });
-
     }
     static boolean isValidEmail(String eMail) {
         String regex = "^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$";
