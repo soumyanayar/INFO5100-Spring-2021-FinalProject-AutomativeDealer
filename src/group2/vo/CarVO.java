@@ -1,4 +1,4 @@
-package src.group2.vo;
+package group2.vo;
 
 import java.util.List;
 import java.util.Map;

@@ -1,4 +1,4 @@
-package src.group2.vo;
+package group2.vo;
 
 public class DealerVO {
     private Integer dealerId;
