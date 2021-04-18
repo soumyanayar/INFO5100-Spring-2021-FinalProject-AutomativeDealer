@@ -140,7 +140,6 @@ public class LeadFormView extends JFrame {
             public void actionPerformed(ActionEvent e) {
 //                (String firstName, String lastName, String eMail, String phoneNumber, String zipCode)
                 if (!fName.getText().isEmpty() && !lName.getText().isEmpty() && !eMail.getText().isEmpty() && !ph_No.getText().isEmpty()) {
-
                     User user = new User(fName.getText(), lName.getText(), eMail.getText(), ph_No.getText(), zipCode.getText());
                     /**
                      * Add optional information to User
@@ -180,9 +179,17 @@ public class LeadFormView extends JFrame {
                     //add message reminder
                     JOptionPane.showMessageDialog(null, "Submit Successfully!");
                     clear();
+                    dispose();
+                }else if (fName.getText().isEmpty()){
+                    JOptionPane.showMessageDialog(null, "Please Enter First Name");
+                }else if (lName.getText().isEmpty()){
+                    JOptionPane.showMessageDialog(null, "Please Enter Last Name");
+                }else if (eMail.getText().isEmpty()){
+                    JOptionPane.showMessageDialog(null, "Please Enter Email");
+                }else if (ph_No.getText().isEmpty()){
+                    JOptionPane.showMessageDialog(null, "Please Enter Phone Number");
                 }
                 //System.exit(0);
-                dispose();
             }
         });
     }
