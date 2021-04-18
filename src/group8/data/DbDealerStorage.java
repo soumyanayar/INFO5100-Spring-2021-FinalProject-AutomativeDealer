@@ -28,7 +28,7 @@ public class DbDealerStorage implements IDataProvider {
     }
 
     public Dealer getDealerById(String id) {
-        String sql = "select * from Dealers where dealerID = ?";
+        String sql = "select * from Dealer where dealerID = ?";
         try {
             String[] aStrParams = new String[1];
             aStrParams[0] = id;
@@ -72,18 +72,21 @@ public class DbDealerStorage implements IDataProvider {
         return rows;
     }
 
-    public Dealer mapRow(ResultSet rs) throws SQLException {
+    public Dealer mapRow(ResultSet resultSet) throws SQLException {
 
         Dealer dealer = new Dealer();
-        rs.next();
-        dealer.setDealerID(rs.getString("dealerID"));
-        dealer.setName(rs.getString("name"));
-        dealer.setCity(rs.getString("city"));
-        dealer.setPhoneNumber(rs.getString("phoneNumber"));
-        dealer.setState(rs.getString("state"));
-        dealer.setStateID(rs.getString("stateID"));
-        dealer.setStreetAddress(rs.getString("streetAddress"));
-        dealer.setZipcode(rs.getString("zipcode"));
+        resultSet.next();
+        dealer.setDealerID(resultSet.getString("DealerId"));
+        dealer.setName(resultSet.getString("DealerName"));
+        dealer.setStreetAddress(resultSet.getString("DealerAddress"));
+        dealer.setCity(resultSet.getString("City"));
+        dealer.setStateID(resultSet.getString("StateCode"));
+        dealer.setState(resultSet.getString("State"));
+        dealer.setCountry(resultSet.getString("Country"));
+        dealer.setZipcode(resultSet.getString("ZipCode"));
+        dealer.setPhoneNumber(resultSet.getString("PhoneNumber"));
+        dealer.setLatitude(resultSet.getDouble("Latitude"));
+        dealer.setLongitude(resultSet.getDouble("Longitude"));
 
         return dealer;
     }

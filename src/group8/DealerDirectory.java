@@ -77,6 +77,7 @@ public class DealerDirectory {
         dealer.setCity(resultSet.getString("City"));
         dealer.setStateID(resultSet.getString(STATE_CODE));
         dealer.setState(resultSet.getString(STATE));
+        dealer.setCountry(resultSet.getString("Country"));
         dealer.setZipcode(resultSet.getString("ZipCode"));
         dealer.setPhoneNumber(resultSet.getString("PhoneNumber"));
         dealer.setLatitude(resultSet.getDouble("Latitude"));
