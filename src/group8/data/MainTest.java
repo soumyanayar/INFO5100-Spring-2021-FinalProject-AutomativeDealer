@@ -1,9 +1,14 @@
 package group8.data;
 
-import group8.Car;
-import group8.DealerDirectory;
+import group8.*;
+
+import java.sql.Date;
 import java.sql.SQLException;
+import java.util.HashSet;
 import java.util.List;
+
+import static group8.IncentiveType.DISCOUNT;
+import static group8.IncentiveType.LOAN;
 
 /**
  * @author Guiyu Liu
@@ -24,5 +29,14 @@ public class MainTest {
 //        DealerDirectory d = dbDealerStorage.loadDealerDirectory();
 //        System.out.println(d.toString());
 //        //System.out.println(dbDealerStorage.getDealerById("testId").getName());
+
+        HashSet<String> hashSet = new HashSet<>();
+        hashSet.add("testCar1");
+        hashSet.add("testCar2");
+        DbDealerStorage dbDealerStorage = new DbDealerStorage();
+        Incentive incentive = new LoanIncentive("222", "222", new Date(System.currentTimeMillis()),
+                new Date(System.currentTimeMillis()+ 10000), "test title", "description", "ff",
+                hashSet, 0.5, 3);
+        dbDealerStorage.persistIncentive(incentive);
     }
 }

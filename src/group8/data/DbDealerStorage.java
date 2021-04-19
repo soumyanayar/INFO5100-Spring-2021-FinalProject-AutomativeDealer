@@ -160,14 +160,15 @@ public class DbDealerStorage implements IDataProvider {
             aStrParams[1] = incentive.getTitle();
             aStrParams[2] = incentive.getDescription();
             aStrParams[3] = incentive.getDisclaimer();
-            aStrParams[4] = incentive.getStartDate();
-            aStrParams[5] = incentive.getEndDate();
+            aStrParams[4] = incentive.getStartDate().toString();
+            aStrParams[5] = incentive.getEndDate().toString();
             aStrParams[6] = null;
-            aStrParams[7] = incentive.getIncentiveType();
+            aStrParams[7] = incentive.getIncentiveType().toString();
             aStrParams[8] = incentive.getDealerId();
             aStrParams[9] = null;
             aStrParams[10] = null;
-            aStrParams[11] = incentive.getCarVINList();
+            aStrParams[11] = incentive.getCarVINList() == null ? null : String.join(",", incentive.getCarVINList());
+            db.update(sql, aStrParams);
         } catch (SQLException e) {
             System.out.println(e);
             System.out.println("The incentive with id: " + incentive.getId() + " save failed!");
