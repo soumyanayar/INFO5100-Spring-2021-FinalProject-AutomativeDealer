@@ -37,7 +37,7 @@ public class DealerDirectory {
 
     public List<Dealer> getDealerByStateOrStateId(String stateOrStateId) throws SQLException {
         List<Dealer> dealers = new ArrayList<>();
-        String query = "select * from DealerWithState where State = ? or StateCode = ?";
+        String query = "select * from Dealer where State = ? or StateCode = ?";
         String[] params = new String[]{stateOrStateId, stateOrStateId};
         ResultSet resultSet = jdbcInstance.query(query, params);
         while (resultSet.next()) {
@@ -48,7 +48,7 @@ public class DealerDirectory {
 
     public List<Dealer> getDealerByZipCode(String zipcode) throws SQLException {
         List<Dealer> dealers = new ArrayList<>();
-        String query = "select * from DealerWithState where ZipCode = ?";
+        String query = "select * from Dealer where ZipCode = ?";
         String[] params = new String[]{zipcode};
         ResultSet resultSet = jdbcInstance.query(query, params);
         while (resultSet.next()) {
@@ -59,7 +59,7 @@ public class DealerDirectory {
 
     public List<State> getUniqueStates() throws SQLException {
         List<State> states = new ArrayList<>();
-        String query = "SELECT DISTINCT State, StateCode FROM DealerWithState";
+        String query = "SELECT DISTINCT State, StateCode FROM Dealer";
         ResultSet resultSet = jdbcInstance.query(query, new String[]{});
         while (resultSet.next()) {
             String name = resultSet.getString(STATE);
@@ -77,6 +77,7 @@ public class DealerDirectory {
         dealer.setCity(resultSet.getString("City"));
         dealer.setStateID(resultSet.getString(STATE_CODE));
         dealer.setState(resultSet.getString(STATE));
+        dealer.setCountry(resultSet.getString("Country"));
         dealer.setZipcode(resultSet.getString("ZipCode"));
         dealer.setPhoneNumber(resultSet.getString("PhoneNumber"));
         dealer.setLatitude(resultSet.getDouble("Latitude"));
