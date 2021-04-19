@@ -149,25 +149,25 @@ public class DbDealerStorage implements IDataProvider {
 
     @Override
     public void persistIncentive(Incentive incentive) {
-//        String sql = " insert into Incentives (IncentiveId, Title, Description, Disclaimer, StartDate, EndDate, DiscountValue, DiscountType, DealerId, IsDeleted, FilterList, VehicleIdList)"
-//                + " values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-//        try {
-//            String[] aStrParams = new String[12];
-//            aStrParams[0] = incentive.getId();
-//            aStrParams[1] = incentive.getTitle();
-//            aStrParams[2] = incentive.getDescription();
-//            aStrParams[3] = incentive.getDisclaimer();
-//            aStrParams[4] = incentive.getStartDate();
-//            aStrParams[5] = incentive.getEndDate();
-//            aStrParams[6] = null;
-//            aStrParams[7] = incentive.getIncentiveType();
-//            aStrParams[8] = incentive.getDealerId();
-//            aStrParams[9] = null;
-//            aStrParams[10] = null;
-//            aStrParams[11] = incentive.getCarVINList();
-//        } catch (SQLException e) {
-//            System.out.println(e);
-//            System.out.println("The incentive with id: " + incentive.getId() + " save failed!");
-//        }
+        String sql = " insert into Incentives (IncentiveId, Title, Description, Disclaimer, StartDate, EndDate, DiscountValue, DiscountType, DealerId, IsDeleted, FilterList, VehicleIdList)"
+                + " values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        try {
+            String[] aStrParams = new String[12];
+            aStrParams[0] = incentive.getId();
+            aStrParams[1] = incentive.getTitle();
+            aStrParams[2] = incentive.getDescription();
+            aStrParams[3] = incentive.getDisclaimer();
+            aStrParams[4] = incentive.getStartDate();
+            aStrParams[5] = incentive.getEndDate();
+            aStrParams[6] = null;
+            aStrParams[7] = incentive.getIncentiveType();
+            aStrParams[8] = incentive.getDealerId();
+            aStrParams[9] = null;
+            aStrParams[10] = null;
+            aStrParams[11] = incentive.getCarVINList();
+        } catch (SQLException e) {
+            System.out.println(e);
+            System.out.println("The incentive with id: " + incentive.getId() + " save failed!");
+        }
     }
 }
