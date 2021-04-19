@@ -4,10 +4,7 @@ import group8.*;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.net.URL;
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -18,6 +15,8 @@ import java.awt.image.BufferedImage;
 import java.net.URL;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
+import java.sql.Blob;
+import java.sql.SQLException;
 
 import static group8.CarCategory.NEW;
 
@@ -46,19 +45,24 @@ public class LeadFormView extends JFrame {
     private JTextField ph_No;
     private JTextField zipCode;
     private JLabel termsConditionLabel;
+    private JLabel milageLabel;
     private JLabel errorLabel = new JLabel();
     Car car;
     LeadFormController controller;
     private ButtonGroup group;
     private String[] info = new String[10];
     public static File file = new File("LEAD.csv");
-
+    private boolean isErrorDialogShown = false;
     public JPanel getMainPanel() {
         return mainPanel;
     }
 
     public LeadFormView(Car car, FormActionDirectory formActionDirectory) {
         this.car = car;
+        this.setContentPane(this.mainPanel);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.pack();
+        setProperties();
         this.setValue();
         setSize(new Dimension(500, 800));
         setMaximumSize(new Dimension(500, 800));
@@ -89,7 +93,7 @@ public class LeadFormView extends JFrame {
             public void focusLost(FocusEvent e) {
                 super.focusLost(e);
                 if (!isValidEmail(eMail.getText())) {
-                    showErrorMessage("Enter a valid E-mail ", eMail.getParent());
+                    showErrorMessage("Enter a valid E-mail ");
                     eMail.setBorder(BorderFactory.createLineBorder(Color.RED));
                 }
             }
@@ -106,7 +110,7 @@ public class LeadFormView extends JFrame {
             public void focusLost(FocusEvent e) {
                 super.focusLost(e);
                 if (!isValidPhone(ph_No.getText())) {
-                    showErrorMessage("Enter a valid Phone No", ph_No.getParent());
+                    showErrorMessage("Enter a valid Phone No");
                     ph_No.setBorder(BorderFactory.createLineBorder(Color.RED));
                 }
             }
@@ -123,7 +127,7 @@ public class LeadFormView extends JFrame {
             public void focusLost(FocusEvent e) {
                 super.focusLost(e);
                 if (!isValidZipCode(zipCode.getText())) {
-                    showErrorMessage("Enter a valid Zip Code", zipCode.getParent());
+                    showErrorMessage("Enter a valid Zip Code");
                     zipCode.setBorder(BorderFactory.createLineBorder(Color.RED));
                 }
             }
@@ -211,12 +215,15 @@ public class LeadFormView extends JFrame {
 
 
     void setProperties() {
-
+        for (JTextField textField: new JTextField[] {lName, fName, eMail, ph_No, zipCode}) {
+            textField.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
+        }
         requestQuoteLabel.setFont(DealerFont.getTitleFont());
         carModelLabel.setFont(DealerFont.getHeaderFont());
-        carColorLabel.setFont(DealerFont.getNormalFont());
-        carStockLabel.setFont(DealerFont.getNormalFont());
-        carVinLabel.setFont(DealerFont.getNormalFont());
+        carColorLabel.setFont(DealerFont.getSubSubTitleFont());
+        carStockLabel.setFont(DealerFont.getSubSubTitleFont());
+        carVinLabel.setFont(DealerFont.getSubSubTitleFont());
+        milageLabel.setFont(DealerFont.getSubSubTitleFont());
         instructionLabel.setFont(DealerFont.getDescriptionFont());
         firstNameLabel.setFont(DealerFont.getNormalFont());
         fName.setFont(DealerFont.getNormalFont());
@@ -243,34 +250,35 @@ public class LeadFormView extends JFrame {
         carModelLabel.setText(car.getYear() + " " + car.getMake() + " " + car.getModel());
         carColorLabel.setText("Color: " + car.getColor());
         carStockLabel.setText("Price: $" + car.getMSRP());
-        carVinLabel.setText("Type: " + car.getCarCategory().name());
+        carVinLabel.setText("Type: " + car.getVIN());
+        milageLabel.setText("Mileage: " + car.getMileage());
         instructionLabel.setText("<html>Fill out the contact form below and one of our friendly helpful sales <br/> staff will answer any questions you have about this vehicle.</html>");
-        setProperties();
-        termsConditionLabel.setText("<html><strong>" + "By submitting your request, you consent to be contacted at the <br/> phone number you provided-which may include auto-dials,<br/> text messages and/or pre-recorded calls.By subscribing to receive <br/> recurring SMS offers, you consent to receive text messages sent <br/> through an automatic telephone dialing system, and message <br/> and data rates may apply. This consent is not a condition of <br/> purchase. You may opt out at any time by replying STOP to <br/> a text message, or calling (206) 241-1888 to have your <br/> telephone number removed from our system.</strong></html>");
-
-        String path = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSC4vdqyjdI2Zz713z7WWoiEjPK3nzO9FSUM3vJQZgaB-Hc9l6qe_hNcKMWkHVX3MvJ3ow&usqp=CAU";
-
-
-        try {
-            URL url = new URL(path);
-            BufferedImage image = null;
-            image = ImageIO.read(url);
-            ImageIcon icon = new ImageIcon(image);
-            imageLabel.setIcon(icon);
-            imageLabel.setText("");
-        } catch (IOException ioException) {
-            ioException.printStackTrace();
+        termsConditionLabel.setText("<html>By submitting your request, you consent to be contacted at the <br/> phone number you provided-which may include auto-dials,<br/>text messages and/or pre-recorded calls.By subscribing to receive <br/> recurring SMS offers, you consent to receive text messages sent <br/> through an automatic telephone dialing system, and message <br/> and data rates may apply. This consent is not a condition of <br/> purchase. You may opt out at any time by replying STOP to <br/> a text message, or calling (206) 241-1888 to have your <br/> telephone number removed from our system.</html>");
+        Blob imageBlob = car.getImage();
+        if (imageBlob != null) {
+            try {
+                InputStream is = imageBlob.getBinaryStream(0, (int) imageBlob.length());
+                BufferedImage imag = null;
+                imag = ImageIO.read(is);
+                Image image = imag;
+                ImageIcon icon = new ImageIcon(image);
+                imageLabel.setIcon(icon);
+                imageLabel.setText("");
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
         }
 
     }
 
-    private void showErrorMessage(String error, Container container) {
-//        errorLabel.setText(error);
-//        this.add(errorLabel);
-//        this.revalidate();
-//        this.repaint();
-//        this.pack();
+    private void showErrorMessage(String error) {
+        if (isErrorDialogShown)
+            return;
+        isErrorDialogShown = true;
         JOptionPane.showMessageDialog(null, error);
+        isErrorDialogShown = false;
     }
 
     //add clear method

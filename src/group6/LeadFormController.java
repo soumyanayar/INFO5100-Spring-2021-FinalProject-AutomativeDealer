@@ -23,9 +23,6 @@ public class LeadFormController {
         LeadFormView formView = new LeadFormView(car, formActionDirectory);
         formView.controller = this;
         formView.setVisible(true);
-        formView.setContentPane(formView.getMainPanel());
-        formView.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        formView.pack();
     }
 
     /**
@@ -71,26 +68,4 @@ public class LeadFormController {
 
     }*/
 
-
-    public void readCarData() {
-        List<List<String>> records = new ArrayList<>();
-        try (Scanner scanner = new Scanner(new File("Dummy Data/NewVehicleData.csv"));) {
-            while (scanner.hasNextLine()) {
-                records.add(getRecordFromLine(scanner.nextLine()));
-            }
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-    }
-
-    private List<String> getRecordFromLine(String line) {
-        List<String> values = new ArrayList<String>();
-        try (Scanner rowScanner = new Scanner(line)) {
-            rowScanner.useDelimiter(",");
-            while (rowScanner.hasNext()) {
-                values.add(rowScanner.next());
-            }
-        }
-        return values;
-    }
 }

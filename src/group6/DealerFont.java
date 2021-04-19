@@ -7,7 +7,8 @@ public class DealerFont {
     static String FONT_NAME = "Helvetica";
     static int TITLE_FONT_SIZE = 30;
     static int HEADER_FONT_SIZE = 20;
-    static int SUB_TITLE_FONT_SIZE = 18;
+    static int TITLE_2_FONT_SIZE = 18;
+    static int TITLE_3_FONT_SIZE = 16;
     static int NORMAL_FONT_SIZE = 14;
     static int DESCRIPTION_FONT_SIZE = 12;
 
@@ -23,7 +24,11 @@ public class DealerFont {
     }
 
     static Font getSubTitleFont() {
-        return new Font(FONT_NAME, Font.PLAIN, SUB_TITLE_FONT_SIZE);
+        return new Font(FONT_NAME, Font.PLAIN, TITLE_2_FONT_SIZE);
+    }
+
+    static Font getSubSubTitleFont() {
+        return new Font(FONT_NAME, Font.PLAIN, TITLE_3_FONT_SIZE);
     }
 
     static Font getDescriptionFont() {
