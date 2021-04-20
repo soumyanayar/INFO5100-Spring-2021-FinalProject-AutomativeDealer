@@ -1,6 +1,20 @@
 package group8.data;
 
+import group8.Car;
+import group8.CarCategory;
+import group8.Incentive;
+import group8.LeasingIncentive;
+import group8.LoanIncentive;
+import group8.RebateIncentive;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+import javax.sql.rowset.serial.SerialBlob;
 
 /**
  * @author Guiyu Liu
@@ -19,6 +33,7 @@ public class NewJDBC {
     static public NewJDBC getInstance() throws SQLException, ClassNotFoundException {
         if (_instance == null) {
             _instance = new NewJDBC();
+            _instance.createRequiredTablesIfDoesNotExists();
         }
         return _instance;
     }
@@ -29,6 +44,403 @@ public class NewJDBC {
         conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
         this.stmt = conn.createStatement();
     }
+    
+    private void createRequiredTablesIfDoesNotExists() throws SQLException {
+        this.createIncentiveTableIfDoesnotExisit();
+        this.createIncentiveVINsTableIfDoesnotExisit();
+        this.createIncentiveRebatesTableIfDoesnotExisit();
+    }
+    
+    private void createIncentiveTableIfDoesnotExisit() throws SQLException {
+        this.stmt.execute("if not exists (select * from sysobjects where name='Incentive' and xtype='U')" +
+                "CREATE TABLE dbo.Incentive (" +
+                "id VARCHAR(40) PRIMARY KEY NOT NULL," +
+                "incentiveType VARCHAR(20) NOT NULL," +
+                "dealerId VARCHAR(40) NOT NULL," +
+                "startDate DATE NOT NULL," +
+                "endDate DATE NOT NULL," +
+                "title VARCHAR(MAX) NOT NULL," +
+                "description VARCHAR(MAX) NOT NULL," +
+                "disclaimer VARCHAR(MAX) NOT NULL," +
+                "carVinUUID VARCHAR(40) NOT NULL," +
+                "cashDiscountType VARCHAR(20) DEFAULT(NULL)," +
+                "discountValue DECIMAL DEFAULT(NULL)," +
+                "apr DECIMAL DEFAULT(NULL)," +
+                "loanmonths INT DEFAULT(NULL)," +
+                "leasemonths INT DEFAULT(NULL)," +
+                "signingPay DECIMAL DEFAULT(NULL)," +
+                "monthlyPay DECIMAL DEFAULT(NULL)," +
+                "rebateMapUUID VARCHAR(40) DEFAULT(NULL))");
+    }
+    
+        private void createIncentiveVINsTableIfDoesnotExisit() throws SQLException {
+        this.stmt.execute("if not exists (select * from sysobjects where name='IncentiveVINs' and xtype='U')" +
+                "CREATE TABLE dbo.IncentiveVINs (" +
+                "incentiveVinID VARCHAR(40) NOT NULL," +
+                "carVIN VARCHAR(40) NOT NULL)");
+    }
+
+    private void createIncentiveRebatesTableIfDoesnotExisit() throws SQLException {
+        this.stmt.execute("if not exists (select * from sysobjects where name='IncentiveRebates' and xtype='U')" +
+                "CREATE TABLE dbo.IncentiveRebates (" +
+                "rebateID VARCHAR(40) NOT NULL," +
+                "rebateType VARCHAR(40) NOT NULL," +
+                "rebateValue DECIMAL NOT NULL)");
+    }
+    
+    public List<LoanIncentive> getAllLoanIncentivesByCarVIN(String carVIN) throws SQLException{
+        String sql = "SELECT * FROM \n" +
+                "\t(SELECT * FROM dbo.Incentive\n" +
+                "\tWHERE incentiveType = 'Loan Incentive')\n" +
+                "AS Incentive\n" +
+                "JOIN dbo.IncentiveVINs AS IncentiveVINs\n" +
+                "ON Incentive.carVinUUID = IncentiveVINs.incentiveVinID\n" +
+                "AND GETDATE() BETWEEN Incentive.startDate AND Incentive.endDate\n" +
+                "WHERE IncentiveVINs.carVIN = '"+ carVIN +"'";
+
+        List<LoanIncentive> loanIncentiveList = new ArrayList<>();
+
+        ResultSet rs = this.stmt.executeQuery(sql);
+        while(rs.next()){
+            // Retrieve by column name
+            String id  = rs.getString("id");
+            String incentiveType = rs.getString("incentiveType");
+            String dealerId = rs.getString("dealerId");
+            Date startDate = rs.getDate("startDate");
+            Date endDate = rs.getDate("endDate");
+            String title = rs.getString("title");
+            String description = rs.getString("description");
+            String disclaimer = rs.getString("disclaimer");
+            HashSet carVINs = new HashSet<>(Arrays.asList(rs.getString("carVIN")));
+            double apr = rs.getDouble("apr");
+            int months = rs.getInt("loanmonths");
+            loanIncentiveList.add(new LoanIncentive(id, dealerId, startDate, endDate, title, description, disclaimer, carVINs, apr, months));
+        }
+
+        return loanIncentiveList;
+    }
+    
+    public List<RebateIncentive> getAllRebateIncentivesByCarVIN(String carVIN) throws SQLException{
+        String sql = "SELECT * FROM \n" +
+                "\t(SELECT * FROM dbo.Incentive\n" +
+                "\tWHERE incentiveType = 'Rebate Incentive') \n" +
+                "AS Incentive\n" +
+                "JOIN dbo.IncentiveVINs AS IncentiveVINs\n" +
+                "ON Incentive.carVinUUID = IncentiveVINs.incentiveVinID\n" +
+                "JOIN dbo.IncentiveRebates AS IncentiveRebates\n" +
+                "ON Incentive.rebateMapUUID = IncentiveRebates.rebateID\n" +
+                "AND GETDATE() BETWEEN Incentive.startDate AND Incentive.endDate\n" +
+                "WHERE IncentiveVINs.carVIN = '" + carVIN + "'";
+
+        List<RebateIncentive> rebateIncentiveList = new ArrayList<>();
+
+        ResultSet rs = this.stmt.executeQuery(sql);
+        while(rs.next()){
+            // Retrieve by column name
+            String id  = rs.getString("id");
+            String incentiveType = rs.getString("incentiveType");
+            String dealerId = rs.getString("dealerId");
+            Date startDate = rs.getDate("startDate");
+            Date endDate = rs.getDate("endDate");
+            String title = rs.getString("title");
+            String description = rs.getString("description");
+            String disclaimer = rs.getString("disclaimer");
+            HashSet carVINs = new HashSet<>(Arrays.asList(rs.getString("carVIN")));
+            HashMap rebateMap = new HashMap<String, Double>() {
+                {
+                    put(rs.getString("rebateType"), rs.getDouble("rebateValue"));
+                }
+            };
+            rebateIncentiveList.add(new RebateIncentive(id, dealerId, startDate, endDate, title, description, disclaimer, carVINs, rebateMap));
+        }
+
+        return rebateIncentiveList;
+    }
+
+    public List<LeasingIncentive> getAllLeasingIncentivesByCarVIN(String carVIN) throws SQLException{
+        String sql = "SELECT * FROM \n" +
+                "\t(SELECT * FROM dbo.Incentive\n" +
+                "\tWHERE incentiveType = 'Lease Incentive')\n" +
+                "AS Incentive\n" +
+                "JOIN dbo.IncentiveVINs AS IncentiveVINs\n" +
+                "ON Incentive.carVinUUID = IncentiveVINs.incentiveVinID\n" +
+                "AND GETDATE() BETWEEN Incentive.startDate AND Incentive.endDate\n" +
+                "WHERE IncentiveVINs.carVIN = '"+ carVIN +"'";
+
+        List<LeasingIncentive> leasingIncentiveList = new ArrayList<>();
+
+        ResultSet rs = this.stmt.executeQuery(sql);
+        while(rs.next()){
+            // Retrieve by column name
+            String id  = rs.getString("id");
+            String incentiveType = rs.getString("incentiveType");
+            String dealerId = rs.getString("dealerId");
+            Date startDate = rs.getDate("startDate");
+            Date endDate = rs.getDate("endDate");
+            String title = rs.getString("title");
+            String description = rs.getString("description");
+            String disclaimer = rs.getString("disclaimer");
+            HashSet carVINs = new HashSet<>(Arrays.asList(rs.getString("carVIN")));
+            int leasemonths = rs.getInt("leasemonths");
+            double signingPay = rs.getDouble("signingPay");
+            double monthlyPay = rs.getDouble("monthlyPay");
+            leasingIncentiveList.add(new LeasingIncentive(id, dealerId, startDate, endDate, title, description, disclaimer, carVINs, leasemonths, signingPay, monthlyPay));
+        }
+
+        return leasingIncentiveList;
+    }
+    
+    public HashMap<Car, List<Incentive>> getAllIncentivesByDealerId(String dealerId) throws SQLException{
+        // get cars and filter res by cars in current dealer
+        List<Car> owned = getAllCarsByDealerId(dealerId);
+        HashMap<Car, List<Incentive>> carIncentiveMap = new HashMap<>();
+        for(Car c: owned){
+            List<Incentive> carIncentive = new ArrayList<>();
+            carIncentive.addAll(this.getAllLeasingIncentivesByCarVIN(c.getVIN()));
+            carIncentive.addAll(this.getAllRebateIncentivesByCarVIN(c.getVIN()));
+            carIncentive.addAll(this.getAllLoanIncentivesByCarVIN(c.getVIN()));
+            carIncentiveMap.put(c, carIncentive);
+        }
+        return carIncentiveMap;
+    }
+    
+    public List<Car> getAllCarsByDealerId(String dealerId) throws SQLException{
+        List<Car> res = new ArrayList<>();
+        String query = "Select * from NewVehicleData where DealerId = " + dealerId;
+        ResultSet resultSet = this.stmt.executeQuery(query);
+        while(resultSet.next()){
+//            public Car(String stockID, String VIN, String dealerID, String make, String model,
+//                int year, CarCategory category, double price, String color, int mileage,
+//                List<String> images, String incentiveID, String discountPrice, int rating){
+                String stockID = resultSet.getString(1);
+                String VIN = resultSet.getString(2);
+                String dealerID = resultSet.getString(3);
+                String make = resultSet.getString(4);
+                String model = resultSet.getString(5);
+                int year = resultSet.getInt(6);
+                CarCategory category = resultSet.getString(7).equals("New") ? CarCategory.NEW : CarCategory.USED;
+                double msrp = resultSet.getDouble(8);
+                String color = resultSet.getString(9);
+                int miles = resultSet.getInt(10);
+                String[] img = resultSet.getString(11).split(",");
+                List<String> images = new ArrayList<>();
+                for(String i: img){
+                    images.add(i);
+                }
+                String incentiveId = resultSet.getString(12);
+                String discountPrice = resultSet.getString(13);
+                int rating = resultSet.getInt(14);
+                Car c = new Car(stockID, VIN, dealerID, make, model, year, category, msrp, color, miles, images,
+                        incentiveId, discountPrice, rating);
+                res.add(c);
+        }
+        return res;
+    }
+    
+    public List<LoanIncentive> getAllLoanIncentivesByDealerId(String dealerID) throws SQLException{
+        String sql = "SELECT * FROM \n" +
+                "\t(SELECT * FROM dbo.Incentive\n" +
+                "\tWHERE incentiveType = 'Loan Incentive')\n" +
+                "AS Incentive\n" +
+                "JOIN dbo.IncentiveVINs AS IncentiveVINs\n" +
+                "ON Incentive.carVinUUID = IncentiveVINs.incentiveVinID\n" +
+                "AND GETDATE() BETWEEN Incentive.startDate AND Incentive.endDate\n" +
+                "WHERE Incentive.dealerId = '"+ dealerID +"'";
+
+        List<LoanIncentive> loanIncentiveList = new ArrayList<>();
+
+        ResultSet rs = this.stmt.executeQuery(sql);
+        while(rs.next()){
+            // Retrieve by column name
+            String id  = rs.getString("id");
+            String incentiveType = rs.getString("incentiveType");
+            String dealerId = rs.getString("dealerId");
+            Date startDate = rs.getDate("startDate");
+            Date endDate = rs.getDate("endDate");
+            String title = rs.getString("title");
+            String description = rs.getString("description");
+            String disclaimer = rs.getString("disclaimer");
+            HashSet carVINs = new HashSet<>(Arrays.asList(rs.getString("carVIN")));
+            double apr = rs.getDouble("apr");
+            int months = rs.getInt("loanmonths");
+            loanIncentiveList.add(new LoanIncentive(id, dealerId, startDate, endDate, title, description, disclaimer, carVINs, apr, months));
+        }
+
+        return loanIncentiveList;
+    }
+    
+    public List<RebateIncentive> getAllRebateIncentivesByDealerId(String dealerID) throws SQLException{
+        String sql = "SELECT * FROM \n" +
+                "\t(SELECT * FROM dbo.Incentive\n" +
+                "\tWHERE incentiveType = 'Rebate Incentive') \n" +
+                "AS Incentive\n" +
+                "JOIN dbo.IncentiveVINs AS IncentiveVINs\n" +
+                "ON Incentive.carVinUUID = IncentiveVINs.incentiveVinID\n" +
+                "JOIN dbo.IncentiveRebates AS IncentiveRebates\n" +
+                "ON Incentive.rebateMapUUID = IncentiveRebates.rebateID\n" +
+                "AND GETDATE() BETWEEN Incentive.startDate AND Incentive.endDate\n" +
+                "WHERE Incentive.dealerId = '" + dealerID + "'";
+
+        List<RebateIncentive> rebateIncentiveList = new ArrayList<>();
+
+        ResultSet rs = this.stmt.executeQuery(sql);
+        while(rs.next()){
+            // Retrieve by column name
+            String id  = rs.getString("id");
+            String incentiveType = rs.getString("incentiveType");
+            String dealerId = rs.getString("dealerId");
+            Date startDate = rs.getDate("startDate");
+            Date endDate = rs.getDate("endDate");
+            String title = rs.getString("title");
+            String description = rs.getString("description");
+            String disclaimer = rs.getString("disclaimer");
+            HashSet carVINs = new HashSet<>(Arrays.asList(rs.getString("carVIN")));
+            HashMap rebateMap = new HashMap<String, Double>() {
+                {
+                    put(rs.getString("rebateType"), rs.getDouble("rebateValue"));
+                }
+            };
+            rebateIncentiveList.add(new RebateIncentive(id, dealerId, startDate, endDate, title, description, disclaimer, carVINs, rebateMap));
+        }
+
+        return rebateIncentiveList;
+    }
+    
+    public List<LeasingIncentive> getAllLeasingIncentivesByDealerId(String dealerID) throws SQLException{
+        String sql = "SELECT * FROM \n" +
+                "\t(SELECT * FROM dbo.Incentive\n" +
+                "\tWHERE incentiveType = 'Lease Incentive')\n" +
+                "AS Incentive\n" +
+                "JOIN dbo.IncentiveVINs AS IncentiveVINs\n" +
+                "ON Incentive.carVinUUID = IncentiveVINs.incentiveVinID\n" +
+                "AND GETDATE() BETWEEN Incentive.startDate AND Incentive.endDate\n" +
+                "WHERE Incentive.dealerId = '"+ dealerID +"'";
+
+        List<LeasingIncentive> leasingIncentiveList = new ArrayList<>();
+
+        ResultSet rs = this.stmt.executeQuery(sql);
+        while(rs.next()){
+            // Retrieve by column name
+            String id  = rs.getString("id");
+            String incentiveType = rs.getString("incentiveType");
+            String dealerId = rs.getString("dealerId");
+            Date startDate = rs.getDate("startDate");
+            Date endDate = rs.getDate("endDate");
+            String title = rs.getString("title");
+            String description = rs.getString("description");
+            String disclaimer = rs.getString("disclaimer");
+            HashSet carVINs = new HashSet<>(Arrays.asList(rs.getString("carVIN")));
+            int leasemonths = rs.getInt("leasemonths");
+            double signingPay = rs.getDouble("signingPay");
+            double monthlyPay = rs.getDouble("monthlyPay");
+            leasingIncentiveList.add(new LeasingIncentive(id, dealerId, startDate, endDate, title, description, disclaimer, carVINs, leasemonths, signingPay, monthlyPay));
+        }
+
+        return leasingIncentiveList;
+    }
+    
+    public void persistIncentive(LoanIncentive loanDiscountIncentive) {
+        String carVinUUID = UUID.randomUUID().toString();
+        String sql = "INSERT INTO Incentive(id, incentiveType, dealerId, startDate, endDate, title, description, disclaimer, carVinUUID, " +
+                "apr, loanmonths) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
+        try {
+            PreparedStatement preparedStatement = this.conn.prepareStatement(sql);
+            preparedStatement.setString(1, loanDiscountIncentive.getId());
+            preparedStatement.setString(2, loanDiscountIncentive.getIncentiveType().toString());
+            preparedStatement.setString(3, loanDiscountIncentive.getDealerId());
+            preparedStatement.setDate(4, new Date(loanDiscountIncentive.getStartDate().getTime()));
+            preparedStatement.setDate(5, new Date(loanDiscountIncentive.getEndDate().getTime()));
+            preparedStatement.setString(6, loanDiscountIncentive.getTitle());
+            preparedStatement.setString(7, loanDiscountIncentive.getDescription());
+            preparedStatement.setString(8, loanDiscountIncentive.getDisclaimer());
+            preparedStatement.setString(9, carVinUUID);
+            preparedStatement.setDouble(10, loanDiscountIncentive.getApr());
+            preparedStatement.setInt(11, loanDiscountIncentive.getMonths());
+            preparedStatement.execute();
+
+            sql = "INSERT INTO IncentiveVINs(incentiveVinID, carVIN) VALUES (?, ?)";
+            preparedStatement = this.conn.prepareStatement(sql);
+            for (String carVIN : loanDiscountIncentive.getCarVINList()) {
+                preparedStatement.setString(1, carVinUUID);
+                preparedStatement.setString(2, carVIN);
+                preparedStatement.execute();
+            }
+        } catch (SQLException sqlException) {
+            sqlException.printStackTrace();
+        }
+    }
+
+    public void persistIncentive(LeasingIncentive leasingIncentive) {
+        String carVinUUID = UUID.randomUUID().toString();
+        String sql = "INSERT INTO Incentive(id, incentiveType, dealerId, startDate, endDate, title, description, disclaimer, carVinUUID, " +
+                "leasemonths, signingPay, monthlyPay) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
+        try {
+            PreparedStatement preparedStatement = this.conn.prepareStatement(sql);
+            preparedStatement.setString(1, leasingIncentive.getId());
+            preparedStatement.setString(2, leasingIncentive.getIncentiveType().toString());
+            preparedStatement.setString(3, leasingIncentive.getDealerId());
+            preparedStatement.setDate(4, new Date(leasingIncentive.getStartDate().getTime()));
+            preparedStatement.setDate(5, new Date(leasingIncentive.getEndDate().getTime()));
+            preparedStatement.setString(6, leasingIncentive.getTitle());
+            preparedStatement.setString(7, leasingIncentive.getDescription());
+            preparedStatement.setString(8, leasingIncentive.getDisclaimer());
+            preparedStatement.setString(9, carVinUUID);
+            preparedStatement.setInt(10, leasingIncentive.getMonths());
+            preparedStatement.setDouble(11, leasingIncentive.getSigningPay());
+            preparedStatement.setDouble(12, leasingIncentive.getMonthlyPay());
+            preparedStatement.execute();
+
+            sql = "INSERT INTO IncentiveVINs(incentiveVinID, carVIN) VALUES (?, ?)";
+            preparedStatement = this.conn.prepareStatement(sql);
+            for (String carVIN : leasingIncentive.getCarVINList()) {
+                preparedStatement.setString(1, carVinUUID);
+                preparedStatement.setString(2, carVIN);
+                preparedStatement.execute();
+            }
+        } catch (SQLException sqlException) {
+            sqlException.printStackTrace();
+        }
+    }
+
+    public void persistIncentive(RebateIncentive rebateIncentive) {
+        String carVinUUID = UUID.randomUUID().toString();
+        String rebateMapUUID = UUID.randomUUID().toString();
+        String sql = "INSERT INTO Incentive(id, incentiveType, dealerId, startDate, endDate, title, description, disclaimer, carVinUUID, " +
+                "rebateMapUUID) VALUES (?,?,?,?,?,?,?,?,?,?)";
+        try {
+            PreparedStatement preparedStatement = this.conn.prepareStatement(sql);
+            preparedStatement.setString(1, rebateIncentive.getId());
+            preparedStatement.setString(2, rebateIncentive.getIncentiveType().toString());
+            preparedStatement.setString(3, rebateIncentive.getDealerId());
+            preparedStatement.setDate(4, new Date(rebateIncentive.getStartDate().getTime()));
+            preparedStatement.setDate(5, new Date(rebateIncentive.getEndDate().getTime()));
+            preparedStatement.setString(6, rebateIncentive.getTitle());
+            preparedStatement.setString(7, rebateIncentive.getDescription());
+            preparedStatement.setString(8, rebateIncentive.getDisclaimer());
+            preparedStatement.setString(9, carVinUUID);
+            preparedStatement.setString(10, rebateMapUUID);
+            preparedStatement.execute();
+
+            sql = "INSERT INTO IncentiveVINs(incentiveVinID, carVIN) VALUES (?, ?)";
+            preparedStatement = this.conn.prepareStatement(sql);
+            for (String carVIN : rebateIncentive.getCarVINList()) {
+                preparedStatement.setString(1, carVinUUID);
+                preparedStatement.setString(2, carVIN);
+                preparedStatement.execute();
+            }
+
+            sql = "INSERT INTO IncentiveRebates(rebateID, rebateType, rebateValue) VALUES (?, ?, ?)";
+            preparedStatement = this.conn.prepareStatement(sql);
+            for (Map.Entry<String, Double> mapElement : rebateIncentive.getRebateMap().entrySet()) {
+                preparedStatement.setString(1, rebateMapUUID);
+                preparedStatement.setString(2, mapElement.getKey());
+                preparedStatement.setDouble(3, mapElement.getValue());
+                preparedStatement.execute();
+            }
+        } catch (SQLException sqlException) {
+            sqlException.printStackTrace();
+        }
+    }
 
     private PreparedStatement prepareStatement(String sql, String[] params) throws SQLException {
         PreparedStatement stmt = conn.prepareStatement(sql);
@@ -36,45 +448,6 @@ public class NewJDBC {
             stmt.setString(i + 1 , params[i]);
         }
         return stmt;
-    }
-    
-    public ResultSet getAllDealers() throws SQLException{
-        return stmt.executeQuery("select * from Dealer");
-    }
-    
-    public ResultSet getAllCars() throws SQLException{
-        return stmt.executeQuery("select * from NewVehicleData");
-    }
-    
-    public void getAllRows() throws SQLException{
-        ResultSet rs = stmt.executeQuery("select * from NewVehicleData");
-        while(rs.next()){
-            for(int i = 1; i <= rs.getMetaData().getColumnCount(); i++){
-                System.out.print(rs.getString(i) + "  ");
-            }
-            System.out.println();
-        }
-    }
-    
-    public int getNumColumns() throws SQLException{
-        ResultSet rs = stmt.executeQuery("select * from Dealers");
-        return rs.getMetaData().getColumnCount();
-    }
-    
-    public void printColumnInfo() throws SQLException{
-        ResultSet rs = stmt.executeQuery("select * from NewVehicleData");
-        ResultSetMetaData metadata = rs.getMetaData();
-        for(int col = 1; col <= metadata.getColumnCount(); col++){
-            String colName = metadata.getColumnName(col);
-            String type = metadata.getColumnTypeName(col);
-            System.out.println(colName + " has data type " + type);
-        }
-    }
-    
-    public void getNumRows() throws SQLException{
-        ResultSet rs = stmt.executeQuery("select count(*) from Dealers");
-        rs.next();
-        System.out.println("Dealer Table has " + rs.getInt(1) + " rows");
     }
 
     public ResultSet query(String sql, String[] params) throws SQLException {
