@@ -143,8 +143,8 @@ public class LeadFormView extends JFrame {
                     /**
                      * Add optional information to User
                      */
-                    String message = "";
-                    String useType = "";
+                    String message = "No Comment";
+                    String useType = "None";
                     LeadModel optional = null;
                     if (textArea1.getText() != null) {
                         message = textArea1.getText();
@@ -155,6 +155,8 @@ public class LeadFormView extends JFrame {
                     } else if (businessUseRadioButton.isSelected()) {
                         optional = new LeadModel(message, LeadModel.UseType.BUSINESS, user);
                         useType = "Business";
+                    }else {
+                        message = "No Comment";
                     }
                     user.setOptional(optional);
                     controller.submitLeadForm(user);

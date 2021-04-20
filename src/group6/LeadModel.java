@@ -31,7 +31,7 @@ public class LeadModel {
     }
 
     public enum UseType {
-        BUSINESS, PERSONAL;
+        BUSINESS, PERSONAL, NO_USE_TYPE;
     }
 
 }
