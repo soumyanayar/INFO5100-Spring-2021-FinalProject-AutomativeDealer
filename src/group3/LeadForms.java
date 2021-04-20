@@ -27,7 +27,7 @@ public class LeadForms extends JFrame {
         for (int i = 0; i < numberOfLeads; i++) {
             Lead lead = leads.get(i);
             LeadForm leadForm = new LeadForm();
-            leadForm.init(this, lead);
+            leadForm.init(this, lead, i);
             leadForm.getMainPanel().setSize(750, 100);
             mainPanel.add(leadForm.getMainPanel(), BorderLayout.NORTH);
         }

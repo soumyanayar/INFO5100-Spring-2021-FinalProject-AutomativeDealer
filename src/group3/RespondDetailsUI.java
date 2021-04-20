@@ -29,11 +29,10 @@ public class RespondDetailsUI {
 
         // use your own file routes
 
-        /*
+
         LeadDataAccessor dataAccessor = new LeadDataAccessor("/Users/bz/Desktop/github/INFO5100Spring2021FinalProject/src/group3/NewVehicleData.csv");
 		RespondDetailsUI r = new RespondDetailsUI(dataAccessor.getLeads().get(0));
 		r.buildGUI();
-         */
     }
 
     public void buildGUI () {

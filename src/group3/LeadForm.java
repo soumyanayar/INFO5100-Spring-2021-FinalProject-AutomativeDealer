@@ -4,8 +4,9 @@ package group3;
  * @date: 2021/4/12
  */
 import javax.swing.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
+import java.sql.SQLOutput;
+
 
 public class LeadForm extends JComponent implements MouseListener {
     private JPanel mainPanel;
@@ -26,8 +27,9 @@ public class LeadForm extends JComponent implements MouseListener {
     private JLabel color;
     private JButton respondShort;
     private boolean isExpanded;
+    private int index;
 
-    public void init(JFrame mainFrame, Lead lead) {
+    public void init(JFrame mainFrame, Lead lead, int index) {
         isExpanded = true;
         this.mainFrame = mainFrame;
         label1.addMouseListener(this);
@@ -40,12 +42,28 @@ public class LeadForm extends JComponent implements MouseListener {
         textField7.setText(lead.carColor);
         textArea1.setText(lead.message);
         mouseClicked(null);
+        this.index = index;
+
+        respondShort.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //TODO
+                //1. Add index of data list to row [0,1,2,3] (v)
+                //2. Get index from row and match to data list. getdatalist(0), getdatalist(1)
+                //3. After clicking the row, open direct the window to another view, showing and retrieving all the data from data list
+                System.out.println(index);
+                LeadDataAccessor dataAccessor = new LeadDataAccessor("/Users/bz/Desktop/github/INFO5100Spring2021FinalProject/src/group3/NewVehicleData.csv");
+                System.out.println(dataAccessor.getLeads().get(index));
+                RespondDetailsUI r = new RespondDetailsUI(dataAccessor.getLeads().get(index));
+                r.buildGUI();
+            }
+            
+        });
     }
 
     public JTextField getFirstName() {
         return textField1;
     }
-
     public JTextField getLastName() {
         return textField2;
     }
@@ -53,11 +71,16 @@ public class LeadForm extends JComponent implements MouseListener {
         return textField3;
     }
 
+    public int getIndex() {
+        return index;
+    }
+
+
 
     JPanel getMainPanel() {
         return mainPanel;
     }
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
         JFrame frame = new JFrame("Leads List");
         LeadForm leadForm = new LeadForm();
         leadForm.init(null, null);
@@ -66,7 +89,7 @@ public class LeadForm extends JComponent implements MouseListener {
         frame.pack();
         frame.setSize(750, 500);
         frame.setVisible(true);
-    }
+    }*/
 
     @Override
     public void mouseClicked(MouseEvent e) {
