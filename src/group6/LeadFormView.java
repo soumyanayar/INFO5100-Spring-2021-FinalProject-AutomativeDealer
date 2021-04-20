@@ -5,7 +5,6 @@ import group8.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
-import java.net.URL;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -13,12 +12,8 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.image.BufferedImage;
 import java.net.URL;
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.sql.Blob;
 import java.sql.SQLException;
-
-import static group8.CarCategory.NEW;
 
 public class LeadFormView extends JFrame {
     private JPanel mainPanel;
@@ -45,7 +40,7 @@ public class LeadFormView extends JFrame {
     private JTextField ph_No;
     private JTextField zipCode;
     private JLabel termsConditionLabel;
-    private JLabel milageLabel;
+    private JLabel mileageLabel;
     private JLabel errorLabel = new JLabel();
     Car car;
     LeadFormController controller;
@@ -64,8 +59,8 @@ public class LeadFormView extends JFrame {
         this.pack();
         setProperties();
         this.setValue();
-        setSize(new Dimension(500, 800));
-        setMaximumSize(new Dimension(500, 800));
+        setSize(new Dimension(510, 800));
+        setMaximumSize(new Dimension(510, 800));
 
         /*personalUseRadioButton = new JRadioButton("Personal");
         businessUseRadioButton = new JRadioButton("Business");
@@ -223,7 +218,7 @@ public class LeadFormView extends JFrame {
         carColorLabel.setFont(DealerFont.getSubSubTitleFont());
         carStockLabel.setFont(DealerFont.getSubSubTitleFont());
         carVinLabel.setFont(DealerFont.getSubSubTitleFont());
-        milageLabel.setFont(DealerFont.getSubSubTitleFont());
+        mileageLabel.setFont(DealerFont.getSubSubTitleFont());
         instructionLabel.setFont(DealerFont.getDescriptionFont());
         firstNameLabel.setFont(DealerFont.getNormalFont());
         fName.setFont(DealerFont.getNormalFont());
@@ -240,20 +235,18 @@ public class LeadFormView extends JFrame {
         personalUseRadioButton.setFont(DealerFont.getNormalFont());
         businessUseRadioButton.setFont(DealerFont.getNormalFont());
         submitButton.setFont(DealerFont.getSubTitleFont());
-        // TODO: remove this
-        imageLabel.setBackground(Color.BLUE);
-        termsConditionLabel.setFont(DealerFont.getDescriptionFont());
 
+        termsConditionLabel.setFont(DealerFont.getDescriptionFont());
     }
 
     private void setValue() {
         carModelLabel.setText(car.getYear() + " " + car.getMake() + " " + car.getModel());
         carColorLabel.setText("Color: " + car.getColor());
         carStockLabel.setText("Price: $" + car.getMSRP());
-        carVinLabel.setText("Type: " + car.getVIN());
-        milageLabel.setText("Mileage: " + car.getMileage());
+        carVinLabel.setText("Vin: " + car.getVIN());
+        mileageLabel.setText("Mileage: " + car.getMileage() + "Miles");
         instructionLabel.setText("<html>Fill out the contact form below and one of our friendly helpful sales <br/> staff will answer any questions you have about this vehicle.</html>");
-        termsConditionLabel.setText("<html>By submitting your request, you consent to be contacted at the <br/> phone number you provided-which may include auto-dials,<br/>text messages and/or pre-recorded calls.By subscribing to receive <br/> recurring SMS offers, you consent to receive text messages sent <br/> through an automatic telephone dialing system, and message <br/> and data rates may apply. This consent is not a condition of <br/> purchase. You may opt out at any time by replying STOP to <br/> a text message, or calling (206) 241-1888 to have your <br/> telephone number removed from our system.</html>");
+        termsConditionLabel.setText("<html>By submitting your request, you consent to be contacted at the phone number you <br/> provided-which may include auto-dials,text messages and/or pre-recorded calls.By <br/> subscribing to receive  recurring SMS offers, you consent to receive text messages <br/> sent  through an automatic telephone dialing system, and message and data rates may<br/> apply. This consent is not a condition of purchase. You may opt out at any time by <br/> replying STOP to a text message, or calling (206) 241-1888 to have your telephone<br/>number removed from our system.</html>");
         Blob imageBlob = car.getImage();
         if (imageBlob != null) {
             try {
@@ -263,13 +256,27 @@ public class LeadFormView extends JFrame {
                 Image image = imag;
                 ImageIcon icon = new ImageIcon(image);
                 imageLabel.setIcon(icon);
-                imageLabel.setText("");
+
             } catch (IOException ioException) {
                 ioException.printStackTrace();
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
             }
+        } else {
+
+            BufferedImage img = null;
+            try {
+                img = ImageIO.read(new File("src/group6/car_placeholder.png"));
+                Image scaledImage = img.getScaledInstance(imageLabel.getWidth(), imageLabel.getHeight(),
+                        Image.SCALE_SMOOTH);
+                ImageIcon image = new ImageIcon(scaledImage);
+                imageLabel.setIcon(image);
+                imageLabel.setBackground(Color.white);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
+        imageLabel.setText("");
 
     }
 
