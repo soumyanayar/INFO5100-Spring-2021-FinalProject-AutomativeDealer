@@ -15,25 +15,75 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DealerSearch extends JFrame {
-    private JPanel test;
+    JPanel searchBar = new JPanel();
+
     private JButton searchButton;
     private JTextField queryTextField;
     private JRadioButton stateRadioButton;
     private JRadioButton zipCodeRadioButton;
     private JRadioButton dealerNameRadioButton;
-    private JScrollPane scrollPane;
-    private JTable dealerTable;
+    private JLabel searchBy;
     private JLabel validationText;
+    private JScrollPane scrollPane;
+    public static JTable dealerTable= new JTable(new DefaultTableModel(
+            null,
+            new String[]{
+                    "Name", "Phone Number", "Address", "City", "Zipcode"
+            }
+    ));
 
-    public static void main(String[] args) {
-        DealerSearch formView = new DealerSearch();
-        formView.setVisible(true);
-        formView.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        formView.pack();
-    }
+    /*public DealerSearch(){
+        searchButton = new JButton("Search");
+        searchBy = new JLabel("Search By:");
+        queryTextField = new JTextField(20);
+        stateRadioButton = new JRadioButton("State");
+        zipCodeRadioButton = new JRadioButton("Zip-code");
+        dealerNameRadioButton = new JRadioButton("Dealer Name");
+    }*/
 
+    /*public void Search() throws HeadlessException {
+
+        searchButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                DefaultTableModel model = (DefaultTableModel) dealerTable.getModel();
+                try {
+                    DealerDirectory dealerDirectory = new DealerDirectory();
+                    String queryString = queryTextField.getText();
+                    List<Dealer> dealers = new ArrayList<>();
+                    if(stateRadioButton.isSelected()) {
+                        dealers = dealerDirectory.getDealerByStateOrStateId(queryString);
+                    }else if(zipCodeRadioButton.isSelected()){
+                        dealers = dealerDirectory.getDealerByZipCode(queryString);
+                    }
+                    model.setRowCount(0);
+                    for (Dealer dealer : dealers) {
+                        model.addRow(new Object[]{dealer.getName(), dealer.getPhoneNumber(), dealer.getStreetAddress(), dealer.getCity(), dealer.getZipcode()});
+                    }
+                    if (dealers.size() == 0) {
+                        JOptionPane.showMessageDialog(null, "Please try different zip code or state code", "InfoBox: " + "No Dealers found", JOptionPane.INFORMATION_MESSAGE);
+                    }
+                } catch (Exception e) {
+                    System.out.println(e);
+                    JOptionPane.showMessageDialog(searchBar,"Error In Connectivity");
+                }
+            }
+        });
+    }*/
     public DealerSearch() throws HeadlessException {
-        add(test);
+        searchButton = new JButton("Search");
+        searchBy = new JLabel("Search By:");
+        queryTextField = new JTextField(20);
+        stateRadioButton = new JRadioButton("State");
+        zipCodeRadioButton = new JRadioButton("Zip-code");
+        dealerNameRadioButton = new JRadioButton("Dealer Name");
+        searchBar.add(searchBy);
+        searchBar.add(stateRadioButton);
+        searchBar.add(zipCodeRadioButton);
+        searchBar.add(dealerNameRadioButton);
+        searchBar.add(queryTextField);
+        searchBar.add(searchButton);
+
         searchButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
@@ -85,7 +135,7 @@ public class DealerSearch extends JFrame {
                     }
                 } catch (Exception e) {
                     System.out.println(e);
-                    JOptionPane.showMessageDialog(test, "Error In Connectivity");
+                    JOptionPane.showMessageDialog(searchBar, "Error In Connectivity");
                 }
             }
         });
@@ -98,24 +148,6 @@ public class DealerSearch extends JFrame {
             }
         });
     }
-
-    private void createUIComponents() {
-        UIDefaults defaults = UIManager.getLookAndFeelDefaults();
-        defaults.putIfAbsent("Table.alternateRowColor", Color.LIGHT_GRAY);
-        searchButton = new JButton();
-        queryTextField = new JTextField();
-        stateRadioButton = new JRadioButton();
-        zipCodeRadioButton = new JRadioButton();
-        dealerNameRadioButton = new JRadioButton();
-        dealerTable = new JTable(new DefaultTableModel(
-                null,
-                new String[]{
-                        "Name", "Phone Number", "Address", "City", "Zipcode"
-                }
-        ));
-        scrollPane = new JScrollPane(dealerTable);
-    }
-
     static boolean isValidZipCode(String zipCode) {
         String regex = "\\d{5}";
         return zipCode.matches(regex);
@@ -134,4 +166,5 @@ public class DealerSearch extends JFrame {
     private void ShowErrorMessage(String errorMessage, String title) {
         JOptionPane.showMessageDialog(null, errorMessage, title, JOptionPane.ERROR_MESSAGE);
     }
+
 }
