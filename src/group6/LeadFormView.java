@@ -10,6 +10,7 @@ import java.awt.event.ActionListener;
 import java.io.*;
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
@@ -75,17 +76,16 @@ public class LeadFormView extends JFrame {
 
         fName.addFocusListener(new FocusAdapter() {
             @Override
-            public void focusLost(FocusEvent e) {
-                super.focusLost(e);
-                if (fName == null) {
-
-                }
+            public void focusGained(FocusEvent e) {
+                super.focusGained(e);
+                setDefaultBorder(fName);
             }
         });
         lName.addFocusListener(new FocusAdapter() {
             @Override
-            public void focusLost(FocusEvent e) {
-                super.focusLost(e);
+            public void focusGained(FocusEvent e) {
+                super.focusGained(e);
+                setDefaultBorder(lName);
             }
         });
         eMail.addFocusListener(new FocusAdapter() {
@@ -93,79 +93,75 @@ public class LeadFormView extends JFrame {
             public void focusLost(FocusEvent e) {
                 super.focusLost(e);
                 if (!isValidEmail(eMail.getText())) {
-                    showErrorMessage("Enter a valid E-mail ");
-                    eMail.setBorder(BorderFactory.createLineBorder(Color.RED));
+                    showErrorMessage("Enter a valid E-mail ", eMail);
                 }
             }
-        });
-        eMail.addFocusListener(new FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
                 super.focusGained(e);
-                eMail.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
+                setDefaultBorder(eMail);
             }
         });
+
         ph_No.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {
                 super.focusLost(e);
                 if (!isValidPhone(ph_No.getText())) {
-                    showErrorMessage("Enter a valid Phone No");
-                    ph_No.setBorder(BorderFactory.createLineBorder(Color.RED));
+                    showErrorMessage("Enter a valid Phone No", ph_No);
                 }
             }
-        });
-        ph_No.addFocusListener(new FocusAdapter() {
+
             @Override
             public void focusGained(FocusEvent e) {
                 super.focusGained(e);
-                ph_No.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
+                setDefaultBorder(ph_No);
             }
         });
+
         zipCode.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {
                 super.focusLost(e);
                 if (!isValidZipCode(zipCode.getText())) {
-                    showErrorMessage("Enter a valid Zip Code");
-                    zipCode.setBorder(BorderFactory.createLineBorder(Color.RED));
+                    showErrorMessage("Enter a valid Zip Code", zipCode);
                 }
             }
-        });
-        zipCode.addFocusListener(new FocusAdapter() {
+
             @Override
             public void focusGained(FocusEvent e) {
                 super.focusGained(e);
-                zipCode.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
+                setDefaultBorder(zipCode);
             }
         });
+
         submitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-//                (String firstName, String lastName, String eMail, String phoneNumber, String zipCode)
+
                 String firstName = fName.getText();
                 if (firstName.isEmpty()) {
-                    showErrorMessage("Please enter First Name");
+                    showErrorMessage("Please enter First Name", fName);
                     return;
                 }
                 String lastName = lName.getText();
                 if (lastName.isEmpty()) {
-                    showErrorMessage("Please enter Last Name");
+                    showErrorMessage("Please enter Last Name", lName);
                     return;
                 }
                 String emaiId = eMail.getText();
                 if (emaiId.isEmpty() || !isValidEmail(emaiId)) {
-                    showErrorMessage("Please enter Valid email");
+                    showErrorMessage("Please enter Valid email", eMail);
                     return;
                 }
                 String phoneNo = ph_No.getText();
                 if (phoneNo.isEmpty() || !isValidPhone(phoneNo)) {
-                    showErrorMessage("Please enter Valid Phone Number");
+                    showErrorMessage("Please enter Valid Phone Number", ph_No);
                     return;
                 }
                 String zip = zipCode.getText();
                 if (zip.isEmpty() || !isValidZipCode(zip)) {
-                    showErrorMessage("Please enter Valid ZipCode");
+                    showErrorMessage("Please enter Valid ZipCode", zipCode);
                     return;
                 }
                 User user = new User(firstName, lastName, emaiId, phoneNo, zip);
@@ -225,10 +221,13 @@ public class LeadFormView extends JFrame {
         return zipCode.matches(regex);
     }
 
+    void setDefaultBorder(JTextField textField) {
+        textField.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
+    }
 
     void setProperties() {
         for (JTextField textField : new JTextField[]{lName, fName, eMail, ph_No, zipCode}) {
-            textField.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
+            setDefaultBorder(textField);
         }
         requestQuoteLabel.setFont(DealerFont.getTitleFont());
         carModelLabel.setFont(DealerFont.getHeaderFont());
@@ -284,10 +283,11 @@ public class LeadFormView extends JFrame {
         imageLabel.setText("");
     }
 
-    private void showErrorMessage(String error) {
+    private void showErrorMessage(String error, JTextField textField) {
         if (isErrorDialogShown)
             return;
         isErrorDialogShown = true;
+        textField.setBorder(BorderFactory.createLineBorder(Color.RED));
         JOptionPane.showMessageDialog(null, error);
         isErrorDialogShown = false;
     }
