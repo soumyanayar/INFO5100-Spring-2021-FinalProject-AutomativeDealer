@@ -14,6 +14,13 @@ import javax.swing.SwingUtilities;
 import javax.swing.*;
 import java.awt.*;
 public class GUIAndMap {
+
+    private final DealerSearch dealerSearch;
+
+    public GUIAndMap() {
+        dealerSearch = new DealerSearch();
+    }
+
     private void GUI() throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException {
         JFrame frame = new JFrame("FIND YOUR DEALER");
         JFrame.setDefaultLookAndFeelDecorated(true);
@@ -21,7 +28,7 @@ public class GUIAndMap {
         UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 
         frame.setSize(400, 400);
-        ImageIcon logo = new ImageIcon("img/5100logo.png");
+        ImageIcon logo = new ImageIcon("src/group1/img/5100logo.png");
         logo.setImage(logo.getImage().getScaledInstance(60, 60, Image.SCALE_DEFAULT));
 
         //create the header panel that contains logo + search bar
@@ -33,8 +40,7 @@ public class GUIAndMap {
         header.add(headerLabel);
 
         //Search bar
-        DealerSearch ds = new DealerSearch();
-        header.add(ds.searchBar);
+        header.add(dealerSearch.getSearchPanel());
 
         //create the panel that contains map
         JPanel mapAndOutput = new JPanel(new GridLayout(1, 2));
@@ -52,7 +58,7 @@ public class GUIAndMap {
         Browser browser = engine.newBrowser();
         // Loading the required web page
 
-        browser.navigation().loadUrl(new File("index.html").getAbsolutePath());
+        browser.navigation().loadUrl(new File("src/group1/index.html").getAbsolutePath());
 
         SwingUtilities.invokeLater(() -> {
             // Creating Swing component for rendering web content
@@ -84,7 +90,7 @@ public class GUIAndMap {
     }
 
     private JScrollPane dealerDisplay() {
-        JScrollPane output = new JScrollPane(DealerSearch.dealerTable,
+        JScrollPane output = new JScrollPane(dealerSearch.getDealerTable(),
                 ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
                 ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         output.setBackground(Color.PINK);
