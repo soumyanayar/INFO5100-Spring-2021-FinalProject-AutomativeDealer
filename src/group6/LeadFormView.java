@@ -96,6 +96,7 @@ public class LeadFormView extends JFrame {
                     showErrorMessage("Enter a valid E-mail ", eMail);
                 }
             }
+
             @Override
             public void focusGained(FocusEvent e) {
                 super.focusGained(e);
@@ -260,13 +261,14 @@ public class LeadFormView extends JFrame {
         carModelLabel.setText(car.getYear() + " " + car.getMake() + " " + car.getModel());
         carColorLabel.setText("Color: " + car.getColor());
         priceLabel.setText("Price: $" + car.getMSRP());
-        carStockLabel.setText("Stock#: " + car.getStockNum());
+        carStockLabel.setText(String.format("Stock#: %s", car.getStockNum()));
         carVinLabel.setText("Vin: " + car.getVIN());
         mileageLabel.setText("Mileage: " + car.getMileage() + "Miles");
         instructionLabel.setText("<html>Fill out the contact form below and one of our friendly helpful sales staff will answer <br/> any questions you have about this vehicle.</html>");
         termsConditionLabel.setText("<html>By submitting your request, you consent to be contacted at the phone number you <br/> provided-which may include auto-dials,text messages and/or pre-recorded calls.By <br/> subscribing to receive  recurring SMS offers, you consent to receive text messages <br/> sent  through an automatic telephone dialing system, and message and data rates may<br/> apply. This consent is not a condition of purchase. You may opt out at any time by <br/> replying STOP to a text message, or calling (206) 241-1888 to have your telephone<br/>number removed from our system.</html>");
 
-        String imageName = "src/group6/car_placeholder.png";
+        String imageName;
+        imageName = "src/group6/car_placeholder.png";
         if (car.getImages() != null && car.getImages().size() > 0) {
             imageName = car.getImages().get(0);
         }
