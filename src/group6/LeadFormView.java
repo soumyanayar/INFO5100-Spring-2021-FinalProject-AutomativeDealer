@@ -177,7 +177,6 @@ public class LeadFormView extends JFrame {
                 }else {
                     optional = new LeadModel(message, LeadModel.UseType.NO_USE_TYPE, user);
                 }
-
                 user.setOptional(optional);
                 controller.submitLeadForm(user);
                 //write into file
