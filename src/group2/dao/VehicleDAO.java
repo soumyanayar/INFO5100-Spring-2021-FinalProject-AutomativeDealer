@@ -1,8 +1,6 @@
 package group2.dao;
 
 import group2.utils.Utils;
-import group8.Car;
-import group8.data.NewJDBC;
 
 import javax.xml.transform.Result;
 import java.sql.ResultSet;
@@ -12,6 +10,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import group8.data.NewJDBC;
+import group2.vo.Car;
 
 public class VehicleDAO {
 
@@ -27,20 +28,17 @@ public class VehicleDAO {
         }
     }
 
-    public List<Map<String, Object>> getById(int id) throws SQLException {
-        final ResultSet query = newJDBC.query("select * from NewVehicleData where vehicleId = ?", new String[]{String.valueOf(id)});
+    public Car getById(int id) throws SQLException {
+        final ResultSet query = newJDBC.query("select * from vehicle_test vt inner join model_test mot on vt.model_id = mot.model_id\n" +
+                "inner join make_test mat on vt.make_id = mat.make_id where vehicle_id = ?", new String[]{String.valueOf(id)});
         List<Map<String, Object>> res = Utils.resultSetToList(query);
-        return res;
+        Car car = Utils.transToCar(res.get(0));
+        return car;
     }
 
     public static void main(String[] args) throws SQLException {
         VehicleDAO vehicleDAO = new VehicleDAO();
-        vehicleDAO.getById(1);
+        final Car byId = vehicleDAO.getById(1);
+        System.out.println(byId);
     }
-
-
-
-
-
-
 }
