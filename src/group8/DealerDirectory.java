@@ -24,8 +24,12 @@ public class DealerDirectory {
 
     public static void main(String[] args) throws SQLException {
         DealerDirectory dealerDirectory = new DealerDirectory();
-        List<Dealer> dealers = dealerDirectory.getDealerByStateOrStateId("WA");
+//        List<Dealer> dealers = dealerDirectory.getDealerByStateOrStateId("WA");
+        List<Dealer> dealers = dealerDirectory.getDealerByDealerName("lee");
         System.out.println(dealers.size());
+        for (Dealer dealer: dealers) {
+            System.out.println(dealer.getName());
+        }
         System.out.println(dealerDirectory.getDealerByZipCode("98032"));
         dealerDirectory.getUniqueStates().forEach(item -> {
             System.out.println(String.format("%s, %s", item.getName(), item.getCode()));
@@ -50,6 +54,18 @@ public class DealerDirectory {
         List<Dealer> dealers = new ArrayList<>();
         String query = "select * from Dealer where ZipCode = ?";
         String[] params = new String[]{zipcode};
+        ResultSet resultSet = jdbcInstance.query(query, params);
+        while (resultSet.next()) {
+            dealers.add(getDealer(resultSet));
+        }
+        return dealers;
+    }
+
+    public List<Dealer> getDealerByDealerName(String dealerName) throws SQLException {
+        List<Dealer> dealers = new ArrayList<>();
+        String query = "select * from Dealer where DealerName like ?";
+        dealerName = "%" + dealerName +"%";
+        String[] params = new String[]{dealerName};
         ResultSet resultSet = jdbcInstance.query(query, params);
         while (resultSet.next()) {
             dealers.add(getDealer(resultSet));

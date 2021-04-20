@@ -34,10 +34,13 @@ public class LeadDataAccessor {
             lead.lastName = rowScanner.next();
             lead.email = rowScanner.next();
             lead.phoneNumber = rowScanner.next();
+            lead.zipCode = rowScanner.next();
             lead.carModel = rowScanner.next();
             lead.carYear = rowScanner.next();
             lead.carColor = rowScanner.next();
             lead.message = rowScanner.next();
+            lead.replyMessage = rowScanner.next();
+            lead.contacted = rowScanner.nextBoolean();
         }
         return lead;
     }

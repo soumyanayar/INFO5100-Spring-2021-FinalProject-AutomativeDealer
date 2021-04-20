@@ -10,10 +10,7 @@ import java.sql.Blob;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import javax.sql.rowset.serial.SerialBlob;
 
 /**
@@ -119,7 +116,7 @@ public class DbDealerStorage implements IDataProvider {
                 String incentiveId = resultSet.getString(12);
                 String discountPrice = resultSet.getString(13);
                 int rating = resultSet.getInt(14);
-                Car c = new Car(stockID, VIN, dealerID, make, model, year, category, msrp, color, miles, blob,
+                Car c = new Car(stockID, VIN, dealerID, make, model, year, category, msrp, color, miles, new ArrayList<>(),
                         incentiveId, discountPrice, rating);
                 result.add(c);
             }

@@ -1,6 +1,7 @@
 package group8;
 
 import java.sql.Blob;
+import java.util.List;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -13,7 +14,9 @@ import java.sql.Blob;
  * @author jasmineshin
  */
 public class Car {
-    
+
+
+
     // instance variables
     private String stockNum;
     private String dealerId;
@@ -33,7 +36,10 @@ public class Car {
     private String model;
     private String type;
     private String location;
-    private Blob image;
+    private List<String> images;
+
+
+
     
     // default constructor
     public Car(){
@@ -42,7 +48,7 @@ public class Car {
     // constructor for MySQL query
     public Car(String stockID, String VIN, String dealerID, String make, String model,
                 int year, CarCategory category, double price, String color, int mileage,
-                Blob img, String incentiveID, String discountPrice, int rating){
+                List<String> images, String incentiveID, String discountPrice, int rating){
         
         this.stockNum = stockID;
         this.VIN = VIN;
@@ -54,7 +60,7 @@ public class Car {
         this.msrp = price;
         this.color = color;
         this.mileage = mileage;
-        this.image = img;
+        this.images = images;
         this.rating = rating;
     }
     
@@ -87,11 +93,31 @@ public class Car {
     public String getstockNum() {
         return this.stockNum;
     }
-    
-    public Blob getImage(){
-        return this.image;
+
+    public String getStockNum() {
+        return stockNum;
     }
-    
+
+    public void setStockNum(String stockNum) {
+        this.stockNum = stockNum;
+    }
+
+    public double getMsrp() {
+        return msrp;
+    }
+
+    public void setMsrp(double msrp) {
+        this.msrp = msrp;
+    }
+
+    public List<String> getImages() {
+        return images;
+    }
+
+    public void setImages(List<String> images) {
+        this.images = images;
+    }
+
     public int getSeatCount(){
         return seatCount;
     }
