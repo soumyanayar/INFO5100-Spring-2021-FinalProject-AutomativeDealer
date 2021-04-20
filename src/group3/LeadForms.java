@@ -40,13 +40,13 @@ public class LeadForms extends JFrame {
 
     public static void main(String[] args) {
         LeadForms frame = new LeadForms("Leads List");
-        LeadDataAccessor lda = new LeadDataAccessor("D:\\NewVehicleData.csv");
-        frame.init(lda.getLeads());
-        /*
-        JScrollPane scrollPane = new JScrollPane();
+        LeadDataAccessor dataAccessor = new LeadDataAccessor("/Users/bz/Desktop/github/INFO5100Spring2021FinalProject/src/group3/NewVehicleData.csv");
+        frame.init(dataAccessor.getLeads());
+
+        /*JScrollPane scrollPane = new JScrollPane();
         scrollPane.setSize(750,200);
-        scrollPane.setVisible(true);
-         */
+        scrollPane.setVisible(true);*/
+
 
 
 //        for(int i = 0; i < 5; i++){

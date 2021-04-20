@@ -14,9 +14,9 @@ public class RespondDetailsUI {
     private static int SAVE_TIME_INTERVAL = 60;
     private static String[] TAB_NAMES = {"Customer info",  "Comments message"};
 
-    JTextArea commentsMessageTextArea;
-    JTextArea commentsMessageReplyTextArea;
-    JButton replyButton;
+    private JTextArea commentsMessageTextArea;
+    private JTextArea commentsMessageReplyTextArea;
+    private JButton replyButton;
     private JTabbedPane mainPanel;
     private JFrame theFrame;
 
@@ -25,15 +25,16 @@ public class RespondDetailsUI {
 	    this.lead = lead;
     }
 
-    /*public static void main (String[] args) {
-        LeadDataHelper helper = LeadDataHelper.instance();
-        helper.mergeLeadsHelper("bae705d7-20da-4ee2-871f-345b2271992b");
-        ArrayList<Lead> forms = (ArrayList<Lead>) helper.getMergedLeads();
-        for (int j = 0; j < mergedIds.get(0).size(); j++) {
-            java.util.List<String> ids = mergedIds.get(0);
-        }
-	    new DetailsWindow(forms.get(0), vehicles).buildGUI();
-    }*/
+    public static void main (String[] args) {
+
+        // use your own file routes
+
+        /*
+        LeadDataAccessor dataAccessor = new LeadDataAccessor("/Users/bz/Desktop/github/INFO5100Spring2021FinalProject/src/group3/NewVehicleData.csv");
+		RespondDetailsUI r = new RespondDetailsUI(dataAccessor.getLeads().get(0));
+		r.buildGUI();
+         */
+    }
 
     public void buildGUI () {
 	    theFrame = new JFrame("Respond Window");
@@ -113,7 +114,7 @@ public class RespondDetailsUI {
         emailLabel.setText("Email: ");
         leadInfoPanel.add(emailLabel);
         JLabel email= new JLabel();
-        email.setText(lead.getEmailAddress());
+        email.setText(lead.getEmail());
         leadInfoPanel.add(email);
         /**
          * fill zip code

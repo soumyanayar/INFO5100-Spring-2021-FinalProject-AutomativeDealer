@@ -8,10 +8,13 @@ public class Lead {
     public String lastName;
     public String email;
     public String phoneNumber;
+    public String zipCode;
     public String carModel;
     public String carColor;
     public String carYear;
     public String message;
+    public String replyMessage;
+    public boolean contacted;
 
     public String getFirstName() {
         return firstName;
@@ -45,6 +48,12 @@ public class Lead {
         this.phoneNumber = phoneNumber;
     }
 
+    public String getZipCode() {
+        return zipCode;
+    }
+
+    public void setZipCode(String zipCode) { this.zipCode = zipCode; }
+
     public String getCarModel() {
         return carModel;
     }
@@ -75,5 +84,17 @@ public class Lead {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public String getReplyMessage() { return replyMessage; }
+
+    public void setReplyMessage(String reply) {
+        this.replyMessage = replyMessage;
+    }
+
+    public boolean getContacted() { return contacted; }
+
+    public void setContacted(boolean contacted) {
+        this.contacted = contacted;
     }
 }
