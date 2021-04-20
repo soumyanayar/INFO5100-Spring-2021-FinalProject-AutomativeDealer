@@ -1,56 +1,64 @@
 package group3;
 /**
  * @author  Zhehui Yang
- * @date: 2021/4/12
+ * @date: 2021/4/15
  */
 import javax.swing.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-
 public class LeadForm extends JComponent implements MouseListener {
     private JPanel mainPanel;
     private JFrame mainFrame;
-    private JTextField textField1;
-    private JTextField textField2;
-    private JTextField textField3;
-    private JTextField textField4;
-    private JTextField textField5;
-    private JTextField textField6;
-    private JTextField textField7;
-    private JTextArea textArea1;
-    private JLabel label1;
+    private JTextField fn;
+    private JTextField ln;
+    private JTextField em;
+    private JTextField phone;
+    private JTextField zipCode;
+    private JTextField carModel;
+    private JTextField carColor;
+    private JTextField carStock;
+    private JTextArea setMessage;
+    private JLabel firstName;
+    private JLabel lastNameLabel;
     private JButton respondButton;
     private JLabel message;
-    private JLabel model;
-    private JLabel year;
-    private JLabel color;
+    private JLabel carModelLabel;
+    private JLabel colorLabel;
     private JButton respondShort;
+    private JLabel emailLabel;
+    private JLabel phoneLabel;
+    private JLabel zipCodeLabel;
+    private JTextField carVinTextField;
+    private JLabel carVINLabel;
+    private JLabel carStockLabel;
+
     private boolean isExpanded;
 
     public void init(JFrame mainFrame, Lead lead) {
         isExpanded = true;
         this.mainFrame = mainFrame;
-        label1.addMouseListener(this);
-        textField1.setText(lead.firstName);
-        textField2.setText(lead.lastName);
-        textField3.setText(lead.email);
-        textField4.setText(lead.phoneNumber);
-        textField5.setText(lead.carModel);
-        textField6.setText(lead.carYear);
-        textField7.setText(lead.carColor);
-        textArea1.setText(lead.message);
+        firstName.addMouseListener(this);
+        fn.setText(lead.getFirstName());
+        ln.setText(lead.getLastName());
+        em.setText(lead.getEmail());
+        phone.setText(lead.getPhoneNumber());
+        zipCode.setText(lead.getZipCode());
+        carModel.setText(lead.getCarModel());
+        carColor.setText(lead.getCarColor());
+        // carStock.setText(lead.getCarStock());
+        setMessage.setText(lead.getMessage());
         mouseClicked(null);
     }
 
     public JTextField getFirstName() {
-        return textField1;
+        return fn;
     }
 
     public JTextField getLastName() {
-        return textField2;
+        return ln;
     }
     public JTextField getEmail() {
-        return textField3;
+        return em;
     }
 
 
@@ -69,16 +77,56 @@ public class LeadForm extends JComponent implements MouseListener {
     }
 
     @Override
+    public void setVisible(boolean isVisible){
+        super.setVisible(isVisible);
+        if (isVisible == true) {
+            isExpanded = false;
+            fn.setVisible(true);
+            ln.setVisible(true);
+            firstName.setVisible(true);
+            lastNameLabel.setVisible(true);
+            mouseClicked(null);
+            return;
+        }
+        fn.setVisible(false);
+        ln.setVisible(false);
+        em.setVisible(false);
+        phone.setVisible(false);
+        zipCode.setVisible(false);
+        carModel.setVisible(false);
+        carColor.setVisible(false);
+        carStock.setVisible(false);
+        setMessage.setVisible(false);
+        firstName.setVisible(false);
+        lastNameLabel.setVisible(false);
+        respondButton.setVisible(false);
+        message.setVisible(false);
+        carModelLabel.setVisible(false);
+        colorLabel.setVisible(false);
+        respondShort.setVisible(false);
+        emailLabel.setVisible(false);
+        phoneLabel.setVisible(false);
+        zipCodeLabel.setVisible(false);
+        carVinTextField.setVisible(false);
+        carVINLabel.setVisible(false);
+        carStockLabel.setVisible(false);
+        return;
+    }
+    @Override
     public void mouseClicked(MouseEvent e) {
         isExpanded = !isExpanded;
-        textArea1.setVisible(isExpanded);
+        zipCodeLabel.setVisible(isExpanded);
+        carModelLabel.setVisible(isExpanded);
+        carStockLabel.setVisible(isExpanded);
+        carVINLabel.setVisible(isExpanded);
+        colorLabel.setVisible(isExpanded);
+        carVinTextField.setVisible(isExpanded);
         message.setVisible(isExpanded);
-        model.setVisible(isExpanded);
-        textField5.setVisible(isExpanded);
-        year.setVisible(isExpanded);
-        textField6.setVisible(isExpanded);
-        color.setVisible(isExpanded);
-        textField7.setVisible(isExpanded);
+        zipCode.setVisible(isExpanded);
+        carModel.setVisible(isExpanded);
+        carColor.setVisible(isExpanded);
+        carStock.setVisible(isExpanded);
+        setMessage.setVisible(isExpanded);
         respondButton.setVisible(isExpanded);
         respondShort.setVisible(!isExpanded);
         if (isExpanded == false) {

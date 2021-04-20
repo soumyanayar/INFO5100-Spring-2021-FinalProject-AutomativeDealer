@@ -1,36 +1,59 @@
 package group3;
 /**
  * @author  Zhehui Yang
- * @date: 2021/4/12
+ * @date: 2021/4/15
  */
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.util.*;
 import java.util.List;
 
-public class LeadForms extends JFrame {
+public class LeadForms extends JFrame implements ItemListener {
     private int numberOfLeads;
     private int height;
     private int width;
+    private Map<String, List<LeadForm>> modelToLeadsMap;
 
     public LeadForms(String title) {
         super(title);
         width = 750;
+        modelToLeadsMap = new HashMap<>();
     }
 
     public void init(List<Lead> leads) {
         this.numberOfLeads = leads.size();
         height = numberOfLeads * 400;
+        JPanel listingPanel = new JPanel();
+        listingPanel.setLayout(new GridLayout(numberOfLeads, 1));
+        JPanel optionPanel = new JPanel();
         JPanel mainPanel = new JPanel();
-        mainPanel.setLayout(new GridLayout(numberOfLeads, 1));
-//        super.setContentPane(mainPanel);
-        super.setContentPane(new JScrollPane(mainPanel));
+        mainPanel.setLayout(new GridLayout(2, 1));
+        mainPanel.add(optionPanel);
+        mainPanel.add(new JScrollPane(listingPanel));
+        super.setContentPane(mainPanel);
+        optionPanel.add(new JLabel("Filter By "));
+        JComboBox<String> filteredByComboBox = new JComboBox<String>();
+        optionPanel.add(filteredByComboBox);
+        // super.setContentPane(new JScrollPane(listingPanel));
         for (int i = 0; i < numberOfLeads; i++) {
             Lead lead = leads.get(i);
+            System.out.println("Current lead name is" + lead.getLastName());
             LeadForm leadForm = new LeadForm();
             leadForm.init(this, lead);
             leadForm.getMainPanel().setSize(750, 100);
-            mainPanel.add(leadForm.getMainPanel(), BorderLayout.NORTH);
+            listingPanel.add(leadForm.getMainPanel(), BorderLayout.NORTH);
+            if (modelToLeadsMap.get(lead.getCarModel().toUpperCase()) != null) {
+                modelToLeadsMap.get(lead.getCarModel().toUpperCase()).add(leadForm);
+            } else {
+                filteredByComboBox.addItem(lead.getCarModel().toUpperCase());
+                List<LeadForm> tmpLeadFormList = new ArrayList<>();
+                tmpLeadFormList.add(leadForm);
+                modelToLeadsMap.put(lead.getCarModel().toUpperCase(), tmpLeadFormList);
+            }
         }
+        filteredByComboBox.addItemListener(this);
 //        super.add(BorderLayout.CENTER, new JScrollPane(mainPanel));
         super.setSize(width, 300);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -80,5 +103,23 @@ public class LeadForms extends JFrame {
         this.height += height;
         // super.setSize(this.width, this.height);
         // super.getContentPane().getComponents()[0].setSize(this.width, this.height);
+    }
+
+    @Override
+    public void itemStateChanged(ItemEvent e){
+        if (e.getStateChange() == ItemEvent.SELECTED) {
+            for (List<LeadForm> list: modelToLeadsMap.values()) {
+                for (LeadForm leadForm: list) {
+                    leadForm.setVisible(false);
+                }
+            }
+            List<LeadForm> selectedLeads = modelToLeadsMap.get((String) e.getItem());
+            int cnt = 0;
+            for (LeadForm leadForm: selectedLeads) {
+                cnt++;
+                leadForm.setVisible(true);
+            }
+            System.out.println(cnt + " leadForm is seleted");
+        }
     }
 }
