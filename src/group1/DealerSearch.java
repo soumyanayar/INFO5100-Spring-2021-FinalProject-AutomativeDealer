@@ -4,10 +4,13 @@ import group8.Dealer;
 import group8.DealerDirectory;
 
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,6 +23,7 @@ public class DealerSearch extends JFrame {
     private JRadioButton dealerNameRadioButton;
     private JScrollPane scrollPane;
     private JTable dealerTable;
+    private JLabel validationText;
 
     public static void main(String[] args) {
         DealerSearch formView = new DealerSearch();
@@ -33,27 +37,64 @@ public class DealerSearch extends JFrame {
         searchButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
+                boolean isValidQuery = false;
                 DefaultTableModel model = (DefaultTableModel) dealerTable.getModel();
                 try {
                     DealerDirectory dealerDirectory = new DealerDirectory();
                     String queryString = queryTextField.getText();
                     List<Dealer> dealers = new ArrayList<>();
                     if(stateRadioButton.isSelected()) {
-                        dealers = dealerDirectory.getDealerByStateOrStateId(queryString);
+                        if(queryString.length() > 0 && isValidStateOrStateCode(queryString)) {
+                            isValidQuery = true;
+                            dealers = dealerDirectory.getDealerByStateOrStateId(queryString);
+                        }
+                        else{
+                            validationText.setText("Please enter a valid State or State code");
+                            validationText.setForeground(Color.RED);
+                            queryTextField.setBorder(new LineBorder(Color.red,1));
+                        }
+
                     }else if(zipCodeRadioButton.isSelected()){
-                        dealers = dealerDirectory.getDealerByZipCode(queryString);
+                        if(queryString.length() > 0 && isValidZipCode(queryString)) {
+                            isValidQuery = true;
+                            dealers = dealerDirectory.getDealerByZipCode(queryString);
+                        }
+                        else{
+                            validationText.setText("Please enter a valid zipcode");
+                            validationText.setForeground(Color.RED);
+                            queryTextField.setBorder(new LineBorder(Color.red,1));
+                        }
+                    }
+                    else if(dealerNameRadioButton.isSelected()){
+                        if(queryString.length() > 0 && isValidDealerName(queryString)) {
+                            isValidQuery = true;
+                            dealers = dealerDirectory.getDealerByDealerName(queryString);
+                        }
+                        else{
+                            validationText.setText("Please enter a valid dealer name");
+                            validationText.setForeground(Color.RED);
+                            queryTextField.setBorder(new LineBorder(Color.red,1));
+                        }
                     }
                     model.setRowCount(0);
                     for (Dealer dealer : dealers) {
                         model.addRow(new Object[]{dealer.getName(), dealer.getPhoneNumber(), dealer.getStreetAddress(), dealer.getCity(), dealer.getZipcode()});
                     }
-                    if (dealers.size() == 0) {
-                        JOptionPane.showMessageDialog(null, "Please try different zip code or state code", "InfoBox: " + "No Dealers found", JOptionPane.INFORMATION_MESSAGE);
+                    if (dealers.size() == 0 && isValidQuery) {
+                        JOptionPane.showMessageDialog(null, "No dealers found. Please try again with a different search parameter", "InfoBox: " + "No Dealers found", JOptionPane.INFORMATION_MESSAGE);
                     }
                 } catch (Exception e) {
                     System.out.println(e);
                     JOptionPane.showMessageDialog(test, "Error In Connectivity");
                 }
+            }
+        });
+        queryTextField.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                super.focusGained(e);
+                queryTextField.setBorder(new LineBorder(Color.white,0));
+                validationText.setText("");
             }
         });
     }
@@ -73,5 +114,24 @@ public class DealerSearch extends JFrame {
                 }
         ));
         scrollPane = new JScrollPane(dealerTable);
+    }
+
+    static boolean isValidZipCode(String zipCode) {
+        String regex = "\\d{5}";
+        return zipCode.matches(regex);
+    }
+
+    static boolean isValidStateOrStateCode(String stateOrStateCode) {
+        String regex = "^[a-zA-Z]*$";
+        return stateOrStateCode.matches(regex);
+    }
+
+    static boolean isValidDealerName(String stateOrStateCode) {
+        String regex = "\\D*";
+        return stateOrStateCode.matches(regex);
+    }
+
+    private void ShowErrorMessage(String errorMessage, String title) {
+        JOptionPane.showMessageDialog(null, errorMessage, title, JOptionPane.ERROR_MESSAGE);
     }
 }
