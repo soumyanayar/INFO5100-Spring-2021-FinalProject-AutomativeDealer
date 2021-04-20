@@ -1,9 +1,6 @@
 package group2.vo;
 
 import java.util.List;
-import java.util.Map;
-
-import java.util.List;
 
 /**
  *
@@ -18,7 +15,7 @@ public class Car {
     private String model;
     private String transmission;
     private int year;
-    private int stockNumber;
+    private int stockNum;
     private String fuel;
     private String VIN;
     private double msrp;
@@ -29,10 +26,10 @@ public class Car {
     private String location;
     private int mileage;
     private int seatCount;
-    private int ratings;
+    private int rating;
     private double discount = 1.0;
     private String vehicleDescription;
-    private String dealersInformation;
+    private String dealerId;
     private List<String> images;
 
 
@@ -57,11 +54,10 @@ public class Car {
         this.transmission = "Automatic 6-Speed";
         this.fuel = "Gasoline";
         this.VIN = "2HNYD2H59AH533278";
-        this.stockNumber = 738;
+        this.stockNum = 738;
         this.seatCount = 4;
         this.mileage = 1174;
-        this.ratings = 4;
-        this.dealersInformation = "Daily Deals Auto Sale \n8100 Ane North\nWashington";
+        this.rating = 4;
         this.vehicleDescription = "Beautiful White Frost. Abel Chevrolet Buick. Many Financing Options available. Credit Challenged? We can help! We have great relationships with many lenders which allows us to offer financing that many others can't! We're here to help you get in the vehicle you want! At Abel, we do our best to offer you an unique experience when purchasing a New or Pre-Owned vehicle. Unlike traditional car dealers, we offer a non-pressured environment giving you the time and space to make an informed decision. Our advertised prices are our best deal upfront. No Games, just fair prices and outstanding customer service. We won't waste your time! Once you've found the Abel Vehicle you're looking for, on average, you'll go from test drive to driving home in less than an hour!";
     }
 //    public vo.Car(String id,String name, String make, String model, int year, double msrp, boolean used,
@@ -101,7 +97,7 @@ public class Car {
         return carCategory.toString();
     }
 
-    public int getStockNumber(){return this.stockNumber;}
+    public int getStockNum(){return this.stockNum;}
     public String getVIN(){ return this.VIN; }
     public String getTransmission(){
         return this.transmission;
@@ -122,8 +118,8 @@ public class Car {
     public int getSeatCount(){
         return seatCount;
     }
-    public int getRatings(){
-        return ratings;
+    public int getRating(){
+        return rating;
     }
     public double getPriceAfterDiscount(){
         return msrp * discount;
@@ -131,9 +127,7 @@ public class Car {
     public String getVehicleDescription(){
         return this.vehicleDescription;
     }
-    public String getDealersInformation(){
-        return this.dealersInformation;
-    }
+
     /*******************  SETTER  *******************/
     public void setID(String id){
         this.id = id;
@@ -205,8 +199,8 @@ public class Car {
         this.transmission = transmission;
     }
 
-    public void setStockNumber(int stockNumber) {
-        this.stockNumber = stockNumber;
+    public void setStockNum(int stockNum) {
+        this.stockNum = stockNum;
     }
 
     public void setFuel(String fuel) {
@@ -229,8 +223,8 @@ public class Car {
         this.seatCount = seatCount;
     }
 
-    public void setRatings(int ratings) {
-        this.ratings = ratings;
+    public void setRating(int rating) {
+        this.rating = rating;
     }
 
     public double getDiscount() {
@@ -241,9 +235,7 @@ public class Car {
         this.vehicleDescription = vehicleDescription;
     }
 
-    public void setDealersInformation(String dealersInformation) {
-        this.dealersInformation = dealersInformation;
-    }
+
 
     @Override
     public String toString() {
@@ -255,7 +247,7 @@ public class Car {
                 ", model='" + model + '\'' +
                 ", transmission='" + transmission + '\'' +
                 ", year=" + year +
-                ", stockNumber=" + stockNumber +
+                ", stockNum=" + stockNum +
                 ", fuel='" + fuel + '\'' +
                 ", VIN='" + VIN + '\'' +
                 ", msrp=" + msrp +
@@ -264,10 +256,9 @@ public class Car {
                 ", location='" + location + '\'' +
                 ", mileage=" + mileage +
                 ", seatCount=" + seatCount +
-                ", ratings=" + ratings +
+                ", rating=" + rating +
                 ", discount=" + discount +
                 ", vehicleDescription='" + vehicleDescription + '\'' +
-                ", dealersInformation='" + dealersInformation + '\'' +
                 ", images=" + images +
                 '}';
     }

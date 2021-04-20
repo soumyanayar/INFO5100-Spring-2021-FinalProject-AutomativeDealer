@@ -2,10 +2,8 @@ package group2.utils;
 
 
 import group2.vo.Car;
-import group8.CarCategory;
+import group8.Dealer;
 
-import javax.sql.rowset.serial.SerialBlob;
-import java.sql.Blob;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -53,7 +51,7 @@ public class Utils {
         car.setFuel(String.valueOf(map.get("fuel")));
         car.setVIN(String.valueOf(map.get("vin")));
         if (map.get("stock") != null) {
-            car.setStockNumber(Integer.valueOf(String.valueOf(map.get("stock"))));
+            car.setStockNum(Integer.valueOf(String.valueOf(map.get("stock"))));
         }
         if (map.get("seat_count") != null) {
             car.setSeatCount(Integer.valueOf(String.valueOf(map.get("seat_count"))));
@@ -63,7 +61,7 @@ public class Utils {
         }
 
         if (map.get("rating") != null) {
-            car.setRatings(Integer.valueOf(String.valueOf(map.get("rating"))));
+            car.setRating(Integer.valueOf(String.valueOf(map.get("rating"))));
         }
         if (map.get("description") != null) {
             car.setVehicleDescription(String.valueOf(map.get("description")));
@@ -74,8 +72,24 @@ public class Utils {
         car.setImages(Arrays.asList(arr));
 
 
+
+
+
         return car;
     }
+
+    static public Dealer transToDealer(Map<String, Object> map) {
+        Dealer dealer = new Dealer();
+        dealer.setName(String.valueOf(map.get("DealerName")));
+        dealer.setStreetAddress(String.valueOf(map.get("DealerAddress")));
+        dealer.setCity(String.valueOf(map.get("City")));
+        dealer.setState(String.valueOf(map.get("State")));
+        dealer.setCountry(String.valueOf(map.get("Country")));
+
+
+        return dealer;
+    }
+
 
 
 }
