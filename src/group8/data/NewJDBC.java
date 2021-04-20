@@ -2,6 +2,7 @@ package group8.data;
 
 import group8.Car;
 import group8.CarCategory;
+import group8.IDataProvider;
 import group8.Incentive;
 import group8.LeasingIncentive;
 import group8.LoanIncentive;
@@ -14,13 +15,15 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.sql.rowset.serial.SerialBlob;
 
 /**
  * @author Guiyu Liu
  * Apr 13, 2021.
  */
-public class NewJDBC {
+public class NewJDBC implements IDataProvider{
     private static final String URL
             = "jdbc:sqlserver://guiyu.database.windows.net:1433;databaseName=test";
     private static final String USERNAME = "guiyu"; //For personal test, will replace it later
@@ -190,28 +193,42 @@ public class NewJDBC {
         return leasingIncentiveList;
     }
     
-    public HashMap<Car, List<Incentive>> getAllIncentivesByDealerId(String dealerId) throws SQLException{
+    @Override
+    public HashMap<Car, List<Incentive>> getAllIncentivesByDealerId(String dealerId){
         // get cars and filter res by cars in current dealer
         List<Car> owned = getAllCarsByDealerId(dealerId);
         HashMap<Car, List<Incentive>> carIncentiveMap = new HashMap<>();
         for(Car c: owned){
-            List<Incentive> carIncentive = new ArrayList<>();
-            carIncentive.addAll(this.getAllLeasingIncentivesByCarVIN(c.getVIN()));
-            carIncentive.addAll(this.getAllRebateIncentivesByCarVIN(c.getVIN()));
-            carIncentive.addAll(this.getAllLoanIncentivesByCarVIN(c.getVIN()));
-            carIncentiveMap.put(c, carIncentive);
+            try {
+                List<Incentive> carIncentive = new ArrayList<>();
+                carIncentive.addAll(this.getAllLeasingIncentivesByCarVIN(c.getVIN()));
+                carIncentive.addAll(this.getAllRebateIncentivesByCarVIN(c.getVIN()));
+                carIncentive.addAll(this.getAllLoanIncentivesByCarVIN(c.getVIN()));
+                carIncentiveMap.put(c, carIncentive);
+            } catch (SQLException ex) {
+                Logger.getLogger(NewJDBC.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return carIncentiveMap;
     }
     
-    public List<Car> getAllCarsByDealerId(String dealerId) throws SQLException{
+    // get all cars by dealer Id
+    // this will be used by the UI team for displaying cars
+    // after the customer selected a dealer to view
+
+    /**
+     *
+     * @param dealerId
+     * @return
+     * @throws SQLException
+     */
+    @Override
+    public List<Car> getAllCarsByDealerId(String dealerId){
         List<Car> res = new ArrayList<>();
-        String query = "Select * from NewVehicleData where DealerId = " + dealerId;
-        ResultSet resultSet = this.stmt.executeQuery(query);
-        while(resultSet.next()){
-//            public Car(String stockID, String VIN, String dealerID, String make, String model,
-//                int year, CarCategory category, double price, String color, int mileage,
-//                List<String> images, String incentiveID, String discountPrice, int rating){
+        try {
+            String query = "Select * from NewVehicleData where DealerId = " + dealerId;
+            ResultSet resultSet = this.stmt.executeQuery(query);
+            while(resultSet.next()){
                 String stockID = resultSet.getString(1);
                 String VIN = resultSet.getString(2);
                 String dealerID = resultSet.getString(3);
@@ -233,6 +250,10 @@ public class NewJDBC {
                 Car c = new Car(stockID, VIN, dealerID, make, model, year, category, msrp, color, miles, images,
                         incentiveId, discountPrice, rating);
                 res.add(c);
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(NewJDBC.class.getName()).log(Level.SEVERE, null, ex);
         }
         return res;
     }
@@ -483,5 +504,20 @@ public class NewJDBC {
             e.printStackTrace();
         }
         return 0;
+    }
+
+    @Override
+    public List<Car> getAllCars() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public List<Incentive> getAllIncentives() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void persistIncentive(Incentive incentive) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
