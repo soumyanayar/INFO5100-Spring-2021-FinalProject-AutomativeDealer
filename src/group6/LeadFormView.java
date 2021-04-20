@@ -48,7 +48,7 @@ public class LeadFormView extends JFrame {
     private JLabel errorLabel = new JLabel();
     Car car;
     LeadFormController controller;
-    private ButtonGroup group;
+
     private String[] info = new String[10];
     public static File file = new File("LEAD.csv");
     private boolean isErrorDialogShown = false;
@@ -66,12 +66,6 @@ public class LeadFormView extends JFrame {
         this.setValue();
         setSize(new Dimension(510, 800));
         setMaximumSize(new Dimension(510, 800));
-
-        /*personalUseRadioButton = new JRadioButton("Personal");
-        businessUseRadioButton = new JRadioButton("Business");
-        group = new ButtonGroup();
-        group.add(personalUseRadioButton);
-        group.add(businessUseRadioButton);*/
 
         fName.addFocusListener(new FocusAdapter() {
             @Override
@@ -153,8 +147,8 @@ public class LeadFormView extends JFrame {
                     showErrorMessage("Please enter Last Name");
                     return;
                 }
-                String emaiId = eMail.getText();
-                if (emaiId.isEmpty() || !isValidEmail(emaiId)) {
+                String emailId = eMail.getText();
+                if (emailId.isEmpty() || !isValidEmail(emailId)) {
                     showErrorMessage("Please enter Valid email");
                     return;
                 }
@@ -168,30 +162,34 @@ public class LeadFormView extends JFrame {
                     showErrorMessage("Please enter Valid ZipCode");
                     return;
                 }
-                User user = new User(firstName, lastName, emaiId, phoneNo, zip);
+                User user = new User(firstName, lastName, emailId, phoneNo, zip);
 
-                String message = "No Comment";
-                String useType = "None";
-                LeadModel optional = null;
-                if (!textArea1.getText().isEmpty()) {
+                String message;
+                LeadModel optional;
+                if (!textArea1.getText().matches("")) {
                     message = textArea1.getText();
+                }else{
+                    message = "No Comment";
                 }
                 if (personalUseRadioButton.isSelected()) {
                     optional = new LeadModel(message, LeadModel.UseType.PERSONAL, user);
-                    useType = "Personal";
+
                 } else if (businessUseRadioButton.isSelected()) {
                     optional = new LeadModel(message, LeadModel.UseType.BUSINESS, user);
-                    useType = "Business";
+
+                }else {
+                    optional = new LeadModel(message, LeadModel.UseType.NO_USE_TYPE, user);
                 }
+
                 user.setOptional(optional);
                 controller.submitLeadForm(user);
                 //write into file
                 info[0] = firstName;
                 info[1] = lastName;
-                info[2] = emaiId;
+                info[2] = emailId;
                 info[3] = phoneNo;
                 info[4] = zip;
-                info[5] = useType;
+                info[5] = optional.getUserType().toString();
                 info[6] = message;
                 info[7] = car.getModel();
                 info[8] = car.getColor();
@@ -201,8 +199,7 @@ public class LeadFormView extends JFrame {
                 } catch (IOException ioException) {
                     ioException.printStackTrace();
                 }
-
-                //add message reminder
+                //add a notification
                 JOptionPane.showMessageDialog(null, "Submit Successfully!");
                 clear();
                 dispose();
@@ -296,18 +293,19 @@ public class LeadFormView extends JFrame {
     private void clear() {
         carModelLabel.setText("");
         carColorLabel.setText("");
+        priceLabel.setText("");
         carStockLabel.setText("");
         carVinLabel.setText("");
-        instructionLabel.setText("");
-        termsConditionLabel.setText("");
+        mileageLabel.setText("");
         fName.setText("");
         lName.setText("");
         eMail.setText("");
         ph_No.setText("");
         zipCode.setText("");
         textArea1.setText("");
-        personalUseRadioButton.setSelected(false);
-        businessUseRadioButton.setSelected(false);
+        imageLabel.setIcon(null);
+//        personalUseRadioButton.setSelected(false);
+//        businessUseRadioButton.setSelected(false);
         info = new String[10];
     }
 
