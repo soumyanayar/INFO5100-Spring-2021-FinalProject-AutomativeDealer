@@ -158,4 +158,24 @@ public class DbDealerStorage implements IDataProvider {
             System.out.println("The incentive with id: " + incentive.getId() + " save failed!");
         }
     }
+
+    @Override
+    public void persistIncentive(CashDiscountIncentive cashDiscountIncentive) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void persistIncentive(LoanIncentive loanIncentive) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void persistIncentive(LeasingIncentive leasingIncentive) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void persistIncentive(RebateIncentive rebateIncentive) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }
