@@ -83,12 +83,12 @@ public class ViewVehicleDetails {
             this.dealer = Utils.transToDealer(res.get(0));
             incentives = NewJDBC.getInstance().getAllIncentiveByCarVIN(this.car.getVIN());
             incentives = new ArrayList<>();
-            incentives.add(new LoanIncentive("String id1", "String dealerId", new Date(), new Date(),
-                    "String title", "Loan description", "String disclaimer", new HashSet<>(),
-                    1.0, 12));
-            incentives.add(new LeasingIncentive("String id2", "String dealerId", new Date(), new Date(),
-                    "String title", "Leasing description", "String disclaimer", new HashSet<>(), 14,
-                    201.0, 90.0));
+//            incentives.add(new LoanIncentive("String id1", "String dealerId", new Date(), new Date(),
+//                    "String title", "Loan description", "String disclaimer", new HashSet<>(),
+//                    1.0, 12));
+//            incentives.add(new LeasingIncentive("String id2", "String dealerId", new Date(), new Date(),
+//                    "String title", "Leasing description", "String disclaimer", new HashSet<>(), 14,
+//                    201.0, 90.0));
             vehicleImageList = new ArrayList<>();
             vehicleImageList = car.getImages();
 
@@ -99,21 +99,17 @@ public class ViewVehicleDetails {
 
     public ViewVehicleDetails(Car myCar, Dealer myDealer) {
         vehicleImageList = new ArrayList<>();
-//        vehicleImageList.add(System.getProperty("user.dir") + "\\src\\group2\\Icons\\img1.jpg");
-//        vehicleImageList.add(System.getProperty("user.dir") + "\\src\\group2\\Icons\\img2.jpg");
-//        vehicleImageList.add(System.getProperty("user.dir") + "\\src\\group2\\Icons\\img3.jpg");
-//        vehicleImageList.add(System.getProperty("user.dir") + "\\src\\group2\\Icons\\img4.jpg");
         this.car = myCar;
         this.dealer = myDealer;
         try {
             incentives = NewJDBC.getInstance().getAllIncentiveByCarVIN(this.car.getVIN());
             incentives = new ArrayList<>();
-            incentives.add(new LoanIncentive("String id1", "String dealerId", new Date(), new Date(),
-                    "String title", "Loan description", "String disclaimer", new HashSet<>(),
-                    1.0, 12));
-            incentives.add(new LeasingIncentive("String id2", "String dealerId", new Date(), new Date(),
-                    "String title", "Leasing description", "String disclaimer", new HashSet<>(), 14,
-                    201.0, 90.0));
+//            incentives.add(new LoanIncentive("String id1", "String dealerId", new Date(), new Date(),
+//                    "String title", "Loan description", "String disclaimer", new HashSet<>(),
+//                    1.0, 12));
+//            incentives.add(new LeasingIncentive("String id2", "String dealerId", new Date(), new Date(),
+//                    "String title", "Leasing description", "String disclaimer", new HashSet<>(), 14,
+//                    201.0, 90.0));
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
