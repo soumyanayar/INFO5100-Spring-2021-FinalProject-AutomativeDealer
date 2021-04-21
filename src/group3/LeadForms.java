@@ -103,7 +103,6 @@ public class LeadForms extends JFrame implements ItemListener {
             }
         }
         filteredByComboBox.addItemListener(this);
-//        super.add(BorderLayout.CENTER, new JScrollPane(mainPanel));
         super.setSize(width, 300);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.pack();
@@ -114,32 +113,7 @@ public class LeadForms extends JFrame implements ItemListener {
         LeadForms frame = new LeadForms("Leads List");
         LeadDataAccessor lda = new LeadDataAccessor("D:\\NewVehicleData.csv");
         frame.init(lda.getLeads());
-        /*
-        JScrollPane scrollPane = new JScrollPane();
-        scrollPane.setSize(750,200);
-        scrollPane.setVisible(true);
-         */
 
-
-//        for(int i = 0; i < 5; i++){
-//
-//            LeadForm newForm = new LeadForm();
-//            newForm.init(frame);
-//            newForm.getMainPanel().setSize(750, 100);
-//            scrollPane.add(newForm.getMainPanel());scrollPane.setViewportView(newForm);
-//        }
-
-//        LeadForm leadForm1 = new LeadForm();
-//        leadForm1.init(frame);
-//        LeadForm leadForm2 = new LeadForm();
-//        leadForm2.init(frame);
-//        leadForm2.getMainPanel().setSize(750, 100);
-//        mainPanel.add(leadForm1.getMainPanel(), BorderLayout.NORTH);
-//        mainPanel.add(leadForm2.getMainPanel(), BorderLayout.NORTH);
-        // mainPanel.add(scrollPane,BorderLayout.CENTER);
-//        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//        frame.pack();
-//        frame.setVisible(true);
     }
 
     public void updateFrame(JFrame frame){
@@ -157,20 +131,7 @@ public class LeadForms extends JFrame implements ItemListener {
     @Override
     public void itemStateChanged(ItemEvent e){
         if (e.getStateChange() == ItemEvent.SELECTED) {
-            /*
-            for (List<LeadForm> list: modelToLeadsMap.values()) {
-                for (LeadForm leadForm: list) {
-                    leadForm.setVisible(false);
-                }
-            }
-            List<LeadForm> selectedLeads = modelToLeadsMap.get((String) e.getItem());
-            int cnt = 0;
-            for (LeadForm leadForm: selectedLeads) {
-                cnt++;
-                leadForm.setVisible(true);
-            }
-            System.out.println(cnt + " leadForm is seleted");
-            */
+
             listingPanel.removeAll();
             List<LeadForm> selectedLeads = modelToLeadsMap.get(e.getItem());
             listingPanel.setLayout(new GridLayout(selectedLeads.size(), 1));

@@ -34,9 +34,5 @@ public class MainTest {
         hashSet.add("testCar1");
         hashSet.add("testCar2");
         DbDealerStorage dbDealerStorage = new DbDealerStorage();
-        Incentive incentive = new LoanIncentive("222", "222", new Date(System.currentTimeMillis()),
-                new Date(System.currentTimeMillis()+ 10000), "test title", "description", "ff",
-                hashSet, 0.5, 3);
-        dbDealerStorage.persistIncentive(incentive);
     }
 }
