@@ -1,15 +1,16 @@
 package group7.ui;
 
 import group7.datafilter.*;
-import group7.dataprovider.*;
 import group7.validators.*;
 import group8.*;
+import group8.data.*;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.time.Year;
 import java.util.List;
@@ -17,7 +18,7 @@ import java.util.*;
 import java.util.function.Predicate;
 
 public class IncentiveManagerUI extends JFrame {
-    private DataProvider dataProvider;
+    private group8.IDataProvider dataProvider;
     private List<Car> carsByDealerId;
     private String dealerId;
 
@@ -140,7 +141,7 @@ public class IncentiveManagerUI extends JFrame {
     private JEditorPane descriptionPageDisclaimerEditorPane;
 
 
-    public IncentiveManagerUI(DataProvider dataProvider, String dealerId) {
+    public IncentiveManagerUI(IDataProvider dataProvider, String dealerId) {
         this.dataProvider = dataProvider;
         this.dealerId = dealerId;
         this.carsByDealerId = dataProvider.getAllCarsByDealerId(this.dealerId);
@@ -1464,14 +1465,13 @@ public class IncentiveManagerUI extends JFrame {
         detailsPanel.add(endDateLabel);
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
         EventQueue.invokeLater(() -> {
             try {
                 UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+                new IncentiveManagerUI(NewJDBC.getInstance(), "20");
             } catch (Exception ex) {
                 ex.printStackTrace();
-            } finally {
-                new IncentiveManagerUI(new CsvDataProvider(), "E5301FBD-D4E1-4595-AC90-260228D681A1");
             }
         });
     }
