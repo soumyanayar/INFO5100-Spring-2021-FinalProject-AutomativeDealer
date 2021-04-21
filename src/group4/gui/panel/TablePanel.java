@@ -97,14 +97,17 @@ public class TablePanel extends JPanel{
         });
     }
 
-    private void loadData() {
+    public void loadData() {
         model.getDataVector().clear();
         List<Make> makeList = makeDao.queryAll();
         JComboBox cmbMake = new JComboBox(makeList.toArray());
         DefaultCellEditor makeID = new DefaultCellEditor(cmbMake);
+
+
         List<Model> modelList = modelDao.queryAll();
         JComboBox cmbModel = new JComboBox(modelList.toArray());
         DefaultCellEditor modelID = new DefaultCellEditor(cmbModel);
+
         ArrayList<String> yearList = new ArrayList<String>();
         for(int years = 1980; years<= Calendar.getInstance().get(Calendar.YEAR); years++) {
             yearList.add(years+"");
@@ -130,10 +133,10 @@ public class TablePanel extends JPanel{
 //            }
             cmbModel.setSelectedItem(new Model(vehicle.getModelID()));
             model.addRow(new Object[] {
-                    vehicle.getVehicleID(),vehicle.getVin(),vehicle.getDealerID(),cmbMake.getSelectedItem(), cmbModel.getSelectedItem(),vehicle.getYear(),vehicle.getCategory(),vehicle.getPrice(),vehicle.getColor(),vehicle.getMiles(),vehicle.getRating(),vehicle.getImageUrls(),vehicle.getEngine(),vehicle.getDescription(),vehicle.getTransmission(),vehicle.getStock(),vehicle.getSeatCount(),vehicle.getFuel()
-            });
+        vehicle.getVehicleID(),vehicle.getVin(),vehicle.getDealerID(),cmbMake.getSelectedItem(), cmbModel.getSelectedItem(),vehicle.getYear(),vehicle.getCategory(),vehicle.getPrice(),vehicle.getColor(),vehicle.getMiles(),vehicle.getRating(),vehicle.getImageUrls(),vehicle.getEngine(),vehicle.getDescription(),vehicle.getTransmission(),vehicle.getStock(),vehicle.getSeatCount(),vehicle.getFuel()
+    });
 
-        }
+}
     }
 
     public void del() {
