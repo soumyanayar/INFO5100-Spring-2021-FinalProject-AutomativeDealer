@@ -1,7 +1,10 @@
-package group5.DAO;
+package group5.dao;
 import java.sql.*;
 import java.util.ArrayList;
 
+/*
+ * used this class only for Team5 when group8 DAO was not integrated
+ */
 public class DBConnector {
     public ResultSet data;
 

@@ -1,4 +1,4 @@
-package group5.Controller;
+package group5.controller;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -6,9 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Vector;
 
-import group5.DAO.CarDAO;
 import group8.Car;
-import group5.DTO.VehicleDetails;
 import group5.service.CarService;
 import group8.data.DbDealerStorage;
 

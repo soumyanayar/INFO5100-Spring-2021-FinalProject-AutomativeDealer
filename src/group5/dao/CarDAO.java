@@ -1,4 +1,4 @@
-package group5.DAO;
+package group5.dao;
 
 import java.sql.Blob;
 import java.sql.ResultSet;
