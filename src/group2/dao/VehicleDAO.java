@@ -13,7 +13,7 @@ import java.util.Map;
 
 import group8.Dealer;
 import group8.data.NewJDBC;
-import group2.vo.Car;
+import group8.Car;
 
 public class VehicleDAO {
 

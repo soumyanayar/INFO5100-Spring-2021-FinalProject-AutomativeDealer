@@ -1,9 +1,12 @@
 package group2;
 
+import group2.utils.Utils;
 import group6.FormActionDirectory;
 import group6.LeadFormController;
 import group8.Car;
+import group8.CarCategory;
 import group8.Dealer;
+import group2.dao.VehicleDAO;
 
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
@@ -13,6 +16,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class ViewVehicleDetails {
     private List<String> vehicleImageList;
@@ -64,39 +68,36 @@ public class ViewVehicleDetails {
     private JPanel vehicleSeatCountLabelPanel;
     private JPanel vehicleRatingsLabelPanel;
     private JFrame frame;
+    private Car car;
+    private Dealer dealer;
 
-    //    public ViewVehicleDetails(String vehicleId, String dealerID) {
-//        VehicleDAO vehicleDAO = new VehicleDAO();
-//        try {
-//            final List<Map<String, Object>> res = vehicleDAO.getById(1);
-//            Car myCar = Utils.transToCar(res.get(0));
-//            Dealer dealer = Utils.transToDealer(res.get(0));
-//            vehicleImageList = new ArrayList<>();
-//            vehicleImageList.add("TestImages/img1.jpg");
-//            vehicleImageList.add("TestImages/img2.jpg");
-//            vehicleImageList.add("TestImages/img3.jpg");
-//            vehicleImageList.add("TestImages/img4.jpg");
-//
-//            createVehicleShortDescriptionPanel(myCar);
-//            createVehicleDetailsPanel(myCar);
-//            createVehicleDescriptionPanel(myCar);
-//            createDealersInformationPanel(myCar);
-//            createOuterPanel();
-//        } catch(Exception e) {
-//            System.out.println(e.getMessage());
-//        }
-//    }
+        public ViewVehicleDetails(String vehicleId) {
+        VehicleDAO vehicleDAO = new VehicleDAO();
+        try {
+            final List<Map<String, Object>> res = vehicleDAO.getById(1);
+            this.car = Utils.transToCar(res.get(0));
+            this.dealer = Utils.transToDealer(res.get(0));
+            vehicleImageList = new ArrayList<>();
+
+        } catch(Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
     public ViewVehicleDetails(Car myCar, Dealer myDealer) {
         vehicleImageList = new ArrayList<>();
         vehicleImageList.add(System.getProperty("user.dir") + "\\src\\group2\\Icons\\img1.jpg");
         vehicleImageList.add(System.getProperty("user.dir") + "\\src\\group2\\Icons\\img2.jpg");
         vehicleImageList.add(System.getProperty("user.dir") + "\\src\\group2\\Icons\\img3.jpg");
         vehicleImageList.add(System.getProperty("user.dir") + "\\src\\group2\\Icons\\img4.jpg");
-        myCar.setImages(vehicleImageList);
-        createVehicleShortDescriptionPanel(myCar);
-        createVehicleDetailsPanel(myCar);
-        createVehicleDescriptionPanel(myCar);
-        createDealersInformationPanel(myDealer);
+        this.car = myCar;
+        this.dealer = myDealer;
+        this.car.setImages(vehicleImageList);
+    }
+    public void showVehicleDetails(){
+        createVehicleShortDescriptionPanel(this.car);
+        createVehicleDetailsPanel(this.car);
+        createVehicleDescriptionPanel(this.car);
+        createDealersInformationPanel(this.dealer);
         createOuterPanel();
     }
 
@@ -433,7 +434,7 @@ public class ViewVehicleDetails {
         dealersInformationTextArea.setMinimumSize(new Dimension(916, 100));
         dealersInformationTextArea.setPreferredSize(new Dimension(916, 100));
         dealersInformationTextArea.setBackground(new Color(238, 238, 238));
-        String dealerInfo = myDealer.getDealerID() + "\n" + myDealer.getName() + "\n" + myDealer.getStreetAddress() + "\n" + myDealer.getCity() + ", " + myDealer.getStateID() + " " + myDealer.getZipcode() + "\n" + myDealer.getPhoneNumber();
+        String dealerInfo = myDealer.getDealerID() + "\n" + myDealer.getName() + "\n" + myDealer.getStreetAddress() + "\n" + myDealer.getCity() + ", " + myDealer.getStateID() + " " + myDealer.getZipcode() + "\n" + "Phone : "+myDealer.getPhoneNumber();
         dealersInformationTextArea.setText(dealerInfo);
         System.out.println(dealerInfo);
 //        dealersInformationTextArea.setText("Beautiful White Frost. Abel Chevrolet Buick. Many Financing Options available. Credit Challenged? We can help! We have great relationships with many lenders which allows us to offer financing that many others can't! We're here to help you get in the vehicle you want! At Abel, we do our best to offer you an unique experience when purchasing a New or Pre-Owned vehicle. Unlike traditional car dealers, we offer a non-pressured environment giving you the time and space to make an informed decision. Our advertised prices are our best deal upfront. No Games, just fair prices and outstanding customer service. We won't waste your time! Once you've found the Abel Vehicle you're looking for, on average, you'll go from test drive to driving home in less than an hour!");
@@ -447,7 +448,34 @@ public class ViewVehicleDetails {
 
     public static void main(String[] args) {
         Car myCar = new Car();
+        myCar.setID("1234");
+        myCar.setMake("Audi");
+        myCar.setModel("Acura MDX SH-AWD w/Advance");
+        myCar.setYear(2010);
+        myCar.setMSRP(13955);
+        myCar.setCarCategory(CarCategory.USED);
+        myCar.setColor("Grey");
+        myCar.setEngine("3.7L V6");
+        myCar.setTransmission("Automatic 6-Speed");
+        myCar.setFuel("Gasoline");
+        myCar.setVIN("2HNYD2H59AH533278");
+        myCar.setSeatCount(4);
+        myCar.setMileage(1174);
+        myCar.setRating(4);
+        myCar.setDescription("Beautiful White Frost. Abel Chevrolet Buick. Many Financing Options available. Credit Challenged? We can help! We have great relationships with many lenders which allows us to offer financing that many others can't! We're here to help you get in the vehicle you want! At Abel, we do our best to offer you an unique experience when purchasing a New or Pre-Owned vehicle. Unlike traditional car dealers, we offer a non-pressured environment giving you the time and space to make an informed decision. Our advertised prices are our best deal upfront. No Games, just fair prices and outstanding customer service. We won't waste your time! Once you've found the Abel Vehicle you're looking for, on average, you'll go from test drive to driving home in less than an hour!");
+
         Dealer myDealer = new Dealer();
-        ViewVehicleDetails carDetails = new ViewVehicleDetails(myCar, myDealer);
+        myDealer.setDealerID("D1234");
+        myDealer.setName("Rairdons Honda of Sumner");
+        myDealer.setStreetAddress("16302 Auto Lane");
+        myDealer.setCity("Sumner");
+        myDealer.setState("Washington");
+        myDealer.setStateID("WA");
+        myDealer.setPhoneNumber("(855) 661-4448");
+
+//        ViewVehicleDetails carDetails = new ViewVehicleDetails(myCar, myDealer);
+        ViewVehicleDetails carDetails = new ViewVehicleDetails("1");
+        carDetails.showVehicleDetails();
+
     }
 }
