@@ -15,16 +15,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DealerSearch extends JFrame {
-    private JPanel test;
+    private JPanel mainPanel;
     private JButton searchButton;
     private JTextField queryTextField;
     private JRadioButton stateRadioButton;
     private JRadioButton zipCodeRadioButton;
     private JRadioButton dealerNameRadioButton;
-    private JScrollPane scrollPane;
     private JTable dealerTable;
     private JLabel validationText;
     private JPanel searchPanel;
+    private JPanel searchContainerPanel;
 
     public static void main(String[] args) {
         DealerSearch formView = new DealerSearch();
@@ -34,7 +34,6 @@ public class DealerSearch extends JFrame {
     }
 
     public DealerSearch() throws HeadlessException {
-        add(test);
         searchButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
@@ -86,7 +85,7 @@ public class DealerSearch extends JFrame {
                     }
                 } catch (Exception e) {
                     System.out.println(e);
-                    JOptionPane.showMessageDialog(test, "Error In Connectivity");
+                    JOptionPane.showMessageDialog(mainPanel, "Error In Connectivity");
                 }
             }
         });
@@ -101,8 +100,6 @@ public class DealerSearch extends JFrame {
     }
 
     private void createUIComponents() {
-        UIDefaults defaults = UIManager.getLookAndFeelDefaults();
-        defaults.putIfAbsent("Table.alternateRowColor", Color.LIGHT_GRAY);
         searchButton = new JButton();
         queryTextField = new JTextField();
         stateRadioButton = new JRadioButton();
@@ -114,7 +111,6 @@ public class DealerSearch extends JFrame {
                         "Name", "Phone Number", "Address", "City", "Zipcode"
                 }
         ));
-        scrollPane = new JScrollPane(dealerTable);
     }
 
     static boolean isValidZipCode(String zipCode) {
@@ -142,5 +138,8 @@ public class DealerSearch extends JFrame {
 
     public JPanel getSearchPanel() {
         return searchPanel;
+    }
+    public JPanel getSearchContainerPanel() {
+        return searchContainerPanel;
     }
 }
