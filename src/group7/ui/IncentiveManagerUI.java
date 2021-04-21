@@ -10,6 +10,7 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.time.Year;
 import java.util.List;
@@ -1464,14 +1465,13 @@ public class IncentiveManagerUI extends JFrame {
         detailsPanel.add(endDateLabel);
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
         EventQueue.invokeLater(() -> {
             try {
                 UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+                new IncentiveManagerUI(NewJDBC.getInstance(), "20");
             } catch (Exception ex) {
                 ex.printStackTrace();
-            } finally {
-                new IncentiveManagerUI(NewJDBC.getInstance(), "20");
             }
         });
     }

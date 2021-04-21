@@ -9,7 +9,6 @@ public interface IDataProvider
     List<Car> getAllCars();
     HashMap<Car, List<Incentive>> getAllIncentivesByDealerId(String dealerId);
     List<Incentive> getAllIncentives();
-    void persistIncentive(Incentive incentive);
     void persistIncentive(CashDiscountIncentive cashDiscountIncentive);
     void persistIncentive(LoanIncentive loanIncentive);
     void persistIncentive(LeasingIncentive leasingIncentive);
