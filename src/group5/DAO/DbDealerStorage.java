@@ -1,5 +1,4 @@
-package group8.data;
-
+package group5.DAO;
 import group8.Car;
 import group8.CarCategory;
 import group8.Dealer;
@@ -16,19 +15,14 @@ import java.util.List;
 import java.util.Map;
 import javax.sql.rowset.serial.SerialBlob;
 
-/**
- * @author Guiyu Liu Apr 13, 2021.
- */
 public class DbDealerStorage implements IDataProvider {
 
-    
-	private NewJDBC db;
+    private NewJDBC db;
 
     public DbDealerStorage() throws SQLException, ClassNotFoundException {
         db = NewJDBC.getInstance();
     }
 
-    
     public Dealer getDealerById(String id) {
         String sql = "select * from Dealer where dealerID = ?";
         try {
