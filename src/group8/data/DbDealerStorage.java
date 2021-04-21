@@ -77,6 +77,7 @@ public class DbDealerStorage implements IDataProvider {
     @Override
     public List<Car> getAllCarsByDealerId(String dealerId) {
         List<Car> result = new ArrayList<>();
+        List<String> imagesList =new ArrayList<>();
         String query = "Select * from NewVehicleData where DealerId = ?";
         try {
             String[] aStrParams = new String[1];
