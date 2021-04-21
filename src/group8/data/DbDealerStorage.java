@@ -39,22 +39,6 @@ public class DbDealerStorage implements IDataProvider {
         }
     }
 
-    public void printColInfo() throws SQLException {
-        db.printColumnInfo();
-    }
-
-    public void printNumCol() throws SQLException {
-        System.out.println("There are " + db.getNumColumns() + " columns in ");
-    }
-
-    public void printAll() throws SQLException {
-        db.getAllRows();
-    }
-
-    public void printNumRow() throws SQLException {
-        db.getNumRows();
-    }
-
     private List<Map<String, Object>> resultSetToList(ResultSet rs) throws SQLException {
         ResultSetMetaData md = rs.getMetaData();
         int columns = md.getColumnCount();
@@ -136,7 +120,7 @@ public class DbDealerStorage implements IDataProvider {
     }
 
     @Override
-    public List<Incentive> getAllIncentivesByDealerId(String dealerId) {
+    public HashMap<Car, List<Incentive>> getAllIncentivesByDealerId(String dealerId) {
         throw new UnsupportedOperationException("Not supported yet."); // To change body of generated methods, choose
                                                                        // Tools | Templates.
     }
@@ -146,6 +130,9 @@ public class DbDealerStorage implements IDataProvider {
         throw new UnsupportedOperationException("Not supported yet."); // To change body of generated methods, choose
                                                                        // Tools | Templates.
     }
+    
+    
+
 
     @Override
     public void persistIncentive(Incentive incentive) {
