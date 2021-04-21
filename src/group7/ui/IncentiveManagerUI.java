@@ -1,10 +1,9 @@
 package group7.ui;
 
 import group7.datafilter.*;
-import group7.dataprovider.*;
 import group7.validators.*;
 import group8.*;
-import group8.data.NewJDBC;
+import group8.data.*;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -18,7 +17,7 @@ import java.util.*;
 import java.util.function.Predicate;
 
 public class IncentiveManagerUI extends JFrame {
-    private IDataProvider dataProvider;
+    private group8.IDataProvider dataProvider;
     private List<Car> carsByDealerId;
     private String dealerId;
 
