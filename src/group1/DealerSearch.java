@@ -27,6 +27,7 @@ public class DealerSearch extends JFrame {
     private JPanel searchContainerPanel;
 
     public DealerSearch() throws HeadlessException {
+        setQueryTextFieldTooltip("State/State code");
         searchButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
@@ -76,28 +77,42 @@ public class DealerSearch extends JFrame {
             @Override
             public void focusGained(FocusEvent e) {
                 super.focusGained(e);
-                queryTextField.setBorder(new LineBorder(Color.white, 0));
-                validationText.setText("");
+                clearValidations();
             }
         });
         stateRadioButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 clearQueryTextField();
+                setQueryTextFieldTooltip("State/State code");
+                clearValidations();
             }
         });
         zipCodeRadioButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 clearQueryTextField();
+                setQueryTextFieldTooltip("Zipcode");
+                clearValidations();
             }
         });
         dealerNameRadioButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 clearQueryTextField();
+                setQueryTextFieldTooltip("Dealer name");
+                clearValidations();
             }
         });
+    }
+
+    private void clearValidations() {
+        queryTextField.setBorder(new LineBorder(Color.white, 0));
+        validationText.setText("");
+    }
+
+    private void setQueryTextFieldTooltip(String tooltipText) {
+        queryTextField.setToolTipText(tooltipText);
     }
 
     public static void main(String[] args) {
