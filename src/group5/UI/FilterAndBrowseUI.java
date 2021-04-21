@@ -30,6 +30,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
+import group2.ViewVehicleDetails;
 import group5.Controller.FilterAndSearchController;
 import group8.Car;
 import group8.Dealer;
@@ -352,8 +353,7 @@ public class FilterAndBrowseUI extends JFrame implements ItemListener {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
-					// new ViewVehicleDetails(car,dealer);
-					// new ViewVehicleDetails(dealerID);
+					 new ViewVehicleDetails(dealerID);
 				} catch (Exception ex) {
 					ex.printStackTrace();
 				}
