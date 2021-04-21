@@ -68,8 +68,11 @@ public class Utils {
             car.setDescription(String.valueOf(map.get("description")));
         }
 
-        String urls = String.valueOf("src/group2/images/" + map.get("image_urls"));
+        String urls = String.valueOf(map.get("image_urls"));
         final String[] arr = urls.split(",");
+        for (int i = 0; i < arr.length; i++) {
+            arr[i] = "src/group2/images/" + arr[i];
+        }
         car.setImages(Arrays.asList(arr));
 
         return car;
