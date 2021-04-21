@@ -4,6 +4,7 @@ import group7.datafilter.*;
 import group7.dataprovider.*;
 import group7.validators.*;
 import group8.*;
+import group8.data.NewJDBC;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -17,7 +18,7 @@ import java.util.*;
 import java.util.function.Predicate;
 
 public class IncentiveManagerUI extends JFrame {
-    private DataProvider dataProvider;
+    private IDataProvider dataProvider;
     private List<Car> carsByDealerId;
     private String dealerId;
 
@@ -140,7 +141,7 @@ public class IncentiveManagerUI extends JFrame {
     private JEditorPane descriptionPageDisclaimerEditorPane;
 
 
-    public IncentiveManagerUI(DataProvider dataProvider, String dealerId) {
+    public IncentiveManagerUI(IDataProvider dataProvider, String dealerId) {
         this.dataProvider = dataProvider;
         this.dealerId = dealerId;
         this.carsByDealerId = dataProvider.getAllCarsByDealerId(this.dealerId);
@@ -1471,7 +1472,7 @@ public class IncentiveManagerUI extends JFrame {
             } catch (Exception ex) {
                 ex.printStackTrace();
             } finally {
-                new IncentiveManagerUI(new CsvDataProvider(), "E5301FBD-D4E1-4595-AC90-260228D681A1");
+                new IncentiveManagerUI(NewJDBC.getInstance(), "20");
             }
         });
     }

@@ -424,7 +424,8 @@ public class NewJDBC implements IDataProvider{
 
         return leasingIncentiveList;
     }
-    
+
+    @Override
     public void persistIncentive(LoanIncentive loanDiscountIncentive) {
         String carVinUUID = UUID.randomUUID().toString();
         String sql = "INSERT INTO Incentive(id, incentiveType, dealerId, startDate, endDate, title, description, disclaimer, carVinUUID, " +
@@ -456,6 +457,7 @@ public class NewJDBC implements IDataProvider{
         }
     }
 
+    @Override
     public void persistIncentive(LeasingIncentive leasingIncentive) {
         String carVinUUID = UUID.randomUUID().toString();
         String sql = "INSERT INTO Incentive(id, incentiveType, dealerId, startDate, endDate, title, description, disclaimer, carVinUUID, " +
@@ -488,6 +490,7 @@ public class NewJDBC implements IDataProvider{
         }
     }
 
+    @Override
     public void persistIncentive(RebateIncentive rebateIncentive) {
         String carVinUUID = UUID.randomUUID().toString();
         String rebateMapUUID = UUID.randomUUID().toString();
@@ -521,6 +524,38 @@ public class NewJDBC implements IDataProvider{
                 preparedStatement.setString(1, rebateMapUUID);
                 preparedStatement.setString(2, mapElement.getKey());
                 preparedStatement.setDouble(3, mapElement.getValue());
+                preparedStatement.execute();
+            }
+        } catch (SQLException sqlException) {
+            sqlException.printStackTrace();
+        }
+    }
+
+    @Override
+    public void persistIncentive(CashDiscountIncentive cashDiscountIncentive) {
+        String carVinUUID = UUID.randomUUID().toString();
+        String sql = "INSERT INTO Incentive(id, incentiveType, dealerId, startDate, endDate, title, description, disclaimer, carVinUUID, " +
+                "cashDiscountType, discountValue) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
+        try {
+            PreparedStatement preparedStatement = this.dbConnection.prepareStatement(sql);
+            preparedStatement.setString(1, cashDiscountIncentive.getId());
+            preparedStatement.setString(2, cashDiscountIncentive.getIncentiveType().toString());
+            preparedStatement.setString(3, cashDiscountIncentive.getDealerId());
+            preparedStatement.setDate(4, new java.sql.Date(cashDiscountIncentive.getStartDate().getTime()));
+            preparedStatement.setDate(5, new java.sql.Date(cashDiscountIncentive.getEndDate().getTime()));
+            preparedStatement.setString(6, cashDiscountIncentive.getTitle());
+            preparedStatement.setString(7, cashDiscountIncentive.getDescription());
+            preparedStatement.setString(8, cashDiscountIncentive.getDisclaimer());
+            preparedStatement.setString(9, carVinUUID);
+            preparedStatement.setString(10, cashDiscountIncentive.getCashDiscountType().toString());
+            preparedStatement.setDouble(11, cashDiscountIncentive.getValue());
+            preparedStatement.execute();
+
+            sql = "INSERT INTO IncentiveVINs(incentiveVinID, carVIN) VALUES (?, ?)";
+            preparedStatement = this.conn.prepareStatement(sql);
+            for (String carVIN : cashDiscountIncentive.getCarVINList()) {
+                preparedStatement.setString(1, carVinUUID);
+                preparedStatement.setString(2, carVIN);
                 preparedStatement.execute();
             }
         } catch (SQLException sqlException) {
