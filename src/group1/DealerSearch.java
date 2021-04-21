@@ -24,6 +24,7 @@ public class DealerSearch extends JFrame {
     private JScrollPane scrollPane;
     private JTable dealerTable;
     private JLabel validationText;
+    private JPanel searchPanel;
 
     public static void main(String[] args) {
         DealerSearch formView = new DealerSearch();
@@ -133,5 +134,13 @@ public class DealerSearch extends JFrame {
 
     private void ShowErrorMessage(String errorMessage, String title) {
         JOptionPane.showMessageDialog(null, errorMessage, title, JOptionPane.ERROR_MESSAGE);
+    }
+
+    public JTable getDealerTable() {
+        return dealerTable;
+    }
+
+    public JPanel getSearchPanel() {
+        return searchPanel;
     }
 }

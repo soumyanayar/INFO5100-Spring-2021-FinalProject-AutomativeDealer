@@ -10,10 +10,7 @@ import java.sql.Blob;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import javax.sql.rowset.serial.SerialBlob;
 
 /**
@@ -42,22 +39,6 @@ public class DbDealerStorage implements IDataProvider {
             System.out.println("No result for Dealer with Id : " + id);
             return null;
         }
-    }
-
-    public void printColInfo() throws SQLException {
-        db.printColumnInfo();
-    }
-
-    public void printNumCol() throws SQLException {
-        System.out.println("There are " + db.getNumColumns() + " columns in ");
-    }
-
-    public void printAll() throws SQLException {
-        db.getAllRows();
-    }
-
-    public void printNumRow() throws SQLException {
-        db.getNumRows();
     }
 
     private List<Map<String, Object>> resultSetToList(ResultSet rs) throws SQLException {
@@ -121,7 +102,7 @@ public class DbDealerStorage implements IDataProvider {
                 String incentiveId = resultSet.getString(12);
                 String discountPrice = resultSet.getString(13);
                 int rating = resultSet.getInt(14);
-                Car c = new Car(stockID, VIN, dealerID, make, model, year, category, msrp, color, miles, blob,
+                Car c = new Car(stockID, VIN, dealerID, make, model, year, category, msrp, color, miles, new ArrayList<>(),
                         incentiveId, discountPrice, rating);
                 result.add(c);
             }
@@ -141,7 +122,7 @@ public class DbDealerStorage implements IDataProvider {
     }
 
     @Override
-    public List<Incentive> getAllIncentivesByDealerId(String dealerId) {
+    public HashMap<Car, List<Incentive>> getAllIncentivesByDealerId(String dealerId) {
         throw new UnsupportedOperationException("Not supported yet."); // To change body of generated methods, choose
                                                                        // Tools | Templates.
     }
@@ -151,6 +132,9 @@ public class DbDealerStorage implements IDataProvider {
         throw new UnsupportedOperationException("Not supported yet."); // To change body of generated methods, choose
                                                                        // Tools | Templates.
     }
+    
+    
+
 
     @Override
     public void persistIncentive(Incentive incentive) {

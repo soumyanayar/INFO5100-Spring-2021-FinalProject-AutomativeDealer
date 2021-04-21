@@ -14,48 +14,48 @@ public class RespondDetailsUI {
     private static int SAVE_TIME_INTERVAL = 60;
     private static String[] TAB_NAMES = {"Customer info",  "Comments message"};
 
-    JTextArea commentsMessageTextArea;
-    JTextArea commentsMessageReplyTextArea;
-    JButton replyButton;
+    private JTextArea commentsMessageTextArea;
+    private JTextArea commentsMessageReplyTextArea;
+    private JButton replyButton;
     private JTabbedPane mainPanel;
     private JFrame theFrame;
 
 
     public RespondDetailsUI(Lead lead) {
-	    this.lead = lead;
+        this.lead = lead;
     }
 
-    /*public static void main (String[] args) {
-        LeadDataHelper helper = LeadDataHelper.instance();
-        helper.mergeLeadsHelper("bae705d7-20da-4ee2-871f-345b2271992b");
-        ArrayList<Lead> forms = (ArrayList<Lead>) helper.getMergedLeads();
-        for (int j = 0; j < mergedIds.get(0).size(); j++) {
-            java.util.List<String> ids = mergedIds.get(0);
-        }
-	    new DetailsWindow(forms.get(0), vehicles).buildGUI();
-    }*/
+    public static void main (String[] args) {
+
+        // use your own file routes
+
+
+        LeadDataAccessor dataAccessor = new LeadDataAccessor("D:\\NewVehicleData.csv");
+        RespondDetailsUI r = new RespondDetailsUI(dataAccessor.getLeads().get(0));
+        r.buildGUI();
+    }
 
     public void buildGUI () {
-	    theFrame = new JFrame("Respond Window");
-	    theFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-	    mainPanel = new JTabbedPane();
-	    layoutComponents();
-	    theFrame.getContentPane().add(mainPanel);
-	    theFrame.setPreferredSize(new Dimension(800, 600));
+        theFrame = new JFrame("Respond Window");
+        theFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        mainPanel = new JTabbedPane();
+        layoutComponents();
+        theFrame.getContentPane().add(mainPanel);
+        theFrame.setPreferredSize(new Dimension(800, 600));
         theFrame.pack();
-	    theFrame.setLocationRelativeTo(null);
+        theFrame.setLocationRelativeTo(null);
         theFrame.setVisible(true);
 
     }
 
     private void layoutComponents() {
-	    int tabIndex = 0;
+        int tabIndex = 0;
 
 
 
-	    /**
+        /**
          * customer info panel
-	    */
+         */
         JPanel leadInfoPanel = new JPanel();
         fillLeadPanel(leadInfoPanel);
         changeFont(leadInfoPanel, new Font("Baskerville", Font.PLAIN, 18));
@@ -63,9 +63,9 @@ public class RespondDetailsUI {
 
 
 
-    	/**
+        /**
          * comments message panel
-    	*/
+         */
         JPanel commentsMessagePanel = new JPanel();
         fillCommentsMessagePanel(commentsMessagePanel);
         mainPanel.addTab(TAB_NAMES[tabIndex++], null, commentsMessagePanel, "third");
@@ -113,7 +113,7 @@ public class RespondDetailsUI {
         emailLabel.setText("Email: ");
         leadInfoPanel.add(emailLabel);
         JLabel email= new JLabel();
-        email.setText(lead.getEmailAddress());
+        email.setText(lead.getEmail());
         leadInfoPanel.add(email);
         /**
          * fill zip code
@@ -154,7 +154,7 @@ public class RespondDetailsUI {
          */
         commentsMessageReplyTextArea = new JTextArea();
         commentsMessageReplyTextArea.setLineWrap(true);
-        if (!lead.getReplyMessage().isEmpty()) {
+        if (lead.getReplyMessage() != null && !lead.getReplyMessage().isEmpty()) {
             commentsMessageReplyTextArea.setText(lead.getReplyMessage());
         }
 
@@ -176,13 +176,13 @@ public class RespondDetailsUI {
                     JDialog dialog = new JDialog();
                     dialog.setAlwaysOnTop(true);
                     JOptionPane.showConfirmDialog(dialog, "The message is empty!",
-                                "Warning",JOptionPane.WARNING_MESSAGE);
+                            "Warning",JOptionPane.WARNING_MESSAGE);
                 } else {
                     int result = JOptionPane.showConfirmDialog(theFrame,
                             "Do you want to continue sending the message",
-                                                            "Reply window",
-                        JOptionPane.YES_NO_OPTION,
-                        JOptionPane.QUESTION_MESSAGE);
+                            "Reply window",
+                            JOptionPane.YES_NO_OPTION,
+                            JOptionPane.QUESTION_MESSAGE);
                     if(result == JOptionPane.YES_OPTION){
                         lead.setReplyMessage(commentsMessageReplyTextArea.getText());
                         replyButton.setText("message sent");
@@ -216,15 +216,15 @@ public class RespondDetailsUI {
 
 
     private JButton makeNavigationButton(String actionCommand, String toolTipText) {
-	    JButton button = new JButton();
-	    button.setActionCommand(actionCommand);
-	    button.setToolTipText(toolTipText);
-	    button.setText(actionCommand);
-	    return button;
+        JButton button = new JButton();
+        button.setActionCommand(actionCommand);
+        button.setToolTipText(toolTipText);
+        button.setText(actionCommand);
+        return button;
     }
 
     private void sendMessage(Lead lead, String message) {
-	
+
     }
 
     private static void changeFont ( Component component, Font font )
@@ -240,8 +240,3 @@ public class RespondDetailsUI {
     }
 
 }
-
-
-
-
-

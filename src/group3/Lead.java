@@ -4,14 +4,18 @@ package group3;
  * @date: 2021/4/14
  */
 public class Lead {
-    public String firstName;
-    public String lastName;
-    public String email;
-    public String phoneNumber;
-    public String carModel;
-    public String carColor;
-    public String carYear;
-    public String message;
+    private String firstName;
+    private String lastName;
+    private String email;
+    private String phoneNumber;
+    private String zipCode;
+    private String carModel;
+    private String carColor;
+    private String carStock;
+    private String message;
+    private String replyMessage;
+    private boolean contacted;
+
 
     public String getFirstName() {
         return firstName;
@@ -53,6 +57,14 @@ public class Lead {
         this.carModel = carModel;
     }
 
+    public String getZipCode() {
+        return zipCode;
+    }
+
+    public void setZipCode(String zipCode) {
+        this.zipCode = zipCode;
+    }
+
     public String getCarColor() {
         return carColor;
     }
@@ -61,19 +73,35 @@ public class Lead {
         this.carColor = carColor;
     }
 
-    public String getCarYear() {
-        return carYear;
-    }
-
-    public void setCarYear(String carYear) {
-        this.carYear = carYear;
-    }
-
     public String getMessage() {
         return message;
     }
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public String getCarStock() {
+        return carStock;
+    }
+
+    public void setCarStock(String carStock) {
+        this.carStock = carStock;
+    }
+
+    public void setReplyMessage(String replyMessage) {
+        this.replyMessage = replyMessage;
+    }
+
+    public String getReplyMessage() {
+        return this.replyMessage;
+    }
+
+    public void setContacted(boolean contacted) {
+        this.contacted = contacted;
+    }
+
+    public boolean getContacted() {
+        return this.contacted;
     }
 }

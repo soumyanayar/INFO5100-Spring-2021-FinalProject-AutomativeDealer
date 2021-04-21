@@ -1,8 +1,6 @@
 package group2.dao;
 
 import group2.utils.Utils;
-import group8.Car;
-import group8.data.NewJDBC;
 
 import javax.xml.transform.Result;
 import java.sql.ResultSet;
@@ -12,6 +10,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import group8.Dealer;
+import group8.data.NewJDBC;
+import group8.Car;
 
 public class VehicleDAO {
 
@@ -28,19 +30,21 @@ public class VehicleDAO {
     }
 
     public List<Map<String, Object>> getById(int id) throws SQLException {
-        final ResultSet query = newJDBC.query("select * from NewVehicleData where vehicleId = ?", new String[]{String.valueOf(id)});
+        final ResultSet query = newJDBC.query("select * from vehicle_test vt inner join model_test mot on vt.model_id = mot.model_id\n" +
+                "inner join make_test mat on vt.make_id = mat.make_id inner join Dealer d on vt.dealer_id =\n" +
+                "d.DealerId\n" +
+                "where vehicle_id = ?", new String[]{String.valueOf(id)});
         List<Map<String, Object>> res = Utils.resultSetToList(query);
+        Car car = Utils.transToCar(res.get(0));
         return res;
     }
 
     public static void main(String[] args) throws SQLException {
         VehicleDAO vehicleDAO = new VehicleDAO();
-        vehicleDAO.getById(1);
+        final List<Map<String, Object>> res = vehicleDAO.getById(1);
+        Car car = Utils.transToCar(res.get(0));
+        Dealer dealer = Utils.transToDealer(res.get(0));
+        System.out.println(car);
+        System.out.println(dealer);
     }
-
-
-
-
-
-
 }
