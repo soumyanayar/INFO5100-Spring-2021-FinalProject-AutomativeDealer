@@ -29,6 +29,53 @@ public class LeadForms extends JFrame implements ItemListener {
         height = numberOfLeads * 400;
         listingPanel.setLayout(new GridLayout(numberOfLeads, 1));
         JPanel optionPanel = new JPanel();
+        optionPanel.setSize(750, 10);
+        JPanel mainPanel = new JPanel();
+        mainPanel.setLayout(new GridBagLayout());
+        GridBagConstraints controlLayout = new GridBagConstraints();
+        controlLayout.fill = GridBagConstraints.VERTICAL;
+        controlLayout.gridy = 0;
+        controlLayout.ipadx = 750;
+        mainPanel.add(optionPanel, controlLayout);
+        controlLayout.ipady = 500;
+        controlLayout.gridy = 1;
+        controlLayout.gridwidth = 3;
+        mainPanel.add(new JScrollPane(listingPanel), controlLayout);
+        super.setContentPane(mainPanel);
+        optionPanel.add(new JLabel("Filter By "));
+        JComboBox<String> filteredByComboBox = new JComboBox<String>();
+        optionPanel.add(filteredByComboBox);
+        optionPanel.setSize(new Dimension(750, 100));
+        // super.setContentPane(new JScrollPane(listingPanel));
+        for (int i = 0; i < numberOfLeads; i++) {
+            Lead lead = leads.get(i);
+            System.out.println("Current lead name is" + lead.getLastName());
+            LeadForm leadForm = new LeadForm();
+            leadForm.init(this, lead);
+            leadForm.getMainPanel().setSize(750, 100);
+            listingPanel.add(leadForm.getMainPanel(), BorderLayout.NORTH);
+            if (modelToLeadsMap.get(lead.getCarModel().toUpperCase()) != null) {
+                modelToLeadsMap.get(lead.getCarModel().toUpperCase()).add(leadForm);
+            } else {
+                filteredByComboBox.addItem(lead.getCarModel().toUpperCase());
+                List<LeadForm> tmpLeadFormList = new ArrayList<>();
+                tmpLeadFormList.add(leadForm);
+                modelToLeadsMap.put(lead.getCarModel().toUpperCase(), tmpLeadFormList);
+            }
+        }
+        filteredByComboBox.addItemListener(this);
+//        super.add(BorderLayout.CENTER, new JScrollPane(mainPanel));
+        super.setSize(500, 300);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.pack();
+        this.setVisible(true);
+    }
+
+    public void initOrigin(List<Lead> leads) {
+        this.numberOfLeads = leads.size();
+        height = numberOfLeads * 400;
+        listingPanel.setLayout(new GridLayout(numberOfLeads, 1));
+        JPanel optionPanel = new JPanel();
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new GridLayout(2, 1));
         mainPanel.add(optionPanel);
@@ -37,6 +84,7 @@ public class LeadForms extends JFrame implements ItemListener {
         optionPanel.add(new JLabel("Filter By "));
         JComboBox<String> filteredByComboBox = new JComboBox<String>();
         optionPanel.add(filteredByComboBox);
+        optionPanel.setSize(new Dimension(750, 100));
         // super.setContentPane(new JScrollPane(listingPanel));
         for (int i = 0; i < numberOfLeads; i++) {
             Lead lead = leads.get(i);
