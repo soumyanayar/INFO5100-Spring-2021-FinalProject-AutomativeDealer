@@ -1,12 +1,11 @@
 package group2;
 
+import group2.dao.VehicleDAO;
 import group2.utils.Utils;
 import group6.FormActionDirectory;
 import group6.LeadFormController;
-import group8.Car;
-import group8.CarCategory;
-import group8.Dealer;
-import group2.dao.VehicleDAO;
+import group8.*;
+import group8.data.NewJDBC;
 
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
@@ -14,9 +13,8 @@ import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class ViewVehicleDetails {
     private List<String> vehicleImageList;
@@ -25,6 +23,7 @@ public class ViewVehicleDetails {
     private JPanel vehicleDetailsPanel;
     private JPanel vehicleImageAndLeadFormPanel;
     private JPanel vehicleInfoPanel;
+    private JPanel vehicleInfoAndIncentivePanel;
     private JScrollPane vehicleDescriptionPane;
     private JPanel vehicleDescriptionPanel;
     private JScrollPane dealersInformationPane;
@@ -41,10 +40,10 @@ public class ViewVehicleDetails {
     private JScrollPane scrollPane;
     private JTextField vehicleNameTextField;
     private JTextField vehicleMSRPTextField;
-    private Dimension iconLabelDimension = new Dimension(60, 50);
-    private Dimension imageLabelDimension = new Dimension(120, 50);
-    private Dimension dataLabelDimension = new Dimension(196, 50);
-    private Dimension labelPanelDimension = new Dimension(376, 50);
+    private Dimension iconLabelDimension = new Dimension(60, 45);
+    private Dimension imageLabelDimension = new Dimension(120, 45);
+    private Dimension dataLabelDimension = new Dimension(196, 45);
+    private Dimension labelPanelDimension = new Dimension(376, 45);
     private ImageIcon carImage;
     private ImageIcon engineImage;
     private ImageIcon transmissionImage;
@@ -67,23 +66,37 @@ public class ViewVehicleDetails {
     private JPanel vehicleMileageLabelPanel;
     private JPanel vehicleSeatCountLabelPanel;
     private JPanel vehicleRatingsLabelPanel;
+    private JPanel discountedPricePanel;
+    private JLabel discountPriceLabel;
     private JFrame frame;
     private Car car;
     private Dealer dealer;
+    private List<Incentive> incentives;
+    private String discountedPrice = "";
 
-        public ViewVehicleDetails(String vehicleId) {
+    public ViewVehicleDetails(String vehicleId) {
         VehicleDAO vehicleDAO = new VehicleDAO();
+
         try {
             final List<Map<String, Object>> res = vehicleDAO.getById(1);
             this.car = Utils.transToCar(res.get(0));
             this.dealer = Utils.transToDealer(res.get(0));
-//            vehicleImageList = new ArrayList<>();
+            incentives = NewJDBC.getInstance().getAllIncentiveByCarVIN(this.car.getVIN());
+            incentives = new ArrayList<>();
+            incentives.add(new LoanIncentive("String id1", "String dealerId", new Date(), new Date(),
+                    "String title", "Loan description", "String disclaimer", new HashSet<>(),
+                    1.0, 12));
+            incentives.add(new LeasingIncentive("String id2", "String dealerId", new Date(), new Date(),
+                    "String title", "Leasing description", "String disclaimer", new HashSet<>(), 14,
+                    201.0, 90.0));
+            vehicleImageList = new ArrayList<>();
             vehicleImageList = car.getImages();
 
-        } catch(Exception e) {
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }
+
     public ViewVehicleDetails(Car myCar, Dealer myDealer) {
         vehicleImageList = new ArrayList<>();
         vehicleImageList.add(System.getProperty("user.dir") + "\\src\\group2\\Icons\\img1.jpg");
@@ -92,9 +105,22 @@ public class ViewVehicleDetails {
         vehicleImageList.add(System.getProperty("user.dir") + "\\src\\group2\\Icons\\img4.jpg");
         this.car = myCar;
         this.dealer = myDealer;
+        try {
+            incentives = NewJDBC.getInstance().getAllIncentiveByCarVIN(this.car.getVIN());
+            incentives = new ArrayList<>();
+            incentives.add(new LoanIncentive("String id1", "String dealerId", new Date(), new Date(),
+                    "String title", "Loan description", "String disclaimer", new HashSet<>(),
+                    1.0, 12));
+            incentives.add(new LeasingIncentive("String id2", "String dealerId", new Date(), new Date(),
+                    "String title", "Leasing description", "String disclaimer", new HashSet<>(), 14,
+                    201.0, 90.0));
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
         this.car.setImages(vehicleImageList);
     }
-    public void showVehicleDetails(){
+
+    public void showVehicleDetails() {
         createVehicleShortDescriptionPanel(this.car);
         createVehicleDetailsPanel(this.car);
         createVehicleDescriptionPanel(this.car);
@@ -141,15 +167,15 @@ public class ViewVehicleDetails {
     }
 
     public void createVehicleShortDescriptionPanel(Car myCar) {
+        Font vehiclePriceFont = new Font("Calibri", Font.BOLD, 28);
         vehicleShortDescriptionPanel = new JPanel();
-        vehicleNameLabel = new JLabel();
-        vehicleMSRPLabel = new JLabel();
-
         vehicleShortDescriptionPanel.setPreferredSize(new Dimension(916, 74));
         vehicleShortDescriptionPanel.setMaximumSize(new Dimension(916, 74));
         vehicleShortDescriptionPanel.setMinimumSize(new Dimension(916, 74));
         vehicleShortDescriptionPanel.setLayout(new BoxLayout(vehicleShortDescriptionPanel, BoxLayout.X_AXIS));
         vehicleShortDescriptionPanel.setBorder(new LineBorder(Color.BLACK));
+
+        vehicleNameLabel = new JLabel();
 
         if (myCar.getMake() == null || myCar.getModel() == null) {
             vehicleNameLabel.setText("--");
@@ -157,23 +183,72 @@ public class ViewVehicleDetails {
             vehicleNameLabel.setText(myCar.getYear() + " " + myCar.getMake() + " " + myCar.getModel());
         }
         vehicleNameLabel.setFont(new Font("Calibri", Font.BOLD, 36));
-        vehicleNameLabel.setMinimumSize(new Dimension(750, 74));
-        vehicleNameLabel.setMaximumSize(new Dimension(750, 74));
-        vehicleNameLabel.setPreferredSize(new Dimension(750, 74));
+        vehicleNameLabel.setMinimumSize(new Dimension(540, 74));
+        vehicleNameLabel.setMaximumSize(new Dimension(540, 74));
+        vehicleNameLabel.setPreferredSize(new Dimension(540, 74));
+//        vehicleNameLabel.setBorder(new LineBorder(Color.BLACK));
 
+        JPanel priceDetailsPanel = new JPanel();
+        priceDetailsPanel.setLayout(new BoxLayout(priceDetailsPanel, BoxLayout.X_AXIS));
+        priceDetailsPanel.setPreferredSize(new Dimension(376, 74));
+        priceDetailsPanel.setMinimumSize(new Dimension(376, 74));
+        priceDetailsPanel.setMaximumSize(new Dimension(376, 74));
+
+        discountedPricePanel = new JPanel();
+        discountedPricePanel.setLayout(new BoxLayout(discountedPricePanel, BoxLayout.Y_AXIS));
+        discountedPricePanel.setPreferredSize(new Dimension(200, 74));
+        discountedPricePanel.setMinimumSize(new Dimension(200, 74));
+        discountedPricePanel.setMaximumSize(new Dimension(200, 74));
+
+        JLabel discountStaticLabel = new JLabel();
+        discountStaticLabel.setText("After Incentive");
+        discountStaticLabel.setPreferredSize(new Dimension(200, 30));
+        discountStaticLabel.setMinimumSize(new Dimension(200, 30));
+        discountStaticLabel.setMaximumSize(new Dimension(200, 30));
+
+        discountPriceLabel = new JLabel();
+        discountPriceLabel.setText(discountedPrice);
+        discountPriceLabel.setPreferredSize(new Dimension(200, 44));
+        discountPriceLabel.setMinimumSize(new Dimension(200, 44));
+        discountPriceLabel.setMaximumSize(new Dimension(200, 44));
+        discountPriceLabel.setFont(vehiclePriceFont);
+
+        discountedPricePanel.add(discountStaticLabel);
+        discountedPricePanel.add(discountPriceLabel);
+
+        JPanel msrpPanel = new JPanel();
+        msrpPanel.setLayout(new BoxLayout(msrpPanel, BoxLayout.Y_AXIS));
+        msrpPanel.setPreferredSize(new Dimension(176, 74));
+        msrpPanel.setMinimumSize(new Dimension(176, 74));
+        msrpPanel.setMaximumSize(new Dimension(176, 74));
+
+        JLabel msrpStaticLabel = new JLabel();
+        msrpStaticLabel.setText("MSRP");
+        msrpStaticLabel.setFont(new Font("Calibri", Font.BOLD, 16));
+        msrpStaticLabel.setPreferredSize(new Dimension(176, 30));
+        msrpStaticLabel.setMinimumSize(new Dimension(176, 30));
+        msrpStaticLabel.setMaximumSize(new Dimension(176, 30));
+
+        vehicleMSRPLabel = new JLabel();
         if (myCar.getMSRP() == 0) {
             vehicleMSRPLabel.setText("--");
         } else {
-            vehicleMSRPLabel.setText("$ "+Double.toString(myCar.getMSRP()));
+            vehicleMSRPLabel.setText("$ " + myCar.getMSRP());
         }
-        Font VehicleMSRPLabelFont = new Font("Calibri", Font.BOLD, 28);
-        vehicleMSRPLabel.setFont(VehicleMSRPLabelFont);
-        vehicleMSRPLabel.setMinimumSize(new Dimension(166, 74));
-        vehicleMSRPLabel.setMaximumSize(new Dimension(166, 74));
-        vehicleMSRPLabel.setPreferredSize(new Dimension(166, 74));
+        vehicleMSRPLabel.setFont(vehiclePriceFont);
+        vehicleMSRPLabel.setMinimumSize(new Dimension(176, 44));
+        vehicleMSRPLabel.setMaximumSize(new Dimension(176, 44));
+        vehicleMSRPLabel.setPreferredSize(new Dimension(176, 44));
 
-        vehicleShortDescriptionPanel.add(vehicleNameLabel, 0);
-        vehicleShortDescriptionPanel.add(vehicleMSRPLabel, 1);
+        msrpPanel.add(msrpStaticLabel);
+        msrpPanel.add(vehicleMSRPLabel);
+
+        priceDetailsPanel.add(msrpPanel);
+        discountedPricePanel.setVisible(false);
+        priceDetailsPanel.add(discountedPricePanel);
+
+        vehicleShortDescriptionPanel.add(vehicleNameLabel);
+        vehicleShortDescriptionPanel.add(priceDetailsPanel);
     }
 
     public void createVehicleDetailsPanel(Car myCar) {
@@ -187,7 +262,7 @@ public class ViewVehicleDetails {
         createVehicleImageAndLeadFormPanel(myCar);
         createVehicleInfoDetailsPanel(myCar);
         vehicleDetailsPanel.add(vehicleImageAndLeadFormPanel, 0);
-        vehicleDetailsPanel.add(vehicleInfoPanel, 1);
+        vehicleDetailsPanel.add(vehicleInfoAndIncentivePanel, 1);
     }
 
     public void createVehicleImageAndLeadFormPanel(Car myCar) {
@@ -198,7 +273,7 @@ public class ViewVehicleDetails {
         vehicleImageAndLeadFormPanel.setMaximumSize(new Dimension(540, 600));
 //        vehicleImageAndLeadFormPanel.setBorder(new LineBorder(new Color(0,0,190)));
 
-        vehicleImagePanel = new VehicleImagePanel(vehicleImageList).imagePanel();
+        vehicleImagePanel = new VehicleImagePanel(car.getImages()).imagePanel();
         requestLeadFormPanel = new JPanel();
         requestLeadFormPanel.setLayout(new BoxLayout(requestLeadFormPanel, BoxLayout.X_AXIS));
         requestLeadFormPanel.setPreferredSize(new Dimension(540, 100));
@@ -238,19 +313,26 @@ public class ViewVehicleDetails {
 
     public void createVehicleInfoDetailsPanel(Car myCar) {
 
+        vehicleInfoAndIncentivePanel = new JPanel();
+        vehicleInfoAndIncentivePanel.setLayout(new BoxLayout(vehicleInfoAndIncentivePanel, BoxLayout.Y_AXIS));
+        vehicleInfoAndIncentivePanel.setPreferredSize(new Dimension(376, 600));
+        vehicleInfoAndIncentivePanel.setMinimumSize(new Dimension(376, 600));
+        vehicleInfoAndIncentivePanel.setMaximumSize(new Dimension(376, 600));
+
         vehicleInfoPanel = new JPanel();
         vehicleInfoPanel.setLayout(new BoxLayout(vehicleInfoPanel, BoxLayout.Y_AXIS));
 
         vehicleInfoPanel.setBorder(new LineBorder(Color.BLACK));
-        vehicleInfoPanel.setPreferredSize(new Dimension(376, 600));
-        vehicleInfoPanel.setMaximumSize(new Dimension(376, 600));
-        vehicleInfoPanel.setMaximumSize(new Dimension(376, 600));
+        vehicleInfoPanel.setPreferredSize(new Dimension(376, 500));
+        vehicleInfoPanel.setMaximumSize(new Dimension(376, 500));
+        vehicleInfoPanel.setMaximumSize(new Dimension(376, 500));
+        vehicleInfoPanel.setBorder(new LineBorder(Color.BLACK));
 
         vehicleInfoLabelPanel = new JPanel();
         vehicleInfoLabelPanel.setLayout(new BoxLayout(vehicleInfoLabelPanel, BoxLayout.Y_AXIS));
-        vehicleInfoLabelPanel.setPreferredSize(labelPanelDimension);
-        vehicleInfoLabelPanel.setMaximumSize(labelPanelDimension);
-        vehicleInfoLabelPanel.setMinimumSize(labelPanelDimension);
+        vehicleInfoLabelPanel.setPreferredSize(new Dimension(376, 45));
+        vehicleInfoLabelPanel.setMaximumSize(new Dimension(376, 45));
+        vehicleInfoLabelPanel.setMinimumSize(new Dimension(376, 45));
 
         vehicleInfoLabel = new JLabel();
         vehicleInfoLabel.setFont(new Font("Calibri", Font.BOLD, 24));
@@ -273,59 +355,120 @@ public class ViewVehicleDetails {
         ratingsImage = new ImageIcon(System.getProperty("user.dir") + "\\src\\group2\\Icons\\Ratings.jpg");
 
         if (myCar.getCarCategory() != null && validateCarInfoDetails(myCar.getCarCategory().toString())) {
-            vehicleConditionLabelPanel = vehicleSubInfoPanel(carImage, "Car Condition", myCar.getCarCategory().toString());
+            vehicleConditionLabelPanel = createVehicleSubInfoPanel(carImage, "Car Condition", myCar.getCarCategory().toString());
             vehicleInfoPanel.add(vehicleConditionLabelPanel);
         }
         if (validateCarInfoDetails(myCar.getEngine())) {
-            vehicleEngineLabelPanel = vehicleSubInfoPanel(engineImage, "Engine", myCar.getEngine());
+            vehicleEngineLabelPanel = createVehicleSubInfoPanel(engineImage, "Engine", myCar.getEngine());
             vehicleInfoPanel.add(vehicleEngineLabelPanel);
         }
         if (validateCarInfoDetails(myCar.getTransmission())) {
-            vehicleTransmissionLabelPanel = vehicleSubInfoPanel(transmissionImage, "Transmission", myCar.getTransmission());
+            vehicleTransmissionLabelPanel = createVehicleSubInfoPanel(transmissionImage, "Transmission", myCar.getTransmission());
             vehicleInfoPanel.add(vehicleTransmissionLabelPanel);
         }
         if (validateCarInfoDetails(myCar.getVIN())) {
-            vehicleVINLabelPanel = vehicleSubInfoPanel(vinImage, "VIN", myCar.getVIN());
+            vehicleVINLabelPanel = createVehicleSubInfoPanel(vinImage, "VIN", myCar.getVIN());
             vehicleInfoPanel.add(vehicleVINLabelPanel);
         }
         if (validateCarInfoDetails(myCar.getFuel())) {
-            vehicleFuelLabelPanel = vehicleSubInfoPanel(fuelImage, "Fuel", myCar.getFuel());
+            vehicleFuelLabelPanel = createVehicleSubInfoPanel(fuelImage, "Fuel", myCar.getFuel());
             vehicleInfoPanel.add(vehicleFuelLabelPanel);
         }
         if (validateCarInfoDetails(myCar.getColor())) {
-            vehicleColorLabelPanel = vehicleSubInfoPanel(colorImage, "Color", myCar.getColor());
+            vehicleColorLabelPanel = createVehicleSubInfoPanel(colorImage, "Color", myCar.getColor());
             vehicleInfoPanel.add(vehicleColorLabelPanel);
         }
         if (validateCarInfoDetails(myCar.getstockNum())) {
-            vehicleStockNumberLabelPanel = vehicleSubInfoPanel(stockNumberImage, "Stock #", myCar.getstockNum());
+            vehicleStockNumberLabelPanel = createVehicleSubInfoPanel(stockNumberImage, "Stock #", myCar.getstockNum());
             vehicleInfoPanel.add(vehicleStockNumberLabelPanel);
         }
         if (myCar.getMileage() >= 0) {
-            vehicleMileageLabelPanel = vehicleSubInfoPanel(mileageImage, "Mileage", Integer.toString(myCar.getMileage()));
+            vehicleMileageLabelPanel = createVehicleSubInfoPanel(mileageImage, "Mileage", Integer.toString(myCar.getMileage()));
             vehicleInfoPanel.add(vehicleMileageLabelPanel);
         }
         if (myCar.getSeatCount() > 0) {
-            vehicleSeatCountLabelPanel = vehicleSubInfoPanel(seatCountImage, "No of Seats", Integer.toString(myCar.getSeatCount()));
+            vehicleSeatCountLabelPanel = createVehicleSubInfoPanel(seatCountImage, "No of Seats", Integer.toString(myCar.getSeatCount()));
             vehicleInfoPanel.add(vehicleSeatCountLabelPanel);
         }
         if (myCar.getRating() >= 0) {
-            vehicleRatingsLabelPanel = vehicleSubInfoPanel(ratingsImage, "Ratings", Integer.toString(myCar.getRating()));
+            vehicleRatingsLabelPanel = createVehicleSubInfoPanel(ratingsImage, "Ratings", Integer.toString(myCar.getRating()));
             vehicleInfoPanel.add(vehicleRatingsLabelPanel);
         }
 
         //vehicleInfoBoxLayoutPanel ends here
+
+
+        JPanel incentivePanel = new JPanel();
+        incentivePanel.setLayout(new BoxLayout(incentivePanel, BoxLayout.X_AXIS));
+        incentivePanel.setMaximumSize(new Dimension(376, 100));
+        incentivePanel.setMinimumSize(new Dimension(376, 100));
+        incentivePanel.setPreferredSize(new Dimension(376, 100));
+        incentivePanel.setBorder(new LineBorder(Color.BLACK));
+
+        JLabel incentiveStaticLabel = new JLabel();
+        incentiveStaticLabel.setText("  Incentive Options");
+        incentiveStaticLabel.setFont(new Font("Calibri", Font.BOLD, 20));
+        incentiveStaticLabel.setPreferredSize(new Dimension(178, 45));
+        incentiveStaticLabel.setMaximumSize(new Dimension(178, 45));
+        incentiveStaticLabel.setMinimumSize(new Dimension(178, 45));
+        incentivePanel.add(incentiveStaticLabel);
+
+        List<String> incentiveDescription = new ArrayList<>();
+        incentiveDescription.add("Select Incentive type");
+        for (Incentive incentive : incentives) {
+            incentiveDescription.add(incentive.getDescription());
+        }
+
+        JComboBox incentiveOptions = new JComboBox(incentiveDescription.toArray());
+        incentiveOptions.setFont(new Font("Calibri", Font.BOLD, 16));
+        incentiveOptions.setPreferredSize(new Dimension(178, 42));
+        incentiveOptions.setMaximumSize(new Dimension(178, 42));
+        incentiveOptions.setMinimumSize(new Dimension(178, 42));
+        incentivePanel.add(incentiveOptions);
+
+        ActionListener incentiveOptionsActionListener = new ActionListener() {
+            public void actionPerformed(ActionEvent actionEvent) {
+                System.out.println("Selected: " + incentiveOptions.getSelectedIndex());
+//                System.out.println("ID : " + incentives.get(incentiveOptions.getSelectedIndex() - 1).getId());
+                if (incentiveOptions.getSelectedIndex() == 0) {
+                    discountedPricePanel.setVisible(false);
+                    return;
+                }
+                try {
+                    discountedPrice = NewJDBC.getInstance().applyDiscount(incentives.get(incentiveOptions.getSelectedIndex() - 1), car);
+                    if (incentiveOptions.getSelectedIndex() == 1) {
+                        discountedPrice = "$ 123111";
+                    } else {
+                        discountedPrice = " ";
+                    }
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
+                discountedPricePanel.setVisible(true);
+                if (discountedPrice != null && discountedPrice.trim().length() > 0) {
+                    discountPriceLabel.setText(discountedPrice);
+                } else {
+                    discountPriceLabel.setText("--");
+                }
+            }
+        };
+
+        incentiveOptions.addActionListener(incentiveOptionsActionListener);
+
+        vehicleInfoAndIncentivePanel.add(vehicleInfoPanel);
+        vehicleInfoAndIncentivePanel.add(incentivePanel);
     }
 
-    private JPanel vehicleSubInfoPanel(ImageIcon image, String imageText, String dataText) {
+    private JPanel createVehicleSubInfoPanel(ImageIcon image, String imageText, String dataText) {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
         panel.setMinimumSize(labelPanelDimension);
         panel.setMaximumSize(labelPanelDimension);
         panel.setPreferredSize(labelPanelDimension);
         panel.add(Box.createRigidArea(new Dimension(5, 0)));
-        panel.add(vehicleIconLabel(image));
-        panel.add(vehicleImageLabel(imageText));
-        panel.add(vehicleDataLabel(dataText));
+        panel.add(createVehicleIconLabel(image));
+        panel.add(createVehicleImageLabel(imageText));
+        panel.add(createVehicleDataLabel(dataText));
         return panel;
     }
 
@@ -336,7 +479,7 @@ public class ViewVehicleDetails {
         return true;
     }
 
-    private JLabel vehicleIconLabel(ImageIcon image) {
+    private JLabel createVehicleIconLabel(ImageIcon image) {
         JLabel label = new JLabel();
         label.setIcon(image);
         label.setPreferredSize(iconLabelDimension);
@@ -345,7 +488,7 @@ public class ViewVehicleDetails {
         return label;
     }
 
-    private JLabel vehicleDataLabel(String text) {
+    private JLabel createVehicleDataLabel(String text) {
         JLabel label = new JLabel();
         label.setText(text);
         label.setPreferredSize(dataLabelDimension);
@@ -355,7 +498,7 @@ public class ViewVehicleDetails {
         return label;
     }
 
-    private JLabel vehicleImageLabel(String text) {
+    private JLabel createVehicleImageLabel(String text) {
         JLabel label = new JLabel();
         label.setText(text);
         label.setPreferredSize(imageLabelDimension);
@@ -435,7 +578,25 @@ public class ViewVehicleDetails {
         dealersInformationTextArea.setMinimumSize(new Dimension(916, 100));
         dealersInformationTextArea.setPreferredSize(new Dimension(916, 100));
         dealersInformationTextArea.setBackground(new Color(238, 238, 238));
-        String dealerInfo = myDealer.getDealerID() + "\n" + myDealer.getName() + "\n" + myDealer.getStreetAddress() + "\n" + myDealer.getCity() + ", " + myDealer.getStateID() + " " + myDealer.getZipcode() + "\n" + "Phone : "+myDealer.getPhoneNumber();
+        String dealerInfo = "";
+        if (myDealer.getName() != null && myDealer.getName().trim().length() != 0) {
+            dealerInfo += myDealer.getName();
+        }
+        if (myDealer.getStreetAddress() != null && myDealer.getName().trim().length() != 0) {
+            dealerInfo += "\n" + myDealer.getStreetAddress();
+        }
+        if (myDealer.getCity() != null && myDealer.getCity().trim().length() != 0) {
+            dealerInfo += "\n" + myDealer.getCity();
+        }
+        if (myDealer.getStateID() != null && myDealer.getStateID().trim().length() != 0) {
+            dealerInfo += ", " + myDealer.getStateID();
+        }
+        if (myDealer.getZipcode() != null && myDealer.getZipcode().trim().length() != 0) {
+            dealerInfo += " " + myDealer.getZipcode();
+        }
+        if (myDealer.getPhoneNumber() != null && myDealer.getPhoneNumber().trim().length() != 0) {
+            dealerInfo += "\nPhone" + myDealer.getPhoneNumber();
+        }
         dealersInformationTextArea.setText(dealerInfo);
         System.out.println(dealerInfo);
 //        dealersInformationTextArea.setText("Beautiful White Frost. Abel Chevrolet Buick. Many Financing Options available. Credit Challenged? We can help! We have great relationships with many lenders which allows us to offer financing that many others can't! We're here to help you get in the vehicle you want! At Abel, we do our best to offer you an unique experience when purchasing a New or Pre-Owned vehicle. Unlike traditional car dealers, we offer a non-pressured environment giving you the time and space to make an informed decision. Our advertised prices are our best deal upfront. No Games, just fair prices and outstanding customer service. We won't waste your time! Once you've found the Abel Vehicle you're looking for, on average, you'll go from test drive to driving home in less than an hour!");

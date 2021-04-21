@@ -6,6 +6,7 @@ import group8.CashDiscountIncentive;
 import group8.CashDiscountType;
 import group8.IDataProvider;
 import group8.Incentive;
+import group8.IncentiveType;
 import group8.LeasingIncentive;
 import group8.LoanIncentive;
 import group8.RebateIncentive;
@@ -91,6 +92,26 @@ public class NewJDBC implements IDataProvider{
                 "rebateID VARCHAR(40) NOT NULL," +
                 "rebateType VARCHAR(40) NOT NULL," +
                 "rebateValue DECIMAL NOT NULL)");
+    }
+    
+    public String applyDiscount(Incentive incentive, Car c){
+        String output = "";
+        if(incentive instanceof CashDiscountIncentive){
+            output += ((CashDiscountIncentive)incentive).getValue();
+        }else if(incentive instanceof LeasingIncentive){
+            output += "Down Payment: " + ((LeasingIncentive)incentive).getSigningPay();
+            output += "\nMontly Payment: " + ((LeasingIncentive)incentive).getMonthlyPay();
+            output += "\nFor " + ((LeasingIncentive)incentive).getMonths() + " months";
+        }else if(incentive instanceof LoanIncentive){
+            output += "Loan Incentive special APR: " + ((LoanIncentive)incentive).getApr() + "%";
+            output += "\nFor " + ((LoanIncentive)incentive).getMonths() + " months";
+        }else if(incentive instanceof RebateIncentive){
+            HashMap<String, Double> rebateMap = ((RebateIncentive)incentive).getRebateMap();
+            for(String key: rebateMap.keySet()){
+                output += "Discount Price For " + key + ": $" + rebateMap.get(key) + "\n";
+            }
+        }
+        return output;
     }
     
     public List<Incentive> getAllIncentiveByCarVIN(String carVIN) throws SQLException{
