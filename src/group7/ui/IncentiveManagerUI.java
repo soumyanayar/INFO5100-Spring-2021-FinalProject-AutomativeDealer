@@ -11,7 +11,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
+import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.Year;
 import java.util.List;
 import java.util.*;
@@ -1121,9 +1123,15 @@ public class IncentiveManagerUI extends JFrame {
             return null;
         }
 
-        if (startDate.before(new Date())) {
-            JOptionPane.showMessageDialog(null, title + " cannot be a past date and needs to be a valid date in the format yyyy/mm/dd", "Invalid StartDate", JOptionPane.ERROR_MESSAGE);
-            return null;
+        DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        try {
+            Date todayWithZeroTime = formatter.parse(formatter.format(new Date()));
+            if (startDate.before(todayWithZeroTime)) {
+                JOptionPane.showMessageDialog(null, title + " cannot be a past date and needs to be a valid date in the format yyyy/mm/dd", "Invalid StartDate", JOptionPane.ERROR_MESSAGE);
+                return null;
+            }
+        } catch (ParseException pe) {
+            pe.printStackTrace();
         }
 
         return startDate;
@@ -1469,7 +1477,7 @@ public class IncentiveManagerUI extends JFrame {
         EventQueue.invokeLater(() -> {
             try {
                 UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
-                new IncentiveManagerUI(NewJDBC.getInstance(), "20");
+                new IncentiveManagerUI(NewJDBC.getInstance(), "10");
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
