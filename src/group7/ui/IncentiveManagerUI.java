@@ -1,23 +1,26 @@
 package group7.ui;
 
 import group7.datafilter.*;
-import group7.dataprovider.*;
 import group7.validators.*;
 import group8.*;
+import group8.data.*;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
+import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.Year;
 import java.util.List;
 import java.util.*;
 import java.util.function.Predicate;
 
 public class IncentiveManagerUI extends JFrame {
-    private DataProvider dataProvider;
+    private group8.IDataProvider dataProvider;
     private List<Car> carsByDealerId;
     private String dealerId;
 
@@ -140,7 +143,7 @@ public class IncentiveManagerUI extends JFrame {
     private JEditorPane descriptionPageDisclaimerEditorPane;
 
 
-    public IncentiveManagerUI(DataProvider dataProvider, String dealerId) {
+    public IncentiveManagerUI(IDataProvider dataProvider, String dealerId) {
         this.dataProvider = dataProvider;
         this.dealerId = dealerId;
         this.carsByDealerId = dataProvider.getAllCarsByDealerId(this.dealerId);
@@ -1120,9 +1123,15 @@ public class IncentiveManagerUI extends JFrame {
             return null;
         }
 
-        if (startDate.before(new Date())) {
-            JOptionPane.showMessageDialog(null, title + " cannot be a past date and needs to be a valid date in the format yyyy/mm/dd", "Invalid StartDate", JOptionPane.ERROR_MESSAGE);
-            return null;
+        DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        try {
+            Date todayWithZeroTime = formatter.parse(formatter.format(new Date()));
+            if (startDate.before(todayWithZeroTime)) {
+                JOptionPane.showMessageDialog(null, title + " cannot be a past date and needs to be a valid date in the format yyyy/mm/dd", "Invalid StartDate", JOptionPane.ERROR_MESSAGE);
+                return null;
+            }
+        } catch (ParseException pe) {
+            pe.printStackTrace();
         }
 
         return startDate;
@@ -1464,14 +1473,13 @@ public class IncentiveManagerUI extends JFrame {
         detailsPanel.add(endDateLabel);
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
         EventQueue.invokeLater(() -> {
             try {
                 UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+                new IncentiveManagerUI(NewJDBC.getInstance(), "10");
             } catch (Exception ex) {
                 ex.printStackTrace();
-            } finally {
-                new IncentiveManagerUI(new CsvDataProvider(), "E5301FBD-D4E1-4595-AC90-260228D681A1");
             }
         });
     }
