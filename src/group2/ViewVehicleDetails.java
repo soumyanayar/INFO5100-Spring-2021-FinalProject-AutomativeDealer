@@ -99,10 +99,10 @@ public class ViewVehicleDetails {
 
     public ViewVehicleDetails(Car myCar, Dealer myDealer) {
         vehicleImageList = new ArrayList<>();
-        vehicleImageList.add(System.getProperty("user.dir") + "\\src\\group2\\Icons\\img1.jpg");
-        vehicleImageList.add(System.getProperty("user.dir") + "\\src\\group2\\Icons\\img2.jpg");
-        vehicleImageList.add(System.getProperty("user.dir") + "\\src\\group2\\Icons\\img3.jpg");
-        vehicleImageList.add(System.getProperty("user.dir") + "\\src\\group2\\Icons\\img4.jpg");
+//        vehicleImageList.add(System.getProperty("user.dir") + "\\src\\group2\\Icons\\img1.jpg");
+//        vehicleImageList.add(System.getProperty("user.dir") + "\\src\\group2\\Icons\\img2.jpg");
+//        vehicleImageList.add(System.getProperty("user.dir") + "\\src\\group2\\Icons\\img3.jpg");
+//        vehicleImageList.add(System.getProperty("user.dir") + "\\src\\group2\\Icons\\img4.jpg");
         this.car = myCar;
         this.dealer = myDealer;
         try {
@@ -202,6 +202,7 @@ public class ViewVehicleDetails {
 
         JLabel discountStaticLabel = new JLabel();
         discountStaticLabel.setText("After Incentive");
+        discountStaticLabel.setFont(new Font("Calibri",Font.PLAIN,16));
         discountStaticLabel.setPreferredSize(new Dimension(200, 30));
         discountStaticLabel.setMinimumSize(new Dimension(200, 30));
         discountStaticLabel.setMaximumSize(new Dimension(200, 30));
@@ -224,7 +225,7 @@ public class ViewVehicleDetails {
 
         JLabel msrpStaticLabel = new JLabel();
         msrpStaticLabel.setText("MSRP");
-        msrpStaticLabel.setFont(new Font("Calibri", Font.BOLD, 16));
+        msrpStaticLabel.setFont(new Font("Calibri", Font.PLAIN, 16));
         msrpStaticLabel.setPreferredSize(new Dimension(176, 30));
         msrpStaticLabel.setMinimumSize(new Dimension(176, 30));
         msrpStaticLabel.setMaximumSize(new Dimension(176, 30));
