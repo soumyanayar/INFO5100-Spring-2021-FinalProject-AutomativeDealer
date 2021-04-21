@@ -4,11 +4,14 @@ package group3;
  * @date: 2021/4/15
  */
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 public class LeadForm extends JComponent implements MouseListener {
     private JPanel mainPanel;
     private JFrame mainFrame;
+    private Lead lead;
     private JTextField fn;
     private JTextField ln;
     private JTextField em;
@@ -36,8 +39,23 @@ public class LeadForm extends JComponent implements MouseListener {
 
     public void init(JFrame mainFrame, Lead lead) {
         isExpanded = true;
+        this.lead = lead;
         this.mainFrame = mainFrame;
         firstName.addMouseListener(this);
+        respondButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                RespondDetailsUI r = new RespondDetailsUI(lead);
+                r.buildGUI();
+            }
+        });
+        respondShort.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                RespondDetailsUI r = new RespondDetailsUI(lead);
+                r.buildGUI();
+            }
+        });
         fn.setText(lead.getFirstName());
         ln.setText(lead.getLastName());
         em.setText(lead.getEmail());

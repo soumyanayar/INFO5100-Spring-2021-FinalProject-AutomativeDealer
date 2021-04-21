@@ -2,8 +2,11 @@ package group8.data;
 
 import group8.Car;
 import group8.CarCategory;
+import group8.CashDiscountIncentive;
+import group8.CashDiscountType;
 import group8.IDataProvider;
 import group8.Incentive;
+import group8.IncentiveType;
 import group8.LeasingIncentive;
 import group8.LoanIncentive;
 import group8.RebateIncentive;
@@ -89,6 +92,67 @@ public class NewJDBC implements IDataProvider{
                 "rebateID VARCHAR(40) NOT NULL," +
                 "rebateType VARCHAR(40) NOT NULL," +
                 "rebateValue DECIMAL NOT NULL)");
+    }
+    
+    public String applyDiscount(Incentive incentive, Car c){
+        String output = "";
+        if(incentive instanceof CashDiscountIncentive){
+            output += ((CashDiscountIncentive)incentive).getValue();
+        }else if(incentive instanceof LeasingIncentive){
+            output += "Down Payment: " + ((LeasingIncentive)incentive).getSigningPay();
+            output += "\nMontly Payment: " + ((LeasingIncentive)incentive).getMonthlyPay();
+            output += "\nFor " + ((LeasingIncentive)incentive).getMonths() + " months";
+        }else if(incentive instanceof LoanIncentive){
+            output += "Loan Incentive special APR: " + ((LoanIncentive)incentive).getApr() + "%";
+            output += "\nFor " + ((LoanIncentive)incentive).getMonths() + " months";
+        }else if(incentive instanceof RebateIncentive){
+            HashMap<String, Double> rebateMap = ((RebateIncentive)incentive).getRebateMap();
+            for(String key: rebateMap.keySet()){
+                output += "Discount Price For " + key + ": $" + rebateMap.get(key) + "\n";
+            }
+        }
+        return output;
+    }
+    
+    public List<Incentive> getAllIncentiveByCarVIN(String carVIN) throws SQLException{
+        List<Incentive> res = new ArrayList<>();
+        res.addAll(this.getAllCashDiscountIncentivesByCarVIN(carVIN));
+        res.addAll(this.getAllLeasingIncentivesByCarVIN(carVIN));
+        res.addAll(this.getAllLoanIncentivesByCarVIN(carVIN));
+        res.addAll(this.getAllRebateIncentivesByCarVIN(carVIN));
+        return res;
+    }
+    
+    public List<CashDiscountIncentive> getAllCashDiscountIncentivesByCarVIN(String carVIN) throws SQLException {
+        String sql = "SELECT * FROM \n" +
+                "\t(SELECT * FROM dbo.Incentive\n" +
+                "\tWHERE incentiveType = 'Discount Incentive')\n" +
+                "AS Incentive\n" +
+                "JOIN dbo.IncentiveVINs AS IncentiveVINs\n" +
+                "ON Incentive.carVinUUID = IncentiveVINs.incentiveVinID\n" +
+                "AND GETDATE() BETWEEN Incentive.startDate AND Incentive.endDate\n" +
+                "WHERE IncentiveVINs.carVIN = '"+ carVIN +"'";
+
+        List<CashDiscountIncentive> cashDiscountIncentiveList = new ArrayList<>();
+
+        ResultSet rs = this.stmt.executeQuery(sql);
+        while(rs.next()){
+            // Retrieve by column name
+            String id  = rs.getString("id");
+            String incentiveType = rs.getString("incentiveType");
+            String dealerId = rs.getString("dealerId");
+            Date startDate = rs.getDate("startDate");
+            Date endDate = rs.getDate("endDate");
+            String title = rs.getString("title");
+            String description = rs.getString("description");
+            String disclaimer = rs.getString("disclaimer");
+            HashSet carVINs = new HashSet<>(Arrays.asList(rs.getString("carVIN")));
+            CashDiscountType cashDiscountType = CashDiscountType.fromString(rs.getString("cashDiscountType"));
+            double discountValue = rs.getInt("discountValue");
+            cashDiscountIncentiveList.add(new CashDiscountIncentive(id, dealerId, startDate, endDate, title, description, disclaimer, carVINs, discountValue, cashDiscountType));
+        }
+
+        return cashDiscountIncentiveList;
     }
     
     public List<LoanIncentive> getAllLoanIncentivesByCarVIN(String carVIN) throws SQLException{
@@ -201,6 +265,7 @@ public class NewJDBC implements IDataProvider{
         for(Car c: owned){
             try {
                 List<Incentive> carIncentive = new ArrayList<>();
+                carIncentive.addAll(this.getAllCashDiscountIncentivesByCarVIN(c.getVIN()));
                 carIncentive.addAll(this.getAllLeasingIncentivesByCarVIN(c.getVIN()));
                 carIncentive.addAll(this.getAllRebateIncentivesByCarVIN(c.getVIN()));
                 carIncentive.addAll(this.getAllLoanIncentivesByCarVIN(c.getVIN()));

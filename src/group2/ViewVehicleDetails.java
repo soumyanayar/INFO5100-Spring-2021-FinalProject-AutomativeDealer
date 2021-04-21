@@ -88,6 +88,7 @@ public class ViewVehicleDetails {
                     "String title", "Leasing description", "String disclaimer", new HashSet<>(), 14,
                     201.0, 90.0));
             vehicleImageList = new ArrayList<>();
+            vehicleImageList = car.getImages();
 
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -266,7 +267,7 @@ public class ViewVehicleDetails {
         vehicleImageAndLeadFormPanel.setMaximumSize(new Dimension(540, 600));
 //        vehicleImageAndLeadFormPanel.setBorder(new LineBorder(new Color(0,0,190)));
 
-        vehicleImagePanel = new VehicleImagePanel(vehicleImageList).imagePanel();
+        vehicleImagePanel = new VehicleImagePanel(car.getImages()).imagePanel();
         requestLeadFormPanel = new JPanel();
         requestLeadFormPanel.setLayout(new BoxLayout(requestLeadFormPanel, BoxLayout.X_AXIS));
         requestLeadFormPanel.setPreferredSize(new Dimension(540, 100));
