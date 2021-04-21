@@ -30,17 +30,15 @@ public class LeadDataAccessor {
         Lead lead = new Lead();
         try (Scanner rowScanner = new Scanner(line)) {
             rowScanner.useDelimiter(",");
-            lead.firstName = rowScanner.next();
-            lead.lastName = rowScanner.next();
-            lead.email = rowScanner.next();
-            lead.phoneNumber = rowScanner.next();
-            lead.zipCode = rowScanner.next();
-            lead.carModel = rowScanner.next();
-            lead.carYear = rowScanner.next();
-            lead.carColor = rowScanner.next();
-            lead.message = rowScanner.next();
-            lead.replyMessage = rowScanner.next();
-            lead.contacted = rowScanner.nextBoolean();
+            lead.setFirstName(rowScanner.next());
+            lead.setLastName(rowScanner.next());
+            lead.setEmail(rowScanner.next());
+            lead.setPhoneNumber(rowScanner.next());
+            lead.setZipCode(rowScanner.next());
+            lead.setCarModel(rowScanner.next());
+            lead.setCarColor(rowScanner.next());
+            lead.setCarStock(rowScanner.next());
+            lead.setMessage(rowScanner.next());
         }
         return lead;
     }

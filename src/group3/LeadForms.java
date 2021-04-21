@@ -15,17 +15,18 @@ public class LeadForms extends JFrame implements ItemListener {
     private int height;
     private int width;
     private Map<String, List<LeadForm>> modelToLeadsMap;
+    private JPanel listingPanel;
 
     public LeadForms(String title) {
         super(title);
         width = 750;
         modelToLeadsMap = new HashMap<>();
+        listingPanel = new JPanel();
     }
 
     public void init(List<Lead> leads) {
         this.numberOfLeads = leads.size();
         height = numberOfLeads * 400;
-        JPanel listingPanel = new JPanel();
         listingPanel.setLayout(new GridLayout(numberOfLeads, 1));
         JPanel optionPanel = new JPanel();
         JPanel mainPanel = new JPanel();
@@ -108,6 +109,7 @@ public class LeadForms extends JFrame implements ItemListener {
     @Override
     public void itemStateChanged(ItemEvent e){
         if (e.getStateChange() == ItemEvent.SELECTED) {
+            /*
             for (List<LeadForm> list: modelToLeadsMap.values()) {
                 for (LeadForm leadForm: list) {
                     leadForm.setVisible(false);
@@ -120,6 +122,14 @@ public class LeadForms extends JFrame implements ItemListener {
                 leadForm.setVisible(true);
             }
             System.out.println(cnt + " leadForm is seleted");
+            */
+            listingPanel.removeAll();
+            List<LeadForm> selectedLeads = modelToLeadsMap.get(e.getItem());
+            listingPanel.setLayout(new GridLayout(selectedLeads.size(), 1));
+            for (LeadForm leadForm: selectedLeads) {
+                listingPanel.add(leadForm.getMainPanel(), BorderLayout.NORTH);
+            }
+            listingPanel.updateUI();
         }
     }
 }

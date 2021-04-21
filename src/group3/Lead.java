@@ -13,6 +13,9 @@ public class Lead {
     private String carColor;
     private String carStock;
     private String message;
+    private String replyMessage;
+    private boolean contacted;
+
 
     public String getFirstName() {
         return firstName;
@@ -84,5 +87,21 @@ public class Lead {
 
     public void setCarStock(String carStock) {
         this.carStock = carStock;
+    }
+
+    public void setReplyMessage(String replyMessage) {
+        this.replyMessage = replyMessage;
+    }
+
+    public String getReplyMessage() {
+        return this.replyMessage;
+    }
+
+    public void setContacted(boolean contacted) {
+        this.contacted = contacted;
+    }
+
+    public boolean getContacted() {
+        return this.contacted;
     }
 }

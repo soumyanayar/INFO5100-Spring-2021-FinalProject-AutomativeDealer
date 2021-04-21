@@ -49,8 +49,9 @@ public class LeadFormView extends JFrame {
     private JLabel errorLabel = new JLabel();
     Car car;
     LeadFormController controller;
+    private ButtonGroup buttonGroup;
 
-    private String[] info = new String[10];
+    private String[] info = new String[11];
     public static File file = new File("LEAD.csv");
     private boolean isErrorDialogShown = false;
 
@@ -67,6 +68,35 @@ public class LeadFormView extends JFrame {
         this.setValue();
         setSize(new Dimension(510, 800));
         setMaximumSize(new Dimension(510, 800));
+
+        buttonGroup = new ButtonGroup();
+        buttonGroup.add(businessUseRadioButton);
+        buttonGroup.add(personalUseRadioButton);
+        businessUseRadioButton.addActionListener(new ActionListener() {
+            boolean flag = true;
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(businessUseRadioButton.isSelected() == flag){
+                    flag = !(flag) ;
+                }else{
+                    buttonGroup.clearSelection();
+                    flag = true;
+                }
+            }
+        });
+
+        personalUseRadioButton.addActionListener(new ActionListener() {
+            boolean flag = true;
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(personalUseRadioButton.isSelected() == flag){
+                    flag = !(flag) ;
+                }else{
+                    buttonGroup.clearSelection();
+                    flag = true;
+                }
+            }
+        });
 
         fName.addFocusListener(new FocusAdapter() {
             @Override
@@ -165,6 +195,9 @@ public class LeadFormView extends JFrame {
                 LeadModel optional;
                 if (!textArea1.getText().matches("")) {
                     message = textArea1.getText();
+                    if(message.contains(",")){
+                        message = message.replaceAll(",","/");
+                    }
                 }else{
                     message = "No Comment";
                 }
@@ -191,6 +224,7 @@ public class LeadFormView extends JFrame {
                 info[7] = car.getModel();
                 info[8] = car.getColor();
                 info[9] = car.getVIN();
+                info[10] = car.getStockNum();
                 try {
                     write(info);
                 } catch (IOException ioException) {
@@ -306,9 +340,8 @@ public class LeadFormView extends JFrame {
         zipCode.setText("");
         textArea1.setText("");
         imageLabel.setIcon(null);
-//        personalUseRadioButton.setSelected(false);
-//        businessUseRadioButton.setSelected(false);
-        info = new String[10];
+        buttonGroup.clearSelection();
+        info = new String[11];
     }
 
     // write in file
