@@ -5,6 +5,7 @@ import group2.utils.Utils;
 import group6.FormActionDirectory;
 import group6.LeadFormController;
 import group8.*;
+import group8.data.NewJDBC;
 
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
@@ -75,11 +76,12 @@ public class ViewVehicleDetails {
 
     public ViewVehicleDetails(String vehicleId) {
         VehicleDAO vehicleDAO = new VehicleDAO();
+
         try {
             final List<Map<String, Object>> res = vehicleDAO.getById(1);
             this.car = Utils.transToCar(res.get(0));
             this.dealer = Utils.transToDealer(res.get(0));
-//            incentives = getAllIncentivesByVIN(this.car.getVIN());
+            incentives = NewJDBC.getInstance().getAllIncentiveByCarVIN(this.car.getVIN());
             incentives = new ArrayList<>();
             incentives.add(new LoanIncentive("String id1", "String dealerId", new Date(), new Date(),
                     "String title", "Loan description", "String disclaimer", new HashSet<>(),
@@ -103,14 +105,18 @@ public class ViewVehicleDetails {
         vehicleImageList.add(System.getProperty("user.dir") + "\\src\\group2\\Icons\\img4.jpg");
         this.car = myCar;
         this.dealer = myDealer;
-//      incentives = getAllIncentivesByVIN(this.car.getVIN());
-        incentives = new ArrayList<>();
-        incentives.add(new LoanIncentive("String id1", "String dealerId", new Date(), new Date(),
-                "String title", "Loan description", "String disclaimer", new HashSet<>(),
-                1.0, 12));
-        incentives.add(new LeasingIncentive("String id2", "String dealerId", new Date(), new Date(),
-                "String title", "Leasing description", "String disclaimer", new HashSet<>(), 14,
-                201.0, 90.0));
+        try {
+            incentives = NewJDBC.getInstance().getAllIncentiveByCarVIN(this.car.getVIN());
+            incentives = new ArrayList<>();
+            incentives.add(new LoanIncentive("String id1", "String dealerId", new Date(), new Date(),
+                    "String title", "Loan description", "String disclaimer", new HashSet<>(),
+                    1.0, 12));
+            incentives.add(new LeasingIncentive("String id2", "String dealerId", new Date(), new Date(),
+                    "String title", "Leasing description", "String disclaimer", new HashSet<>(), 14,
+                    201.0, 90.0));
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
         this.car.setImages(vehicleImageList);
     }
 
@@ -428,12 +434,16 @@ public class ViewVehicleDetails {
                     discountedPricePanel.setVisible(false);
                     return;
                 }
-                if (incentiveOptions.getSelectedIndex() == 1) {
-                    discountedPrice = "$ 123111";
-                } else {
-                    discountedPrice = " ";
+                try {
+                    discountedPrice = NewJDBC.getInstance().applyDiscount(incentives.get(incentiveOptions.getSelectedIndex() - 1), car);
+                    if (incentiveOptions.getSelectedIndex() == 1) {
+                        discountedPrice = "$ 123111";
+                    } else {
+                        discountedPrice = " ";
+                    }
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
                 }
-//                    discountedPrice = applyDiscount(incentives.get(incentiveOptions.getSelectedIndex() - 1), car);
                 discountedPricePanel.setVisible(true);
                 if (discountedPrice != null && discountedPrice.trim().length() > 0) {
                     discountPriceLabel.setText(discountedPrice);
