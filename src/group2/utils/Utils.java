@@ -51,24 +51,24 @@ public class Utils {
         car.setTransmission(String.valueOf(map.get("transmission")));
         car.setFuel(String.valueOf(map.get("fuel")));
         car.setVIN(String.valueOf(map.get("vin")));
-//        if (map.get("stock") != null) {
-//            car.setID(Integer.valueOf(map.get("stock"))));
-//        }
-//        if (map.get("seat_count") != null) {
-//            car.setSeatCount(Integer.valueOf(String.valueOf(map.get("seat_count"))));
-//        }
-//        if (map.get("miles") != null) {
-//            car.setMileage(Integer.valueOf(String.valueOf(map.get("miles"))));
-//        }
-//
-//        if (map.get("rating") != null) {
-//            car.setRating(Integer.valueOf(String.valueOf(map.get("rating"))));
-//        }
-//        if (map.get("description") != null) {
-//            car.setVehicleDescription(String.valueOf(map.get("description")));
-//        }
+        if (map.get("stock") != null) {
+            car.setStockNum(String.valueOf(map.get("stock")));
+        }
+        if (map.get("seat_count") != null) {
+            car.setSeatCount(Integer.valueOf(String.valueOf(map.get("seat_count"))));
+        }
+        if (map.get("miles") != null) {
+            car.setMileage(Integer.valueOf(String.valueOf(map.get("miles"))));
+        }
 
-        String urls = String.valueOf(map.get("image_urls"));
+        if (map.get("rating") != null) {
+            car.setRating(Integer.valueOf(String.valueOf(map.get("rating"))));
+        }
+        if (map.get("description") != null) {
+            car.setDescription(String.valueOf(map.get("description")));
+        }
+
+        String urls = String.valueOf("src/group2/images/" + map.get("image_urls"));
         final String[] arr = urls.split(",");
         car.setImages(Arrays.asList(arr));
 

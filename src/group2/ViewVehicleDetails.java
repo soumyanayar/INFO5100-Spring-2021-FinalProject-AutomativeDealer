@@ -77,7 +77,8 @@ public class ViewVehicleDetails {
             final List<Map<String, Object>> res = vehicleDAO.getById(1);
             this.car = Utils.transToCar(res.get(0));
             this.dealer = Utils.transToDealer(res.get(0));
-            vehicleImageList = new ArrayList<>();
+//            vehicleImageList = new ArrayList<>();
+            vehicleImageList = car.getImages();
 
         } catch(Exception e) {
             System.out.println(e.getMessage());
