@@ -14,12 +14,14 @@ import javax.sql.rowset.serial.SerialBlob;
  */
 public class DbDealerStorage implements IDataProvider {
 
-    private NewJDBC db;
+    
+	private NewJDBC db;
 
     public DbDealerStorage() throws SQLException, ClassNotFoundException {
         db = NewJDBC.getInstance();
     }
 
+    
     public Dealer getDealerById(String id) {
         String sql = "select * from Dealer where dealerID = ?";
         try {
@@ -71,6 +73,7 @@ public class DbDealerStorage implements IDataProvider {
     @Override
     public List<Car> getAllCarsByDealerId(String dealerId) {
         List<Car> result = new ArrayList<>();
+        List<String> imagesList =new ArrayList<>();
         String query = "Select * from NewVehicleData where DealerId = ?";
         try {
             String[] aStrParams = new String[1];
