@@ -26,8 +26,10 @@ public class GUIAndMap {
         JFrame.setDefaultLookAndFeelDecorated(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        UIDefaults defaults = UIManager.getLookAndFeelDefaults();
+        defaults.putIfAbsent("Table.alternateRowColor", new Color(240, 240, 240));
 
-        frame.setSize(400, 400);
+        frame.setSize(1200, 800);
         ImageIcon logo = new ImageIcon("src/group1/img/5100logo.png");
         logo.setImage(logo.getImage().getScaledInstance(60, 60, Image.SCALE_DEFAULT));
 
@@ -40,7 +42,8 @@ public class GUIAndMap {
         header.add(headerLabel);
 
         //Search bar
-        header.add(dealerSearch.getSearchPanel());
+        JPanel searchPanel = dealerSearch.getSearchContainerPanel();
+        header.add(searchPanel);
 
         //create the panel that contains map
         JPanel mapAndOutput = new JPanel(new GridLayout(1, 2));
@@ -93,7 +96,7 @@ public class GUIAndMap {
         JScrollPane output = new JScrollPane(dealerSearch.getDealerTable(),
                 ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
                 ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        output.setBackground(Color.PINK);
+        output.setBackground(Color.WHITE);
         output.setBorder(BorderFactory.createLoweredBevelBorder());
         output.setPreferredSize(new Dimension(180, 300));
         output.getVerticalScrollBar();
