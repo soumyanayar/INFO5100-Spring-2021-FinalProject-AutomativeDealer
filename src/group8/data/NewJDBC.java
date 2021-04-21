@@ -537,7 +537,7 @@ public class NewJDBC implements IDataProvider{
         String sql = "INSERT INTO Incentive(id, incentiveType, dealerId, startDate, endDate, title, description, disclaimer, carVinUUID, " +
                 "cashDiscountType, discountValue) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
         try {
-            PreparedStatement preparedStatement = this.dbConnection.prepareStatement(sql);
+            PreparedStatement preparedStatement = this.conn.prepareStatement(sql);
             preparedStatement.setString(1, cashDiscountIncentive.getId());
             preparedStatement.setString(2, cashDiscountIncentive.getIncentiveType().toString());
             preparedStatement.setString(3, cashDiscountIncentive.getDealerId());
