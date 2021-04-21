@@ -26,13 +26,6 @@ public class DealerSearch extends JFrame {
     private JPanel searchPanel;
     private JPanel searchContainerPanel;
 
-    public static void main(String[] args) {
-        DealerSearch formView = new DealerSearch();
-        formView.setVisible(true);
-        formView.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        formView.pack();
-    }
-
     public DealerSearch() throws HeadlessException {
         searchButton.addActionListener(new ActionListener() {
             @Override
@@ -43,37 +36,27 @@ public class DealerSearch extends JFrame {
                     DealerDirectory dealerDirectory = new DealerDirectory();
                     String queryString = queryTextField.getText();
                     List<Dealer> dealers = new ArrayList<>();
-                    if(stateRadioButton.isSelected()) {
-                        if(queryString.length() > 0 && isValidStateOrStateCode(queryString)) {
+                    if (stateRadioButton.isSelected()) {
+                        if (queryString.length() > 0 && isValidStateOrStateCode(queryString)) {
                             isValidQuery = true;
                             dealers = dealerDirectory.getDealerByStateOrStateId(queryString);
-                        }
-                        else{
-                            validationText.setText("Please enter a valid State or State code");
-                            validationText.setForeground(Color.RED);
-                            queryTextField.setBorder(new LineBorder(Color.red,1));
+                        } else {
+                            invalidQueryTextFieldEntry("Please enter a valid State or State code");
                         }
 
-                    }else if(zipCodeRadioButton.isSelected()){
-                        if(queryString.length() > 0 && isValidZipCode(queryString)) {
+                    } else if (zipCodeRadioButton.isSelected()) {
+                        if (queryString.length() > 0 && isValidZipCode(queryString)) {
                             isValidQuery = true;
                             dealers = dealerDirectory.getDealerByZipCode(queryString);
+                        } else {
+                            invalidQueryTextFieldEntry("Please enter a valid zipcode");
                         }
-                        else{
-                            validationText.setText("Please enter a valid zipcode");
-                            validationText.setForeground(Color.RED);
-                            queryTextField.setBorder(new LineBorder(Color.red,1));
-                        }
-                    }
-                    else if(dealerNameRadioButton.isSelected()){
-                        if(queryString.length() > 0 && isValidDealerName(queryString)) {
+                    } else if (dealerNameRadioButton.isSelected()) {
+                        if (queryString.length() > 0 && isValidDealerName(queryString)) {
                             isValidQuery = true;
                             dealers = dealerDirectory.getDealerByDealerName(queryString);
-                        }
-                        else{
-                            validationText.setText("Please enter a valid dealer name");
-                            validationText.setForeground(Color.RED);
-                            queryTextField.setBorder(new LineBorder(Color.red,1));
+                        } else {
+                            invalidQueryTextFieldEntry("Please enter a valid dealer name");
                         }
                     }
                     model.setRowCount(0);
@@ -93,24 +76,35 @@ public class DealerSearch extends JFrame {
             @Override
             public void focusGained(FocusEvent e) {
                 super.focusGained(e);
-                queryTextField.setBorder(new LineBorder(Color.white,0));
+                queryTextField.setBorder(new LineBorder(Color.white, 0));
                 validationText.setText("");
+            }
+        });
+        stateRadioButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                clearQueryTextField();
+            }
+        });
+        zipCodeRadioButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                clearQueryTextField();
+            }
+        });
+        dealerNameRadioButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                clearQueryTextField();
             }
         });
     }
 
-    private void createUIComponents() {
-        searchButton = new JButton();
-        queryTextField = new JTextField();
-        stateRadioButton = new JRadioButton();
-        zipCodeRadioButton = new JRadioButton();
-        dealerNameRadioButton = new JRadioButton();
-        dealerTable = new JTable(new DefaultTableModel(
-                null,
-                new String[]{
-                        "Name", "Phone Number", "Address", "City", "Zipcode"
-                }
-        ));
+    public static void main(String[] args) {
+        DealerSearch formView = new DealerSearch();
+        formView.setVisible(true);
+        formView.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        formView.pack();
     }
 
     static boolean isValidZipCode(String zipCode) {
@@ -128,6 +122,30 @@ public class DealerSearch extends JFrame {
         return stateOrStateCode.matches(regex);
     }
 
+    private void invalidQueryTextFieldEntry(String s) {
+        validationText.setText(s);
+        validationText.setForeground(Color.RED);
+        queryTextField.setBorder(new LineBorder(Color.red, 1));
+    }
+
+    private void clearQueryTextField() {
+        queryTextField.setText("");
+    }
+
+    private void createUIComponents() {
+        searchButton = new JButton();
+        queryTextField = new JTextField();
+        stateRadioButton = new JRadioButton();
+        zipCodeRadioButton = new JRadioButton();
+        dealerNameRadioButton = new JRadioButton();
+        dealerTable = new JTable(new DefaultTableModel(
+                null,
+                new String[]{
+                        "Name", "Phone Number", "Address", "City", "Zipcode"
+                }
+        ));
+    }
+
     private void ShowErrorMessage(String errorMessage, String title) {
         JOptionPane.showMessageDialog(null, errorMessage, title, JOptionPane.ERROR_MESSAGE);
     }
@@ -139,6 +157,7 @@ public class DealerSearch extends JFrame {
     public JPanel getSearchPanel() {
         return searchPanel;
     }
+
     public JPanel getSearchContainerPanel() {
         return searchContainerPanel;
     }
