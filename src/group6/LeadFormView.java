@@ -18,6 +18,7 @@ import java.awt.image.BufferedImage;
 import java.net.URL;
 import java.sql.Blob;
 import java.sql.SQLException;
+import java.util.Base64;
 
 public class LeadFormView extends JFrame {
     private JPanel mainPanel;
@@ -67,7 +68,7 @@ public class LeadFormView extends JFrame {
     public LeadFormView(Car car, FormActionDirectory formActionDirectory) {
         this.car = car;
         this.setContentPane(this.mainPanel);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         this.pack();
         setProperties();
         this.setValue();
@@ -136,6 +137,7 @@ public class LeadFormView extends JFrame {
                 } else {
                     optional = new LeadModel(message, LeadModel.UseType.NO_USE_TYPE, user);
                 }
+                String encodedMessage = Base64.getEncoder().encodeToString(message.getBytes());
 
                 user.setOptional(optional);
                 controller.submitLeadForm(user);
@@ -146,7 +148,7 @@ public class LeadFormView extends JFrame {
                 info[3] = phoneNo;
                 info[4] = zip;
                 info[5] = optional.getUserType().toString();
-                info[6] = message;
+                info[6] = encodedMessage;
                 info[7] = car.getModel();
                 info[8] = car.getColor();
                 info[9] = car.getVIN();
