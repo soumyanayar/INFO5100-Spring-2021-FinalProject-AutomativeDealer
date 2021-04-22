@@ -1,8 +1,4 @@
 package group3;
-/**
- * @author  Zhehui Yang
- * @date: 2021/4/14
- */
 public class Lead {
     private String firstName;
     private String lastName;
