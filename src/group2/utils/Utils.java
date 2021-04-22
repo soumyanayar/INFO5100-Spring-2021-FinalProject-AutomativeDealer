@@ -32,13 +32,15 @@ public class Utils {
         car.setMake(String.valueOf(map.get("make_name")));
         car.setModel(String.valueOf(map.get("model_name")));
 //        car.setName(String.valueOf(map.get("make_name")) + String.valueOf(map.get("model_name")));
-        String year = String.valueOf(map.get("year"));
-        if (year != null) {
-            car.setYear(Integer.parseInt(year));
+//        String year = String.valueOf(map.get("year"));
+        if (map.get("year") != null) {
+            car.setYear(Integer.parseInt(String.valueOf(map.get("year"))));
         }
 
+        if (map.get("price") != null) {
+            car.setMSRP(Double.parseDouble(String.valueOf(map.get("price"))));
+        }
 
-        car.setMSRP(Double.parseDouble(String.valueOf(map.get("price"))));
         if (String.valueOf(map.get("category")).equals("New")){
             car.setCarCategory(CarCategory.USED);
         } else if (String.valueOf(map.get("category")).equals("Used")){
@@ -63,6 +65,58 @@ public class Utils {
 
         if (map.get("rating") != null) {
             car.setRating(Integer.valueOf(String.valueOf(map.get("rating"))));
+        }
+        if (map.get("description") != null) {
+            car.setDescription(String.valueOf(map.get("description")));
+        }
+
+        String urls = String.valueOf(map.get("image_urls"));
+        final String[] arr = urls.split(",");
+        for (int i = 0; i < arr.length; i++) {
+            arr[i] = "src/group2/images/" + arr[i];
+        }
+        car.setImages(Arrays.asList(arr));
+
+        return car;
+    }
+
+    static public Car transToCarV2(Map<String, Object> map) {
+        Car car = new Car();
+        car.setID(String.valueOf(map.get("VehicleId")));
+        car.setMake(String.valueOf(map.get("Make")));
+        car.setModel(String.valueOf(map.get("Model")));
+//        car.setName(String.valueOf(map.get("make_name")) + String.valueOf(map.get("model_name")));
+        String year = String.valueOf(map.get("Year"));
+        if (year != null) {
+            car.setYear(Integer.parseInt(year));
+        }
+
+
+        car.setMSRP(Double.parseDouble(String.valueOf(map.get("Price"))));
+        if (String.valueOf(map.get("Category")).equals("New")){
+            car.setCarCategory(CarCategory.USED);
+        } else if (String.valueOf(map.get("Category")).equals("Used")){
+            car.setCarCategory(CarCategory.USED);
+        }
+
+        car.setColor(String.valueOf(map.get("Color")));
+
+        car.setEngine(String.valueOf(map.get("engine")));
+        car.setTransmission(String.valueOf(map.get("transmission")));
+        car.setFuel(String.valueOf(map.get("fuel")));
+        car.setVIN(String.valueOf(map.get("VIN")));
+        if (map.get("stock") != null) {
+            car.setStockNum(String.valueOf(map.get("stock")));
+        }
+        if (map.get("seat_count") != null) {
+            car.setSeatCount(Integer.valueOf(String.valueOf(map.get("seat_count"))));
+        }
+        if (map.get("Miles") != null) {
+            car.setMileage(Integer.valueOf(String.valueOf(map.get("Miles"))));
+        }
+
+        if (map.get("Ratings") != null) {
+            car.setRating(Integer.valueOf(String.valueOf(map.get("Ratings"))));
         }
         if (map.get("description") != null) {
             car.setDescription(String.valueOf(map.get("description")));
