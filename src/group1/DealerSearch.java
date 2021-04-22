@@ -101,6 +101,7 @@ public class DealerSearch extends JFrame {
                         listDealersPanel.add(new JLabel("<html><br/></html>"));
                     }
                     listDealersPanel.revalidate();
+                    listDealersPanel.repaint();
                     if (dealers.size() == 0 && isValidQuery) {
                         JOptionPane.showMessageDialog(null, "No dealers found. Please try again with a different search parameter", "InfoBox: " + "No Dealers found", JOptionPane.INFORMATION_MESSAGE);
                     }
