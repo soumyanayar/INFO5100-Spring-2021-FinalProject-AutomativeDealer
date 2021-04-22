@@ -14,11 +14,17 @@ After team 8 seems in charge of data, we communicated with them directly and hop
 	Then, we arranged our own group meeting. 
 	We send messages to our TA and professor to discuss the problems we faced. 
 	
-At the meantime, our team lead Yun has divided our tasks into three parts: fetching data + search logic/algorithm (Lakshimi), GUI and user interaction design (Yun and Tejaswi), implementing map and calling google maps APIs (Chang). 
-	We all chose our parts. 
+At the meantime, our team lead Yun has divided our tasks:
+
+    Creating SQL table for Dealer data,import data from the updated csv file, fetching data + search queries and search bar UI component (Lakshmi),
+    GUI integration and created logo and the base JFrame and panels for usecase-1(Yun) and  Created the MVP for the initial UI and Created the dealer listing UI
+    component with the selected dealer for navigation(Tejaswi), implementing map and calling google maps APIs (Chang).
+	We all chose our parts.
+	
 	After discussing with TA and professor, TA had posted the datasets on the Github. 
 	After we reviewed it, we realized that there are many locations are duplicated and marked in a wrong place (cities and states), which means that we need to correct the data. 
 	We searched the dealers name with address and changed the wrong information. 
 	Also, we added the latitude and longitude into the table, and separated the zip code and state code. 
-	Thus, we can pined the dealers location on the maps. 
+	Thus, we can pined the dealers location on the maps.
+
 
