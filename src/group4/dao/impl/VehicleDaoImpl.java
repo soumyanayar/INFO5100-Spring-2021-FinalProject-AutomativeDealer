@@ -8,6 +8,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+
+import group4.gui.frame.MenuFrame;
 
 public class VehicleDaoImpl implements VehicleDao {
     DBCon dbCon = new DBCon();
@@ -85,12 +88,16 @@ public class VehicleDaoImpl implements VehicleDao {
 
     @Override
     public Vehicle queryByID(int vehicleId) {
-        return getVehicleEntity(dbCon.query("SELECT * FROM "+ DBNAME + " WHERE vehicle_id=?", vehicleId));
+        return getVehicleEntity(dbCon.query("SELECT * FROM " + DBNAME + " WHERE vehicle_id=?", vehicleId));
     }
 
     @Override
     public List<Vehicle> queryAll() {
-        return getVehicleList(dbCon.query("SELECT * FROM "+DBNAME));
+        if (Objects.equals(MenuFrame.dealerID, "all")){
+            return getVehicleList(dbCon.query("SELECT * FROM " + DBNAME));
+        } else{
+            return getVehicleList(dbCon.query("SELECT * FROM " + DBNAME + " WHERE dealer_id = " + MenuFrame.dealerID));
+        }
     }
 
     public static void main(String[] args) {

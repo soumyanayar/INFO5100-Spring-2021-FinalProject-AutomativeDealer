@@ -40,7 +40,7 @@ public class FilterAndBrowseUI extends JFrame implements ItemListener {
 	 * 
 	 */
 	private JTextField textField;
-	private JButton btnNewButton;
+	private JButton searchBtn;
 	private JFrame frame;
 	private JLabel imagelabel, startlabel, year, mileagelabel1, pricelabel, makeLabel, modelLabel, typeLabel,
 			categoryLabel, colorLabel, priceLabel, priceMinLabel, priceMaxLabel, yearLabel, mileageLabel, makevalue,
@@ -88,9 +88,9 @@ public class FilterAndBrowseUI extends JFrame implements ItemListener {
 		textField.setColumns(10);
 
 		// creating the search button
-		btnNewButton = new JButton("Search");
-		btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		btnNewButton.setBounds(920, 120, 102, 33);
+		searchBtn = new JButton("Search");
+		searchBtn.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		searchBtn.setBounds(920, 120, 102, 33);
 
 		// creating the combo box for all the filter types
 		make = new JComboBox(filterAndSearchController.getValidOption("make", completeList));
@@ -133,8 +133,6 @@ public class FilterAndBrowseUI extends JFrame implements ItemListener {
 		mileageLabel = new JLabel("  Mileage");
 
 		//creates fonts and sets label fonts
-		Font font1 = new Font("Courier", Font.BOLD, 16);
-		Font font2 = new Font("Courier", Font.BOLD, 22);
 		makeLabel.setFont(makeLabel.getFont().deriveFont(14f));
 		modelLabel.setFont(makeLabel.getFont().deriveFont(14f));
 		categoryLabel.setFont(makeLabel.getFont().deriveFont(14f));
@@ -174,7 +172,7 @@ public class FilterAndBrowseUI extends JFrame implements ItemListener {
 		p1.add(imagelabel);
 		p1.add(startlabel);
 		p1.add(textField);
-		p1.add(btnNewButton);
+		p1.add(searchBtn);
 		p.add(makeLabel);
 		p.add(make);
 		p.add(modelLabel);
@@ -365,7 +363,7 @@ public class FilterAndBrowseUI extends JFrame implements ItemListener {
 		});
 
 		panel.add(jp1);
-		panel.setPreferredSize(new Dimension(400, 200));
+		panel.setPreferredSize(new Dimension(450, 200));
 	}
 
 	/*
@@ -410,7 +408,7 @@ public class FilterAndBrowseUI extends JFrame implements ItemListener {
 		priceMax.addItemListener(this);
 		selectYear.addItemListener(this);
 		mileage.addItemListener(this);
-		btnNewButton.addActionListener(new ActionListener() {
+		searchBtn.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {

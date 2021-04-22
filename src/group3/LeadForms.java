@@ -7,6 +7,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.image.BufferedImage;
 import java.util.*;
 import java.util.List;
 
@@ -15,6 +16,7 @@ public class LeadForms extends JFrame implements ItemListener {
     private int height;
     private int width;
     private Map<String, List<LeadForm>> modelToLeadsMap;
+    private Map<String, List<LeadForm>> emailToLeadsMap;
     private JPanel mainPanel;
     private JPanel listingPanel;
     private JPanel optionPanel;
@@ -23,11 +25,12 @@ public class LeadForms extends JFrame implements ItemListener {
         super(title);
         width = 750;
         modelToLeadsMap = new HashMap<>();
+        emailToLeadsMap = new HashMap<>();
         listingPanel = new JPanel();
     }
 
     public void init(List<Lead> leads) {
-        super.setSize(500, 300);
+        super.setSize(300, 300);
         mainPanel = new JPanel();
         super.setContentPane(mainPanel);
         this.numberOfLeads = leads.size();
@@ -36,14 +39,15 @@ public class LeadForms extends JFrame implements ItemListener {
         mainPanel.setLayout(new GridBagLayout());
         createLeads(leads);
         setFilter();
+        super.setSize(800, 600);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.pack();
+        // this.pack();
         this.setVisible(true);
     }
 
     public void setFilter(){
         optionPanel = new JPanel();
-        optionPanel.setSize(750, 10);
+        optionPanel.setSize(500, 10);
         optionPanel.add(new JLabel("Filter By "));
         optionPanel.add(filteredByComboBox);
         optionPanel.setSize(new Dimension(750, 100));
@@ -78,6 +82,7 @@ public class LeadForms extends JFrame implements ItemListener {
         }
         filteredByComboBox.addItemListener(this);
     }
+
     public void updateFrame(JFrame frame){
         frame.setSize(750, numberOfLeads * 100);
     }

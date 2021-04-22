@@ -36,7 +36,6 @@ public class MainFrame extends JFrame {
     };
 
     public static void main(String[] args) {
-//        System.setProperty("java.net.useSystemProxies", "true");
         EventQueue.invokeLater(run);
     }
 
@@ -61,7 +60,6 @@ public class MainFrame extends JFrame {
         panelBottom.updateUI();
 
         tabs = new JTabbedPane(JTabbedPane.TOP, JTabbedPane.WRAP_TAB_LAYOUT);
-        tabs.setBackground(Color.blue);
         tabs.addTab("Get Data", table);
         tabs.addTab("Add Stock",add);
         tabs.addChangeListener(new ChangeListener() {
@@ -81,10 +79,10 @@ public class MainFrame extends JFrame {
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
         contentPane.setLayout(new BorderLayout(0, 0));
         setContentPane(contentPane);
-        contentPane.add(tabs, BorderLayout.NORTH);
+        contentPane.add(tabs, BorderLayout.CENTER);
 
-        JPanel panel = new JPanel();
-        panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+//        JPanel panel = new JPanel();
+//        panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 
 //        btnDel = new JButton("Delete Selected");
 //

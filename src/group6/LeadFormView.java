@@ -122,9 +122,6 @@ public class LeadFormView extends JFrame {
                 LeadModel optional;
                 if (!textArea1.getText().matches("")) {
                     message = textArea1.getText();
-                    if (message.contains(",")) {
-                        message = message.replaceAll(",", "/");
-                    }
                 } else {
                     message = "No Comment";
                 }
@@ -319,7 +316,7 @@ public class LeadFormView extends JFrame {
         carVinLabel.setText("Vin: " + car.getVIN());
         mileageLabel.setText("Mileage: " + car.getMileage() + "Miles");
         instructionLabel.setText("<html>Fill out the contact form below and one of our friendly helpful sales staff will answer <br/> any questions you have about this vehicle.</html>");
-        termsConditionLabel.setText("<html>By submitting your request, you consent to be contacted at the phone number you <br/> provided-which may include auto-dials,text messages and/or pre-recorded calls.By <br/> subscribing to receive  recurring SMS offers, you consent to receive text messages <br/> sent  through an automatic telephone dialing system, and message and data rates may<br/> apply. This consent is not a condition of purchase. You may opt out at any time by <br/> replying STOP to a text message, or calling (xxx) xxx-xxxx to have your telephone<br/>number removed from our system.</html>");
+        termsConditionLabel.setText("<html>By submitting your request, you consent to be contacted at the phone number you <br/> provided-which may include auto-dials,text messages and/or pre-recorded calls.By <br/> subscribing to receive  recurring SMS offers, you consent to receive text messages <br/> sent  through an automatic telephone dialing system, and message and data rates<br/>may apply. This consent is not a condition of purchase. You may opt out at any time<br/>by replying STOP to the received text message to have your telephone number<br/>removed from our system.</html>");
 
         String imageName;
         imageName = "src/group6/car_placeholder.png";
