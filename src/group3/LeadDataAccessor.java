@@ -19,7 +19,10 @@ public class LeadDataAccessor {
         List<Lead> leads = new ArrayList<>();
         try (Scanner scanner = new Scanner(new File(filePath));) {
             while (scanner.hasNextLine()) {
-                leads.add(getRecordFromLine(scanner.nextLine()));
+                if (scanner.nextLine()!= "") {
+                    leads.add(getRecordFromLine(scanner.nextLine()));
+                }
+
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -29,6 +32,7 @@ public class LeadDataAccessor {
     private static Lead getRecordFromLine(String line) {
         Lead lead = new Lead();
         try (Scanner rowScanner = new Scanner(line)) {
+
             rowScanner.useDelimiter(",");
             lead.setFirstName(rowScanner.next());
             lead.setLastName(rowScanner.next());

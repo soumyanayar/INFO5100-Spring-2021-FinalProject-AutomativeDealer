@@ -77,6 +77,7 @@ public class LeadFormView extends JFrame {
         buttonGroup = new ButtonGroup();
         buttonGroup.add(businessUseRadioButton);
         buttonGroup.add(personalUseRadioButton);
+
         radioButtonActionListener();
 
         textFieldFocusListener();
@@ -238,6 +239,7 @@ public class LeadFormView extends JFrame {
                 } else {
                     buttonGroup.clearSelection();
                     flag = true;
+
                 }
             }
         });

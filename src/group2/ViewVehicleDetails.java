@@ -4,10 +4,7 @@ import group2.dao.VehicleDAO;
 import group2.utils.Utils;
 import group6.FormActionDirectory;
 import group6.LeadFormController;
-import group8.Car;
-import group8.CarCategory;
-import group8.Dealer;
-import group8.Incentive;
+import group8.*;
 import group8.data.NewJDBC;
 
 import javax.swing.*;
@@ -75,11 +72,17 @@ public class ViewVehicleDetails {
     private Dealer dealer;
     private List<Incentive> incentives;
     private String discountedPrice = "";
+    private static final Font vehiclePriceFont = new Font("Calibri", Font.BOLD, 26);
+    private static final Font cashIncentiveFont = new Font("Calibri", Font.BOLD, 26);
+    private static final Font nonCashIncentiveFont = new Font("Calibri", Font.BOLD, 16);
+    private JLabel discountStaticLabel;
+
 
     public ViewVehicleDetails(String vehicleId) {
         VehicleDAO vehicleDAO = new VehicleDAO();
 
         try {
+
             final List<Map<String, Object>> res = vehicleDAO.getById(Integer.parseInt(vehicleId));
             this.car = Utils.transToCarV2(res.get(0));
             this.dealer = Utils.transToDealer(res.get(0));
@@ -152,13 +155,13 @@ public class ViewVehicleDetails {
 
         frame.pack();
         frame.setSize(new Dimension(950, 950));
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         frame.setVisible(true);
         frame.setContentPane(scrollPane);
     }
 
     public void createVehicleShortDescriptionPanel(Car myCar) {
-        Font vehiclePriceFont = new Font("Calibri", Font.BOLD, 28);
+
         vehicleShortDescriptionPanel = new JPanel();
         vehicleShortDescriptionPanel.setPreferredSize(new Dimension(916, 74));
         vehicleShortDescriptionPanel.setMaximumSize(new Dimension(916, 74));
@@ -191,7 +194,7 @@ public class ViewVehicleDetails {
         discountedPricePanel.setMinimumSize(new Dimension(200, 74));
         discountedPricePanel.setMaximumSize(new Dimension(200, 74));
 
-        JLabel discountStaticLabel = new JLabel();
+        discountStaticLabel = new JLabel();
         discountStaticLabel.setText("After Incentive");
         discountStaticLabel.setFont(new Font("Calibri", Font.PLAIN, 16));
         discountStaticLabel.setPreferredSize(new Dimension(200, 30));
@@ -202,7 +205,7 @@ public class ViewVehicleDetails {
         discountPriceLabel.setText(discountedPrice);
         discountPriceLabel.setPreferredSize(new Dimension(200, 44));
         discountPriceLabel.setMinimumSize(new Dimension(200, 44));
-        discountPriceLabel.setMaximumSize(new Dimension(200, 44));
+        discountPriceLabel.setMaximumSize(new Dimension(200, 74));
         discountPriceLabel.setFont(vehiclePriceFont);
 
         discountedPricePanel.add(discountStaticLabel);
@@ -289,7 +292,6 @@ public class ViewVehicleDetails {
                 FormActionDirectory formAction = new FormActionDirectory(myCar);
                 LeadFormController leadFormRequest = new LeadFormController(myCar, formAction);
                 leadFormRequest.showLeadForm();
-                frame.dispose();
             }
         });
 
@@ -335,16 +337,16 @@ public class ViewVehicleDetails {
 
         vehicleInfoPanel.add(vehicleInfoLabelPanel);
 
-        carImage = new ImageIcon(System.getProperty("user.dir") + "\\src\\group2\\Icons\\carCondition.jpg");
-        engineImage = new ImageIcon(System.getProperty("user.dir") + "\\src\\group2\\Icons\\CarEngine.jpg");
-        transmissionImage = new ImageIcon(System.getProperty("user.dir") + "\\src\\group2\\Icons\\Transmission.jpg");
-        vinImage = new ImageIcon(System.getProperty("user.dir") + "\\src\\group2\\Icons\\VIN.jpg");
-        fuelImage = new ImageIcon(System.getProperty("user.dir") + "\\src\\group2\\Icons\\Fuel.jpg");
-        colorImage = new ImageIcon(System.getProperty("user.dir") + "\\src\\group2\\Icons\\CarColor.jpg");
-        stockNumberImage = new ImageIcon(System.getProperty("user.dir") + "\\src\\group2\\Icons\\vehicleid.jpg");
-        mileageImage = new ImageIcon(System.getProperty("user.dir") + "\\src\\group2\\Icons\\Mileage.jpg");
-        seatCountImage = new ImageIcon(System.getProperty("user.dir") + "\\src\\group2\\Icons\\carseat.jpg");
-        ratingsImage = new ImageIcon(System.getProperty("user.dir") + "\\src\\group2\\Icons\\Ratings.jpg");
+        carImage = new ImageIcon("src/group2/Icons/carCondition.jpg");
+        engineImage = new ImageIcon("src/group2/Icons/CarEngine.jpg");
+        transmissionImage = new ImageIcon("src/group2/Icons/Transmission.jpg");
+        vinImage = new ImageIcon("src/group2/Icons/VIN.jpg");
+        fuelImage = new ImageIcon("src/group2/Icons/Fuel.jpg");
+        colorImage = new ImageIcon("src/group2/Icons/CarColor.jpg");
+        stockNumberImage = new ImageIcon("src/group2/Icons/vehicleid.jpg");
+        mileageImage = new ImageIcon("src/group2/Icons/Mileage.jpg");
+        seatCountImage = new ImageIcon("src/group2/Icons/carseat.jpg");
+        ratingsImage = new ImageIcon("src/group2/Icons/Ratings.jpg");
 
         if (myCar.getCarCategory() != null && validateCarInfoDetails(myCar.getCarCategory().toString())) {
             vehicleConditionLabelPanel = createVehicleSubInfoPanel(carImage, "Car Condition", myCar.getCarCategory().toString());
@@ -420,19 +422,30 @@ public class ViewVehicleDetails {
 
         ActionListener incentiveOptionsActionListener = new ActionListener() {
             public void actionPerformed(ActionEvent actionEvent) {
+                Incentive incentive = null;
                 if (incentiveOptions.getSelectedIndex() == 0) {
                     discountedPricePanel.setVisible(false);
                     return;
                 }
                 try {
-                    discountedPrice = NewJDBC.getInstance().applyDiscount(incentives.get(incentiveOptions.getSelectedIndex() - 1), car);
+                    incentive = incentives.get(incentiveOptions.getSelectedIndex() - 1);
+                    discountedPrice = NewJDBC.getInstance().applyDiscount(incentive, car);
+//                    System.out.println(discountedPrice);
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
                 }
                 discountedPricePanel.setVisible(true);
-                if (discountedPrice != null && discountedPrice.trim().length() > 0) {
+                if (discountedPrice != null && discountedPrice.trim().length() > 0 && incentive != null) {
+                    if(incentive instanceof CashDiscountIncentive) {
+                        discountStaticLabel.setVisible(true);
+                        discountPriceLabel.setFont(cashIncentiveFont);
+                    } else {
+                        discountStaticLabel.setVisible(false);
+                        discountedPrice = "<html>" + discountedPrice + "</html>";
+                        discountedPrice = discountedPrice.replaceAll("\n", "<br>");
+                        discountPriceLabel.setFont(nonCashIncentiveFont);
+                    }
                     discountPriceLabel.setText(discountedPrice);
-                    System.out.println(discountedPrice);
                 } else {
                     discountPriceLabel.setText("--");
                 }
@@ -593,35 +606,35 @@ public class ViewVehicleDetails {
     }
 
     public static void main(String[] args) {
-        Car myCar = new Car();
-        myCar.setID("1234");
-        myCar.setMake("Audi");
-        myCar.setModel("Acura MDX SH-AWD w/Advance");
-        myCar.setYear(2010);
-        myCar.setMSRP(13955);
-        myCar.setCarCategory(CarCategory.USED);
-        myCar.setColor("Grey");
-        myCar.setEngine("3.7L V6");
-        myCar.setTransmission("Automatic 6-Speed");
-        myCar.setFuel("Gasoline");
-        myCar.setVIN("2HNYD2H59AH533278");
-        myCar.setSeatCount(4);
-        myCar.setMileage(1174);
-        myCar.setRating(4);
-        myCar.setDescription("Beautiful White Frost. Abel Chevrolet Buick. Many Financing Options available. Credit Challenged? We can help! We have great relationships with many lenders which allows us to offer financing that many others can't! We're here to help you get in the vehicle you want! At Abel, we do our best to offer you an unique experience when purchasing a New or Pre-Owned vehicle. Unlike traditional car dealers, we offer a non-pressured environment giving you the time and space to make an informed decision. Our advertised prices are our best deal upfront. No Games, just fair prices and outstanding customer service. We won't waste your time! Once you've found the Abel Vehicle you're looking for, on average, you'll go from test drive to driving home in less than an hour!");
+//        Car myCar = new Car();
+//        myCar.setID("1234");
+//        myCar.setMake("Audi");
+//        myCar.setModel("Acura MDX SH-AWD w/Advance");
+//        myCar.setYear(2010);
+//        myCar.setMSRP(13955);
+//        myCar.setCarCategory(CarCategory.USED);
+//        myCar.setColor("Grey");
+//        myCar.setEngine("3.7L V6");
+//        myCar.setTransmission("Automatic 6-Speed");
+//        myCar.setFuel("Gasoline");
+//        myCar.setVIN("2HNYD2H59AH533278");
+//        myCar.setSeatCount(4);
+//        myCar.setMileage(1174);
+//        myCar.setRating(4);
+//        myCar.setDescription("Beautiful White Frost. Abel Chevrolet Buick. Many Financing Options available. Credit Challenged? We can help! We have great relationships with many lenders which allows us to offer financing that many others can't! We're here to help you get in the vehicle you want! At Abel, we do our best to offer you an unique experience when purchasing a New or Pre-Owned vehicle. Unlike traditional car dealers, we offer a non-pressured environment giving you the time and space to make an informed decision. Our advertised prices are our best deal upfront. No Games, just fair prices and outstanding customer service. We won't waste your time! Once you've found the Abel Vehicle you're looking for, on average, you'll go from test drive to driving home in less than an hour!");
 
-        Dealer myDealer = new Dealer();
-        myDealer.setDealerID("D1234");
-        myDealer.setName("Rairdons Honda of Sumner");
-        myDealer.setStreetAddress("16302 Auto Lane");
-        myDealer.setCity("Sumner");
-        myDealer.setState("Washington");
-        myDealer.setStateID("WA");
-        myDealer.setPhoneNumber("(855) 661-4448");
+//        Dealer myDealer = new Dealer();
+//        myDealer.setDealerID("D1234");
+//        myDealer.setName("Rairdons Honda of Sumner");
+//        myDealer.setStreetAddress("16302 Auto Lane");
+//        myDealer.setCity("Sumner");
+//        myDealer.setState("Washington");
+//        myDealer.setStateID("WA");
+//        myDealer.setPhoneNumber("(855) 661-4448");
 
 //        ViewVehicleDetails carDetails = new ViewVehicleDetails(myCar, myDealer);
-        ViewVehicleDetails carDetails = new ViewVehicleDetails("2");
+        ViewVehicleDetails carDetails = new ViewVehicleDetails("1");
         carDetails.showVehicleDetails();
-
     }
+
 }

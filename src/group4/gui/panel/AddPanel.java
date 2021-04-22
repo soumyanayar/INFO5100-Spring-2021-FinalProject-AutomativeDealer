@@ -226,24 +226,138 @@ public class AddPanel extends JPanel {
         JButton btnNewButton = new JButton("Add");
         btnNewButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
-                int vehicleID = Integer.parseInt(txtVehicleID.getText());
-                int vin = Integer.parseInt(txtVin.getText());
-                int dealerID = Integer.parseInt(txtDealerID.getText());
+                String vehicleIdText = txtVehicleID.getText().trim();
+                if (vehicleIdText.isEmpty()){
+                    JOptionPane.showMessageDialog(null, "VehicleId is empty", "Missing Field", JOptionPane.WARNING_MESSAGE);
+                }
+
+                // Right data type?
+                try{
+                    int vehicleID = Integer.parseInt(vehicleIdText);
+                } catch (NumberFormatException e) {
+                    JOptionPane.showMessageDialog(null, "Wrong data type for VehicleId", "Wrong Input", JOptionPane.WARNING_MESSAGE);
+                };
+
+                int vehicleID = Integer.parseInt(vehicleIdText);
+                if (vehicleID<0 || vehicleID >= Short.MAX_VALUE){
+                    JOptionPane.showMessageDialog(null, "VehicleId not in range", "Wrong Input", JOptionPane.WARNING_MESSAGE);
+                }
+
+                String vinText = txtVin.getText().trim();
+                if (vinText.isEmpty()){
+                    JOptionPane.showMessageDialog(null, "Vin is empty", "Missing Field", JOptionPane.WARNING_MESSAGE);
+                }
+                int vin = Integer.parseInt(vinText);
+                if (vin<0 || vin >= Short.MAX_VALUE){
+                    JOptionPane.showMessageDialog(null, "Vin not in range", "Wrong Input", JOptionPane.WARNING_MESSAGE);
+                }
+                String dealerIdText = txtDealerID.getText().trim();
+                if (dealerIdText.isEmpty()){
+                    JOptionPane.showMessageDialog(null, "DealerId is empty", "Missing Field", JOptionPane.WARNING_MESSAGE);
+                }
+                int dealerID = Integer.parseInt(dealerIdText);
+                if (dealerID<0 || dealerID >= Byte.MAX_VALUE){
+                    JOptionPane.showMessageDialog(null, "DealerID not in range", "Wrong Input", JOptionPane.WARNING_MESSAGE);
+                }
+
                 Make make = (Make) cmbMake.getSelectedItem();
                 Model model = (Model) cmbModel.getSelectedItem();
                 int year = Integer.parseInt(Objects.requireNonNull(cmbYear.getSelectedItem()).toString());
-                String category = txtCategory.getText();
-                double price = Double.parseDouble(txtPrice.getText());
-                String color = txtColor.getText();
-                int miles = Integer.parseInt(txtMiles.getText());
-                int rating = Integer.parseInt(txtRating.getText());
-                String imageUrls = txtImageUrls.getText();
-                String engine = txtEngine.getText();
-                String transmission = txtTransmission.getText();
-                int stock = Integer.parseInt(txtStock.getText());
-                int seatCount = Integer.parseInt(txtSeatCount.getText());
-                String fuel = txtFuel.getText();
-                String description = txtDescription.getText();
+
+                String category = txtCategory.getText().trim();
+                if (category.isEmpty()){
+                    JOptionPane.showMessageDialog(null, "Category is empty", "Missing Field", JOptionPane.WARNING_MESSAGE);
+                }
+                if (category.length()>=50){
+                    JOptionPane.showMessageDialog(null, "Category is too long", "Wrong Input", JOptionPane.WARNING_MESSAGE);
+                }
+                String priceText = txtPrice.getText().trim();
+                if (priceText.isEmpty()){
+                    JOptionPane.showMessageDialog(null, "Price is empty", "Missing Field", JOptionPane.WARNING_MESSAGE);
+                }
+                double price = Double.parseDouble(priceText);
+                if (price<0 || price >= Float.MAX_VALUE){
+                    JOptionPane.showMessageDialog(null, "Price not in range", "Wrong Input", JOptionPane.WARNING_MESSAGE);
+                }
+
+                String color = txtColor.getText().trim();
+                if (color.isEmpty()){
+                    JOptionPane.showMessageDialog(null, "Color is empty", "Missing Field", JOptionPane.WARNING_MESSAGE);
+                }
+                if (color.length() >= 50){
+                    JOptionPane.showMessageDialog(null, "Color is too long", "Wrong Input", JOptionPane.WARNING_MESSAGE);
+                }
+                String milesText = txtMiles.getText().trim();
+                if (milesText.isEmpty()){
+                    JOptionPane.showMessageDialog(null, "Miles is empty", "Missing Field", JOptionPane.WARNING_MESSAGE);
+                }
+                int miles = Integer.parseInt(milesText);
+                if (miles < 0){
+                    JOptionPane.showMessageDialog(null, "Miles not in range", "Wrong Input", JOptionPane.WARNING_MESSAGE);
+                }
+
+                String ratingText = txtRating.getText().trim();
+                if (ratingText.isEmpty()){
+                    JOptionPane.showMessageDialog(null, "Rating is empty", "Missing Field", JOptionPane.WARNING_MESSAGE);
+                }
+                int rating = Integer.parseInt(ratingText);
+                if (rating<0 || rating >= Byte.MAX_VALUE){
+                    JOptionPane.showMessageDialog(null, "Rating not in range", "Wrong Input", JOptionPane.WARNING_MESSAGE);
+                }
+
+                String imageUrls = txtImageUrls.getText().trim();
+                if (imageUrls.isEmpty()){
+                    JOptionPane.showMessageDialog(null, "Image Urls is empty", "Missing Field", JOptionPane.WARNING_MESSAGE);
+                }
+                if (color.length() >= 2000){
+                    JOptionPane.showMessageDialog(null, "image Urls is too long", "Wrong Input", JOptionPane.WARNING_MESSAGE);
+                }
+
+                String engine = txtEngine.getText().trim();
+                if (engine.isEmpty()){
+                    JOptionPane.showMessageDialog(null, "Engine is empty", "Missing Field", JOptionPane.WARNING_MESSAGE);
+                }
+                if (engine.length()>=200){
+                    JOptionPane.showMessageDialog(null, "Engine is too long", "Wrong Input", JOptionPane.WARNING_MESSAGE);
+                }
+                String transmission = txtTransmission.getText().trim();
+                if (transmission.isEmpty()){
+                    JOptionPane.showMessageDialog(null, "Transmission is empty", "Missing Field", JOptionPane.WARNING_MESSAGE);
+                }
+                if (transmission.length()>=200){
+                    JOptionPane.showMessageDialog(null, "Transmission is too long", "Wrong Input", JOptionPane.WARNING_MESSAGE);
+                }
+
+                String stockText = txtStock.getText().trim();
+                if (stockText.isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "Stock is empty", "Missing Field", JOptionPane.WARNING_MESSAGE);
+                }
+                int stock = Integer.parseInt(stockText);
+                if (stock < 0){
+                    JOptionPane.showMessageDialog(null, "Stock not in range", "Wrong Input", JOptionPane.WARNING_MESSAGE);
+                }
+                String seatCountText = txtSeatCount.getText().trim();
+                if (seatCountText.isEmpty()){
+                    JOptionPane.showMessageDialog(null, "Seat Count is empty", "Missing Field", JOptionPane.WARNING_MESSAGE);
+                }
+                int seatCount = Integer.parseInt(seatCountText);
+                if (seatCount<0){
+                    JOptionPane.showMessageDialog(null, "Seat Count not in range", "Wrong Input", JOptionPane.WARNING_MESSAGE);
+                }
+                String fuel = txtFuel.getText().trim();
+                if (fuel.isEmpty()){
+                    JOptionPane.showMessageDialog(null, "Fuel is empty", "Missing Field", JOptionPane.WARNING_MESSAGE);
+                }
+                if (fuel.length()>=200){
+                    JOptionPane.showMessageDialog(null, "Fuel is too long", "Wrong Input", JOptionPane.WARNING_MESSAGE);
+                }
+                String description = txtDescription.getText().trim();
+                if (description.isEmpty()){
+                    JOptionPane.showMessageDialog(null, "Description is empty", "Missing Field", JOptionPane.WARNING_MESSAGE);
+                }
+                if (description.length()>=4000){
+                    JOptionPane.showMessageDialog(null, "Description is too long", "Wrong Input", JOptionPane.WARNING_MESSAGE);
+                }
 
                 Vehicle vehicle=new Vehicle();
                 vehicle.setVehicleID(vehicleID);
