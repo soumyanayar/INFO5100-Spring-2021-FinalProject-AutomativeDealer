@@ -602,7 +602,7 @@ public class ViewVehicleDetails {
             dealerInfo += " " + myDealer.getZipcode();
         }
         if (myDealer.getPhoneNumber() != null && myDealer.getPhoneNumber().trim().length() != 0) {
-            dealerInfo += "\nPhone" + myDealer.getPhoneNumber();
+            dealerInfo += "\nPhone " + myDealer.getPhoneNumber();
         }
         dealersInformationTextArea.setText(dealerInfo);
         dealersInformationTextArea.setFont(new Font("Calibri", Font.PLAIN, 13));
