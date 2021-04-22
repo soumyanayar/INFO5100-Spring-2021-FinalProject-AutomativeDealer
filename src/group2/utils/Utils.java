@@ -54,7 +54,7 @@ public class Utils {
         String urls = String.valueOf(map.getOrDefault("image_urls", ""));
         final String[] arr = urls.split(",");
         for (int i = 0; i < arr.length; i++) {
-            arr[i] = "src/group2/images/" + arr[i];
+            arr[i] = "img/" + arr[i];
         }
         car.setImages(Arrays.asList(arr));
 
@@ -97,7 +97,7 @@ public class Utils {
         String urls = String.valueOf(map.getOrDefault("image_urls", ""));
         final String[] arr = urls.split(",");
         for (int i = 0; i < arr.length; i++) {
-            arr[i] = "src/group2/images/" + arr[i];
+            arr[i] = "img/" + arr[i];
         }
         car.setImages(Arrays.asList(arr));
 
