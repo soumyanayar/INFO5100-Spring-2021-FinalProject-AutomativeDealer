@@ -50,19 +50,6 @@ public class TablePanel extends JPanel implements ActionListener {
                 if (column == 0) return ImageIcon.class;
                 return Object.class;
             }
-            public String getToolTipText(MouseEvent e) {
-                int row = TablePanel.this.table.rowAtPoint(e.getPoint());
-                int col = TablePanel.this.table.columnAtPoint(e.getPoint());
-                String tiptextString = null;
-                if (row > -1 && col > -1) {
-                    Object value = TablePanel.this.table.getValueAt(row, col);
-                    if (null != value && !"".equals(value)) {
-                        tiptextString = value.toString();
-                    }
-                }
-
-                return tiptextString;
-            }
         };;
 
         this.table = new JTable(this.model){
