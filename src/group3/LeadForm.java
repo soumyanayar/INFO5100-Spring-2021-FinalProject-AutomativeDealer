@@ -63,7 +63,8 @@ public class LeadForm extends JComponent implements MouseListener {
         zipCode.setText(lead.getZipCode());
         carModel.setText(lead.getCarModel());
         carColor.setText(lead.getCarColor());
-        // carStock.setText(lead.getCarStock());
+        carVinTextField.setText(lead.getCarVin());
+        carStock.setText(lead.getCarStock());
         setMessage.setText(lead.getMessage());
         mouseClicked(null);
     }

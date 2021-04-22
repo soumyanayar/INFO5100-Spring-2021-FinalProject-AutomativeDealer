@@ -94,10 +94,11 @@ public class NewJDBC implements IDataProvider{
                 "rebateValue DECIMAL NOT NULL)");
     }
     
-    public String applyDiscount(Incentive incentive, Car c){
+   public String applyDiscount(Incentive incentive, Car c){
         String output = "";
         if(incentive instanceof CashDiscountIncentive){
-            output += ((CashDiscountIncentive)incentive).getValue();
+            double newPrice = c.getMSRP() - ((CashDiscountIncentive)incentive).getValue();
+            output += newPrice;
         }else if(incentive instanceof LeasingIncentive){
             output += "Down Payment: " + ((LeasingIncentive)incentive).getSigningPay();
             output += "\nMontly Payment: " + ((LeasingIncentive)incentive).getMonthlyPay();
@@ -108,7 +109,8 @@ public class NewJDBC implements IDataProvider{
         }else if(incentive instanceof RebateIncentive){
             HashMap<String, Double> rebateMap = ((RebateIncentive)incentive).getRebateMap();
             for(String key: rebateMap.keySet()){
-                output += "Discount Price For " + key + ": $" + rebateMap.get(key) + "\n";
+                double newPrice = c.getMSRP() - rebateMap.get(key);
+                output += "Discount Price For " + key + ": $" + newPrice + "\n";
             }
         }
         return output;
@@ -304,7 +306,7 @@ public class NewJDBC implements IDataProvider{
                 double msrp = resultSet.getDouble(8);
                 String color = resultSet.getString(9);
                 int miles = resultSet.getInt(10);
-                String[] img = resultSet.getString(11).split(",");
+                String[] img = resultSet.getString(15).split(",");
                 List<String> images = new ArrayList<>();
                 for(String i: img){
                     images.add(i);
@@ -312,8 +314,14 @@ public class NewJDBC implements IDataProvider{
                 String incentiveId = resultSet.getString(12);
                 String discountPrice = resultSet.getString(13);
                 int rating = resultSet.getInt(14);
+                String engine = resultSet.getString(16);
+                String description = resultSet.getString(17);
+                String transmission = resultSet.getString(18);
+                int seat = resultSet.getInt(20);
+                String fuel = resultSet.getString(21);
+
                 Car c = new Car(stockID, VIN, dealerID, make, model, year, category, msrp, color, miles, images,
-                        incentiveId, discountPrice, rating);
+                        incentiveId, discountPrice, rating, engine, description, transmission, null, seat, fuel);
                 res.add(c);
             }
 

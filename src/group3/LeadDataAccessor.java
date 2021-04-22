@@ -35,10 +35,13 @@ public class LeadDataAccessor {
             lead.setEmail(rowScanner.next());
             lead.setPhoneNumber(rowScanner.next());
             lead.setZipCode(rowScanner.next());
+            rowScanner.next();
+            lead.setMessage(rowScanner.next());
             lead.setCarModel(rowScanner.next());
             lead.setCarColor(rowScanner.next());
+            lead.setCarVin(rowScanner.next());
             lead.setCarStock(rowScanner.next());
-            lead.setMessage(rowScanner.next());
+
         }
         return lead;
     }

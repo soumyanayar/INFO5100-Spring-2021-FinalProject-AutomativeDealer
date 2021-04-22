@@ -12,6 +12,7 @@ public class Lead {
     private String carModel;
     private String carColor;
     private String carStock;
+    private String carVin;
     private String message;
     private String replyMessage;
     private boolean contacted;
@@ -80,7 +81,12 @@ public class Lead {
     public void setMessage(String message) {
         this.message = message;
     }
-
+    public String getCarVin() {
+        return carVin;
+    }
+    public void setCarVin(String carVin) {
+        this.carVin = carVin;
+    }
     public String getCarStock() {
         return carStock;
     }
@@ -104,4 +110,6 @@ public class Lead {
     public boolean getContacted() {
         return this.contacted;
     }
+
+
 }
