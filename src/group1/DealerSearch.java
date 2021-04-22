@@ -129,11 +129,11 @@ public class DealerSearch extends JFrame {
 
                         Dealer clickedDealer = dealers.get(0);
                         String dealerID = clickedDealer.getDealerID();
-                        JFrame filterAndBrowseUI = new FilterAndBrowseUI(clickedDealer);
-                        filterAndBrowseUI.setVisible(true);
-                        setVisible(false); //to hide the log in frame
+                        FilterAndBrowseUI filterAndBrowseUI = new FilterAndBrowseUI(clickedDealer);
+                        filterAndBrowseUI.buildUseCase2UI();
                     }
                 } catch (Exception e) {
+                    e.printStackTrace();
                     System.out.println(e);
                     JOptionPane.showMessageDialog(mainPanel, "Error In Connectivity");
                 }
