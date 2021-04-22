@@ -75,11 +75,11 @@ public class Utils {
         car.setModel(String.valueOf(map.getOrDefault("Model", "")));
         car.setYear(Integer.parseInt(String.valueOf(map.getOrDefault("Year", "0"))));
         car.setMSRP(Double.parseDouble(String.valueOf(map.getOrDefault("Price", ""))));
-        if ("New".equals(String.valueOf(map.get("category")))) {
+        if ("New".equals(String.valueOf(map.get("Category")))) {
             car.setCarCategory(CarCategory.NEW);
-        } else if ("Used".equals(String.valueOf(map.get("category")))) {
+        } else if ("Used".equals(String.valueOf(map.get("Category")))) {
             car.setCarCategory(CarCategory.USED);
-        } else if ("Certified Pre-Owned".equals(String.valueOf(map.get("category")))) {
+        } else if ("Certified Pre-Owned".equals(String.valueOf(map.get("Category")))) {
             car.setCarCategory(CarCategory.CERTIFIEDPREOWNED);
         }
 
