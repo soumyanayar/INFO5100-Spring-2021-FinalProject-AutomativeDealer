@@ -250,4 +250,6 @@ public class Car {
     public void setType(String type){
         this.type = type;
     }
+
+
 }

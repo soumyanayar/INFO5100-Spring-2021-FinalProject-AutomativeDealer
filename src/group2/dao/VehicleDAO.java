@@ -44,7 +44,7 @@ public class VehicleDAO {
     public static void main(String[] args) throws SQLException {
         VehicleDAO vehicleDAO = new VehicleDAO();
         final List<Map<String, Object>> res = vehicleDAO.getById(1);
-        Car car = Utils.transToCar(res.get(0));
+        Car car = Utils.transToCarV2(res.get(0));
         Dealer dealer = Utils.transToDealer(res.get(0));
         System.out.println(car);
         System.out.println(dealer);
