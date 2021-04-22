@@ -113,6 +113,8 @@ public class Utils {
         dealer.setCity(checkNull(String.valueOf(map.getOrDefault("City", ""))));
         dealer.setState(checkNull(String.valueOf(map.getOrDefault("State", ""))));
         dealer.setCountry(checkNull(String.valueOf(map.getOrDefault("Country", ""))));
+        dealer.setPhoneNumber(checkNull(String.valueOf(map.getOrDefault("PhoneNumber", ""))));
+        dealer.setZipcode(checkNull(String.valueOf(map.getOrDefault("ZipCode", ""))));
         return dealer;
     }
 
