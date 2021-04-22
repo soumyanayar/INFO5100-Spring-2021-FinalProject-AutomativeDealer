@@ -13,7 +13,7 @@ import javax.swing.*;
 import static group4.gui.frame.MainFrame.run;
 
 public class MenuFrame extends JFrame implements ActionListener {
-    private String dealerID;
+    public static String dealerID;
     private JTextField tfDealerID;
 
     public MenuFrame(){
@@ -47,7 +47,7 @@ public class MenuFrame extends JFrame implements ActionListener {
             });
         }
         if(command.equals("Inventory")){
-//            dealerID = tfDealerID.getText();
+            dealerID = tfDealerID.getText();
             EventQueue.invokeLater(run);
         }
     }

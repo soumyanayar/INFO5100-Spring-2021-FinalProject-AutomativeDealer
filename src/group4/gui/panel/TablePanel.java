@@ -33,6 +33,7 @@ public class TablePanel extends JPanel implements ActionListener {
     private String oldValue = null;
     private JButton btnDel;
 
+
     public TablePanel() {
         setLayout(new BorderLayout(0,0));
         JScrollPane scrollPane = new JScrollPane();
@@ -41,13 +42,17 @@ public class TablePanel extends JPanel implements ActionListener {
         //table = new JTable();
         //scrollPane.setColumnHeaderView(table);
 
-        model = new DefaultTableModel(new Object[][] {}, new String[] {"Image","Vehicle ID", "VIN", "Dealer ID", "Make", "Model", "Year", "Category","Price","Color","Miles","Rating","Image", "Engine", "Description", "Transmission","Stock","Seat Count","Fuel"});
-
-        this.table = new JTable(this.model) {
-            public Class getColumnClass(int column) {
-                return this.getValueAt(0, column).getClass();
+        model = new DefaultTableModel(new Object[][] {}, new String[] {"Image","Vehicle ID", "VIN", "Dealer ID", "Make", "Model", "Year", "Category","Price","Color","Miles","Rating","Image", "Engine", "Description", "Transmission","Stock","Seat Count","Fuel"}){
+            @Override
+            public Class getColumnClass(int column)
+            {
+                if (column == 0) return ImageIcon.class;
+                return Object.class;
             }
-        };
+        };;
+
+        this.table = new JTable(this.model);
+
         scrollPane.setColumnHeaderView(table);
         table.setModel(model);
         table.setRowHeight(100);
@@ -86,7 +91,7 @@ public class TablePanel extends JPanel implements ActionListener {
                     return;
                 }
 
-                String vehicleIdText = table.getValueAt(e.getLastRow(),0).toString().trim();
+                String vehicleIdText = table.getValueAt(e.getLastRow(),2).toString().trim();
                 if (vehicleIdText.isEmpty()){
                     JOptionPane.showMessageDialog(null, "VehicleId is empty", "Missing Field", JOptionPane.WARNING_MESSAGE);
                 }
@@ -94,7 +99,7 @@ public class TablePanel extends JPanel implements ActionListener {
                 if (vehicleID<0 || vehicleID >= Short.MAX_VALUE){
                     JOptionPane.showMessageDialog(null, "VehicleId not in range", "Wrong Input", JOptionPane.WARNING_MESSAGE);
                 }
-                String vinText = table.getValueAt(e.getLastRow(), 1).toString().trim();
+                String vinText = table.getValueAt(e.getLastRow(), 3).toString().trim();
                 if (vinText.isEmpty()){
                     JOptionPane.showMessageDialog(null, "Vin is empty", "Missing Field", JOptionPane.WARNING_MESSAGE);
                 }
@@ -102,7 +107,7 @@ public class TablePanel extends JPanel implements ActionListener {
                 if (vin<0 || vin >= Short.MAX_VALUE){
                     JOptionPane.showMessageDialog(null, "Vin not in range", "Wrong Input", JOptionPane.WARNING_MESSAGE);
                 }
-                String dealerIdText = table.getValueAt(e.getLastRow(), 2).toString().trim();
+                String dealerIdText = table.getValueAt(e.getLastRow(), 4).toString().trim();
                 if (dealerIdText.isEmpty()){
                     JOptionPane.showMessageDialog(null, "DealerId is empty", "Missing Field", JOptionPane.WARNING_MESSAGE);
                 }
@@ -175,6 +180,14 @@ public class TablePanel extends JPanel implements ActionListener {
                 if (engine.length()>=200){
                     JOptionPane.showMessageDialog(null, "Engine is too long", "Wrong Input", JOptionPane.WARNING_MESSAGE);
                 }
+                String description = table.getValueAt(e.getLastRow(), 13).toString().trim();
+                if (description.isEmpty()){
+                    JOptionPane.showMessageDialog(null, "Description is empty", "Missing Field", JOptionPane.WARNING_MESSAGE);
+                }
+                if (description.length()>=4000){
+                    JOptionPane.showMessageDialog(null, "Description is too long", "Wrong Input", JOptionPane.WARNING_MESSAGE);
+                }
+
                 String transmission = table.getValueAt(e.getLastRow(), 14).toString().trim();
                 if (transmission.isEmpty()){
                     JOptionPane.showMessageDialog(null, "Transmission is empty", "Missing Field", JOptionPane.WARNING_MESSAGE);
@@ -206,13 +219,7 @@ public class TablePanel extends JPanel implements ActionListener {
                 if (fuel.length()>=200){
                     JOptionPane.showMessageDialog(null, "Fuel is too long", "Wrong Input", JOptionPane.WARNING_MESSAGE);
                 }
-                String description = table.getValueAt(e.getLastRow(), 13).toString().trim();
-                if (description.isEmpty()){
-                    JOptionPane.showMessageDialog(null, "Description is empty", "Missing Field", JOptionPane.WARNING_MESSAGE);
-                }
-                if (description.length()>=4000){
-                    JOptionPane.showMessageDialog(null, "Description is too long", "Wrong Input", JOptionPane.WARNING_MESSAGE);
-                }
+
 
                 Vehicle vehicle = new Vehicle();
                 vehicle.setVehicleID(Integer.valueOf(table.getValueAt(e.getLastRow(),1).toString()));
@@ -262,9 +269,9 @@ public class TablePanel extends JPanel implements ActionListener {
 
         TableColumnModel col = table.getColumnModel();
 
-        col.getColumn(3).setCellEditor(makeID);
-        col.getColumn(4).setCellEditor(modelID);
-        col.getColumn(5).setCellEditor(year);
+        col.getColumn(4).setCellEditor(makeID);
+        col.getColumn(5).setCellEditor(modelID);
+        col.getColumn(6).setCellEditor(year);
 
         List<Vehicle> vehicleList = vehicleDao.queryAll();
 
@@ -288,9 +295,9 @@ public class TablePanel extends JPanel implements ActionListener {
             ImageIcon imageicon2 = this.change(imageicon1, 0.5D);
             model.addRow(new Object[] {
                     imageicon2,vehicle.getVehicleID(),vehicle.getVin(),vehicle.getDealerID(),cmbMake.getSelectedItem(), cmbModel.getSelectedItem(),vehicle.getYear(),vehicle.getCategory(),vehicle.getPrice(),vehicle.getColor(),vehicle.getMiles(),vehicle.getRating(),vehicle.getImageUrls(),vehicle.getEngine(),vehicle.getDescription(),vehicle.getTransmission(),vehicle.getStock(),vehicle.getSeatCount(),vehicle.getFuel()
-    });
+            });
 
-}
+        }
     }
 
     public void del() {

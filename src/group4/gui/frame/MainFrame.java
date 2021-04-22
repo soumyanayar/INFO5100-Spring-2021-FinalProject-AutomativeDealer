@@ -36,7 +36,6 @@ public class MainFrame extends JFrame {
     };
 
     public static void main(String[] args) {
-//        System.setProperty("java.net.useSystemProxies", "true");
         EventQueue.invokeLater(run);
     }
 
