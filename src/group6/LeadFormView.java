@@ -59,6 +59,11 @@ public class LeadFormView extends JFrame {
         return mainPanel;
     }
 
+    /**
+     * Constructor
+     * @param car
+     * @param formActionDirectory
+     */
     public LeadFormView(Car car, FormActionDirectory formActionDirectory) {
         this.car = car;
         this.setContentPane(this.mainPanel);
@@ -72,96 +77,15 @@ public class LeadFormView extends JFrame {
         buttonGroup = new ButtonGroup();
         buttonGroup.add(businessUseRadioButton);
         buttonGroup.add(personalUseRadioButton);
-        businessUseRadioButton.addActionListener(new ActionListener() {
-            boolean flag = true;
 
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (businessUseRadioButton.isSelected() == flag) {
-                    flag = !(flag);
-                } else {
-                    buttonGroup.clearSelection();
-                    flag = true;
-                }
-            }
-        });
+        radioButtonActionListener();
 
-        personalUseRadioButton.addActionListener(new ActionListener() {
-            boolean flag = true;
+        textFieldFocusListener();
 
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (personalUseRadioButton.isSelected() == flag) {
-                    flag = !(flag);
-                } else {
-                    buttonGroup.clearSelection();
-                    flag = true;
-                }
-            }
-        });
+        submitButtonActionListener(car);
+    }
 
-        fName.addFocusListener(new FocusAdapter() {
-            @Override
-            public void focusGained(FocusEvent e) {
-                super.focusGained(e);
-                setDefaultBorder(fName);
-            }
-        });
-        lName.addFocusListener(new FocusAdapter() {
-            @Override
-            public void focusGained(FocusEvent e) {
-                super.focusGained(e);
-                setDefaultBorder(lName);
-            }
-        });
-        eMail.addFocusListener(new FocusAdapter() {
-            @Override
-            public void focusLost(FocusEvent e) {
-                super.focusLost(e);
-                if (!isValidEmail(eMail.getText())) {
-                    showErrorMessage("Enter a valid E-mail ", eMail);
-                }
-            }
-
-            @Override
-            public void focusGained(FocusEvent e) {
-                super.focusGained(e);
-                setDefaultBorder(eMail);
-            }
-        });
-
-        ph_No.addFocusListener(new FocusAdapter() {
-            @Override
-            public void focusLost(FocusEvent e) {
-                super.focusLost(e);
-                if (!isValidPhone(ph_No.getText())) {
-                    showErrorMessage("Enter a valid Phone No", ph_No);
-                }
-            }
-
-            @Override
-            public void focusGained(FocusEvent e) {
-                super.focusGained(e);
-                setDefaultBorder(ph_No);
-            }
-        });
-
-        zipCode.addFocusListener(new FocusAdapter() {
-            @Override
-            public void focusLost(FocusEvent e) {
-                super.focusLost(e);
-                if (!isValidZipCode(zipCode.getText())) {
-                    showErrorMessage("Enter a valid Zip Code", zipCode);
-                }
-            }
-
-            @Override
-            public void focusGained(FocusEvent e) {
-                super.focusGained(e);
-                setDefaultBorder(zipCode);
-            }
-        });
-
+    private void submitButtonActionListener(Car car) {
         submitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -240,17 +164,112 @@ public class LeadFormView extends JFrame {
         });
     }
 
-    static boolean isValidEmail(String eMail) {
+    private void textFieldFocusListener() {
+        fName.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                super.focusGained(e);
+                setDefaultBorder(fName);
+            }
+        });
+        lName.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                super.focusGained(e);
+                setDefaultBorder(lName);
+            }
+        });
+        eMail.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent e) {
+                super.focusLost(e);
+                if (!isValidEmail(eMail.getText())) {
+                    showErrorMessage("Enter a valid E-mail ", eMail);
+                }
+            }
+
+            @Override
+            public void focusGained(FocusEvent e) {
+                super.focusGained(e);
+                setDefaultBorder(eMail);
+            }
+        });
+
+        ph_No.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent e) {
+                super.focusLost(e);
+                if (!isValidPhone(ph_No.getText())) {
+                    showErrorMessage("Enter a valid Phone No", ph_No);
+                }
+            }
+
+            @Override
+            public void focusGained(FocusEvent e) {
+                super.focusGained(e);
+                setDefaultBorder(ph_No);
+            }
+        });
+
+        zipCode.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent e) {
+                super.focusLost(e);
+                if (!isValidZipCode(zipCode.getText())) {
+                    showErrorMessage("Enter a valid Zip Code", zipCode);
+                }
+            }
+
+            @Override
+            public void focusGained(FocusEvent e) {
+                super.focusGained(e);
+                setDefaultBorder(zipCode);
+            }
+        });
+    }
+
+    private void radioButtonActionListener() {
+        businessUseRadioButton.addActionListener(new ActionListener() {
+            boolean flag = true;
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (businessUseRadioButton.isSelected() == flag) {
+                    flag = !(flag);
+                } else {
+                    buttonGroup.clearSelection();
+                    flag = true;
+
+                }
+            }
+        });
+
+        personalUseRadioButton.addActionListener(new ActionListener() {
+            boolean flag = true;
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (personalUseRadioButton.isSelected() == flag) {
+                    flag = !(flag);
+                } else {
+                    buttonGroup.clearSelection();
+                    flag = true;
+                }
+            }
+        });
+    }
+
+    boolean isValidEmail(String eMail) {
         String regex = "^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$";
         return eMail.matches(regex);
     }
 
-    static boolean isValidPhone(String phoneNo) {
+    boolean isValidPhone(String phoneNo) {
         String regex = "^\\(?([0-9]{3})\\)?[-.\\s]?([0-9]{3})[-.\\s]?([0-9]{4})$";
         return phoneNo.matches(regex);
     }
 
-    static boolean isValidZipCode(String zipCode) {
+    boolean isValidZipCode(String zipCode) {
         String regex = "\\d{5}";
         return zipCode.matches(regex);
     }
@@ -289,7 +308,7 @@ public class LeadFormView extends JFrame {
 
         termsConditionLabel.setFont(DealerFont.getDescriptionFont());
     }
-
+    // Car details
     private void setValue() {
         carModelLabel.setText(car.getYear() + " " + car.getMake() + " " + car.getModel());
         carColorLabel.setText("Color: " + car.getColor());
@@ -298,7 +317,7 @@ public class LeadFormView extends JFrame {
         carVinLabel.setText("Vin: " + car.getVIN());
         mileageLabel.setText("Mileage: " + car.getMileage() + "Miles");
         instructionLabel.setText("<html>Fill out the contact form below and one of our friendly helpful sales staff will answer <br/> any questions you have about this vehicle.</html>");
-        termsConditionLabel.setText("<html>By submitting your request, you consent to be contacted at the phone number you <br/> provided-which may include auto-dials,text messages and/or pre-recorded calls.By <br/> subscribing to receive  recurring SMS offers, you consent to receive text messages <br/> sent  through an automatic telephone dialing system, and message and data rates may<br/> apply. This consent is not a condition of purchase. You may opt out at any time by <br/> replying STOP to a text message, or calling (206) 241-1888 to have your telephone<br/>number removed from our system.</html>");
+        termsConditionLabel.setText("<html>By submitting your request, you consent to be contacted at the phone number you <br/> provided-which may include auto-dials,text messages and/or pre-recorded calls.By <br/> subscribing to receive  recurring SMS offers, you consent to receive text messages <br/> sent  through an automatic telephone dialing system, and message and data rates may<br/> apply. This consent is not a condition of purchase. You may opt out at any time by <br/> replying STOP to a text message, or calling (xxx) xxx-xxxx to have your telephone<br/>number removed from our system.</html>");
 
         String imageName;
         imageName = "src/group6/car_placeholder.png";
@@ -318,6 +337,7 @@ public class LeadFormView extends JFrame {
         imageLabel.setText("");
     }
 
+    //after error message, border will change to Red color
     private void showErrorMessage(String error, JTextField textField) {
         if (isErrorDialogShown)
             return;

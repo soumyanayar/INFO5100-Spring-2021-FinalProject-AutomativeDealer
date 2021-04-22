@@ -227,6 +227,7 @@ public class DealerSearch extends JFrame {
         searchButton = new JButton();
         searchButton.setText("Search");
         searchPanel.add(searchButton, new GridConstraints(1, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        queryTextField = new JTextField();
         queryTextField.setText("");
         searchPanel.add(queryTextField, new GridConstraints(1, 0, 1, 2, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
         stateRadioButton.setSelected(true);
@@ -264,4 +265,5 @@ public class DealerSearch extends JFrame {
     public JComponent $$$getRootComponent$$$() {
         return searchContainerPanel;
     }
+
 }
