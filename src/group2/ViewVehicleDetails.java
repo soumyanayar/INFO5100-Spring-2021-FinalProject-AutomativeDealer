@@ -9,6 +9,7 @@ import group8.data.NewJDBC;
 
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
+import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -18,7 +19,6 @@ import java.util.List;
 import java.util.Map;
 
 public class ViewVehicleDetails {
-    private List<String> vehicleImageList;
     private JPanel innerPanel;
     private JPanel vehicleShortDescriptionPanel;
     private JPanel vehicleDetailsPanel;
@@ -82,37 +82,14 @@ public class ViewVehicleDetails {
         VehicleDAO vehicleDAO = new VehicleDAO();
 
         try {
-
             final List<Map<String, Object>> res = vehicleDAO.getById(Integer.parseInt(vehicleId));
             this.car = Utils.transToCarV2(res.get(0));
             this.dealer = Utils.transToDealer(res.get(0));
             incentives = NewJDBC.getInstance().getAllIncentiveByCarVIN(this.car.getVIN());
-            vehicleImageList = new ArrayList<>();
-            vehicleImageList = car.getImages();
-
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }
-
-//    public ViewVehicleDetails(Car myCar, Dealer myDealer) {
-//        vehicleImageList = new ArrayList<>();
-//        this.car = myCar;
-//        this.dealer = myDealer;
-//        try {
-//            incentives = NewJDBC.getInstance().getAllIncentiveByCarVIN(this.car.getVIN());
-//            incentives = new ArrayList<>();
-////            incentives.add(new LoanIncentive("String id1", "String dealerId", new Date(), new Date(),
-////                    "String title", "Loan description", "String disclaimer", new HashSet<>(),
-////                    1.0, 12));
-////            incentives.add(new LeasingIncentive("String id2", "String dealerId", new Date(), new Date(),
-////                    "String title", "Leasing description", "String disclaimer", new HashSet<>(), 14,
-////                    201.0, 90.0));
-//        } catch (Exception e) {
-//            System.out.println(e.getMessage());
-//        }
-//        this.car.setImages(vehicleImageList);
-//    }
 
     public void showVehicleDetails() {
         createVehicleShortDescriptionPanel(this.car);
@@ -389,9 +366,6 @@ public class ViewVehicleDetails {
             vehicleInfoPanel.add(vehicleRatingsLabelPanel);
         }
 
-        //vehicleInfoBoxLayoutPanel ends here
-
-
         JPanel incentivePanel = new JPanel();
         incentivePanel.setLayout(new BoxLayout(incentivePanel, BoxLayout.X_AXIS));
         incentivePanel.setMaximumSize(new Dimension(376, 100));
@@ -534,11 +508,17 @@ public class ViewVehicleDetails {
         vehicleDescriptionTextArea.setMaximumSize(new Dimension(916, 120));
         vehicleDescriptionTextArea.setMinimumSize(new Dimension(916, 120));
         vehicleDescriptionTextArea.setPreferredSize(new Dimension(916, 120));
+        vehicleDescriptionTextArea.setEditable(false);
+        vehicleDescriptionTextArea.setBorder(new EmptyBorder(10,10,10,10));
         vehicleDescriptionTextArea.setWrapStyleWord(true);
         vehicleDescriptionTextArea.setVisible(true);
         vehicleDescriptionTextArea.setLineWrap(true);
         vehicleDescriptionTextArea.setBackground(new Color(238, 238, 238));
-        vehicleDescriptionTextArea.setText(myCar.getDescription());
+        if(myCar.getDescription().equals("")){
+            vehicleDescriptionTextArea.setText(defaultDescription());
+        }else{
+            vehicleDescriptionTextArea.setText(myCar.getDescription());
+        }
         vehicleDescriptionTextArea.setFont(new Font("Calibri", Font.PLAIN, 13));
 
         vehicleDescriptionPane.setViewportView(vehicleDescriptionTextArea);
@@ -548,6 +528,32 @@ public class ViewVehicleDetails {
 
         //vehicleDescriptionPanel ends here
 
+    }
+
+    private String defaultDescription(){
+        StringBuilder desc = new StringBuilder();
+        desc.append(car.getYear() + " " + car.getMake() + " " + car.getModel()).append("\n");
+        if(car.getType() != null){
+            desc.append(car.getType()).append("\n");
+        }
+        if(car.getMileage() != 0){
+            desc.append(car.getMileage()).append(" mileage").append("\n");
+        }
+        if(car.getTransmission() != null && car.getEngine() != null){
+            desc.append("The vehicle has a ").append(car.getTransmission()).append(" transmission and a ").
+                    append(car.getEngine()).append(" engine. ").append("\n");
+        }
+        if(dealer.getStreetAddress() != null || dealer.getCity() != null || dealer.getStateID() != null){
+            desc.append("Available at location ");
+            if(dealer.getStreetAddress() != null){
+                desc.append(dealer.getStreetAddress()).append(", ");
+            }if(dealer.getCity() != null){
+                desc.append(dealer.getCity()).append(", ");
+            }if(dealer.getStateID() != null){
+                desc.append(dealer.getStateID());
+            }
+        }
+        return desc.toString();
     }
 
     public void createDealersInformationPanel(Dealer myDealer) {
@@ -576,6 +582,8 @@ public class ViewVehicleDetails {
         dealersInformationTextArea.setMaximumSize(new Dimension(916, 100));
         dealersInformationTextArea.setMinimumSize(new Dimension(916, 100));
         dealersInformationTextArea.setPreferredSize(new Dimension(916, 100));
+        dealersInformationTextArea.setEditable(false);
+        dealersInformationTextArea.setBorder(new EmptyBorder(0,10,0,10));
         dealersInformationTextArea.setBackground(new Color(238, 238, 238));
         String dealerInfo = "";
         if (myDealer.getName() != null && myDealer.getName().trim().length() != 0) {
