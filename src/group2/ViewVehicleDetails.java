@@ -72,8 +72,8 @@ public class ViewVehicleDetails {
     private Dealer dealer;
     private List<Incentive> incentives;
     private String discountedPrice = "";
-    private static final Font vehiclePriceFont = new Font("Calibri", Font.BOLD, 28);
-    private static final Font cashIncentiveFont = new Font("Calibri", Font.BOLD, 28);
+    private static final Font vehiclePriceFont = new Font("Calibri", Font.BOLD, 26);
+    private static final Font cashIncentiveFont = new Font("Calibri", Font.BOLD, 26);
     private static final Font nonCashIncentiveFont = new Font("Calibri", Font.BOLD, 16);
     private JLabel discountStaticLabel;
 
