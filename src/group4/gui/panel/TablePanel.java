@@ -334,7 +334,7 @@ public class TablePanel extends JPanel implements ActionListener {
         int result = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete it?");
 
         if (result == JOptionPane.OK_OPTION) {
-            int vehicleID = Integer.valueOf(table.getValueAt(table.getSelectedRow(), 0).toString());
+            int vehicleID = Integer.valueOf(table.getValueAt(table.getSelectedRow(), 1).toString());
             vehicleDao.delete(vehicleID);
             loadData();
         }
