@@ -78,11 +78,10 @@ public class ViewVehicleDetails {
         VehicleDAO vehicleDAO = new VehicleDAO();
 
         try {
-            final List<Map<String, Object>> res = vehicleDAO.getById(1);
+            final List<Map<String, Object>> res = vehicleDAO.getById(Integer.parseInt(vehicleId));
             this.car = Utils.transToCar(res.get(0));
             this.dealer = Utils.transToDealer(res.get(0));
             incentives = NewJDBC.getInstance().getAllIncentiveByCarVIN(this.car.getVIN());
-            incentives = new ArrayList<>();
 //            incentives.add(new LoanIncentive("String id1", "String dealerId", new Date(), new Date(),
 //                    "String title", "Loan description", "String disclaimer", new HashSet<>(),
 //                    1.0, 12));
@@ -425,7 +424,7 @@ public class ViewVehicleDetails {
 
         ActionListener incentiveOptionsActionListener = new ActionListener() {
             public void actionPerformed(ActionEvent actionEvent) {
-                System.out.println("Selected: " + incentiveOptions.getSelectedIndex());
+//                System.out.println("Selected: " + incentiveOptions.getSelectedIndex());
 //                System.out.println("ID : " + incentives.get(incentiveOptions.getSelectedIndex() - 1).getId());
                 if (incentiveOptions.getSelectedIndex() == 0) {
                     discountedPricePanel.setVisible(false);
@@ -433,17 +432,18 @@ public class ViewVehicleDetails {
                 }
                 try {
                     discountedPrice = NewJDBC.getInstance().applyDiscount(incentives.get(incentiveOptions.getSelectedIndex() - 1), car);
-                    if (incentiveOptions.getSelectedIndex() == 1) {
-                        discountedPrice = "$ 123111";
-                    } else {
-                        discountedPrice = " ";
-                    }
+//                    if (incentiveOptions.getSelectedIndex() == 1) {
+//                        discountedPrice = "$ 123111";
+//                    } else {
+//                        discountedPrice = " ";
+//                    }
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
                 }
                 discountedPricePanel.setVisible(true);
                 if (discountedPrice != null && discountedPrice.trim().length() > 0) {
                     discountPriceLabel.setText(discountedPrice);
+                    System.out.println(discountedPrice);
                 } else {
                     discountPriceLabel.setText("--");
                 }
@@ -595,7 +595,7 @@ public class ViewVehicleDetails {
             dealerInfo += "\nPhone" + myDealer.getPhoneNumber();
         }
         dealersInformationTextArea.setText(dealerInfo);
-        System.out.println(dealerInfo);
+//        System.out.println(dealerInfo);
 //        dealersInformationTextArea.setText("Beautiful White Frost. Abel Chevrolet Buick. Many Financing Options available. Credit Challenged? We can help! We have great relationships with many lenders which allows us to offer financing that many others can't! We're here to help you get in the vehicle you want! At Abel, we do our best to offer you an unique experience when purchasing a New or Pre-Owned vehicle. Unlike traditional car dealers, we offer a non-pressured environment giving you the time and space to make an informed decision. Our advertised prices are our best deal upfront. No Games, just fair prices and outstanding customer service. We won't waste your time! Once you've found the Abel Vehicle you're looking for, on average, you'll go from test drive to driving home in less than an hour!");
         dealersInformationTextArea.setFont(new Font("Calibri", Font.PLAIN, 13));
 
