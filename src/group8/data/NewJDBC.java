@@ -623,9 +623,5 @@ public class NewJDBC implements IDataProvider{
     public List<Incentive> getAllIncentives() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
-    @Override
-    public void persistIncentive(CashDiscountIncentive cashDiscountIncentive) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+   
 }
