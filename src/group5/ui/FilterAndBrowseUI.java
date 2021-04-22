@@ -361,7 +361,7 @@ public class FilterAndBrowseUI extends JFrame implements ItemListener {
 		});
 
 		panel.add(jp1);
-		panel.setPreferredSize(new Dimension(350, 200));
+		panel.setPreferredSize(new Dimension(400, 200));
 	}
 
 	/*

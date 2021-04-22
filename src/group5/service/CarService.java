@@ -170,7 +170,10 @@ public class CarService {
 	}
 
 	public ArrayList<Car> intersectLists(ArrayList<ArrayList<Car>> filteredLists) {
-
+		
+		if(filteredLists.isEmpty()) {
+			return new ArrayList<Car>();
+		}
 		ArrayList<Car> resultFilteredList = filteredLists.get(0);
 		for (ArrayList li : filteredLists) {
 
