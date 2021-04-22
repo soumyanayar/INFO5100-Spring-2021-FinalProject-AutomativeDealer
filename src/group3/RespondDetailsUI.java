@@ -178,6 +178,8 @@ public class RespondDetailsUI {
                     dialog.setAlwaysOnTop(true);
                     JOptionPane.showConfirmDialog(dialog, "The message is empty!",
                             "Warning",JOptionPane.WARNING_MESSAGE);
+                    theFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                    theFrame.setVisible(false);
                 } else {
                     int result = JOptionPane.showConfirmDialog(theFrame,
                             "Do you want to continue sending the message",
