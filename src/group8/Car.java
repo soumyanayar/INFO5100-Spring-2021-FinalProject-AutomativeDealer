@@ -48,7 +48,9 @@ public class Car {
     // constructor for MySQL query
     public Car(String stockID, String VIN, String dealerID, String make, String model,
                 int year, CarCategory category, double price, String color, int mileage,
-                List<String> images, String incentiveID, String discountPrice, int rating){
+                List<String> images, String incentiveID, String discountPrice, int rating,
+                String engine, String description, String transmission, String stock,
+                int seatCount, String fuel){
         
         this.stockNum = stockID;
         this.VIN = VIN;
@@ -62,6 +64,11 @@ public class Car {
         this.mileage = mileage;
         this.images = images;
         this.rating = rating;
+        this.engine = engine;
+        this.description = description;
+        this.transmission = transmission;
+        this.seatCount = seatCount;
+        this.fuel = fuel;
     }
     
     public Car(String stockNum , String make, String model, int year, double msrp,
