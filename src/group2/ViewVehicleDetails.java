@@ -79,7 +79,7 @@ public class ViewVehicleDetails {
 
         try {
             final List<Map<String, Object>> res = vehicleDAO.getById(1);
-            this.car = Utils.transToCar(res.get(0));
+            this.car = Utils.transToCarV2(res.get(0));
             this.dealer = Utils.transToDealer(res.get(0));
             incentives = NewJDBC.getInstance().getAllIncentiveByCarVIN(this.car.getVIN());
             incentives = new ArrayList<>();
@@ -640,4 +640,5 @@ public class ViewVehicleDetails {
         carDetails.showVehicleDetails();
 
     }
+
 }
