@@ -98,10 +98,10 @@ public class NewJDBC implements IDataProvider{
         String output = "";
         if(incentive instanceof CashDiscountIncentive){
             double newPrice = c.getMSRP() - ((CashDiscountIncentive)incentive).getValue();
-            output += newPrice;
+            output += "$ " + newPrice;
         }else if(incentive instanceof LeasingIncentive){
-            output += "Down Payment: " + ((LeasingIncentive)incentive).getSigningPay();
-            output += "\nMontly Payment: " + ((LeasingIncentive)incentive).getMonthlyPay();
+            output += "Down Payment: $ " + ((LeasingIncentive)incentive).getSigningPay();
+            output += "\nMontly Payment: $ " + ((LeasingIncentive)incentive).getMonthlyPay();
             output += "\nFor " + ((LeasingIncentive)incentive).getMonths() + " months";
         }else if(incentive instanceof LoanIncentive){
             output += "Loan Incentive special APR: " + ((LoanIncentive)incentive).getApr() + "%";
@@ -623,4 +623,5 @@ public class NewJDBC implements IDataProvider{
     public List<Incentive> getAllIncentives() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+   
 }
