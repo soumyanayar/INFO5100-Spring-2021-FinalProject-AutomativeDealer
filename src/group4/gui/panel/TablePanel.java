@@ -36,12 +36,12 @@ public class TablePanel extends JPanel implements ActionListener {
     public TablePanel() {
         setLayout(new BorderLayout(0,0));
         JScrollPane scrollPane = new JScrollPane();
-        add(scrollPane, BorderLayout.CENTER);
+        add(scrollPane);
 
         table = new JTable();
         scrollPane.setColumnHeaderView(table);
 
-        model = new DefaultTableModel(new Object[][] {}, new String[] {"Vehicle ID", "VIN", "Dealer ID", "Make ID", "Model ID", "Year", "Category","Price","Color","Miles","Rating","Image", "Engine", "Description", "Transmission","Stock","Seat Count","Fuel"});
+        model = new DefaultTableModel(new Object[][] {}, new String[] {"Vehicle ID", "VIN", "Dealer ID", "Make", "Model", "Year", "Category","Price","Color","Miles","Rating","Image", "Engine", "Description", "Transmission","Stock","Seat Count","Fuel"});
 
         table.setModel(model);
         table.setRowHeight(100);

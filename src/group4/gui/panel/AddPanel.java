@@ -252,7 +252,7 @@ public class AddPanel extends JPanel {
                     int vehicleID = Integer.parseInt(vehicleIdText);
                 } catch (NumberFormatException e) {
                     JOptionPane.showMessageDialog(null, "Wrong data type for VehicleId", "Wrong Input", JOptionPane.WARNING_MESSAGE);
-                };
+                }
 
                 int vehicleID = Integer.parseInt(vehicleIdText);
                 if (vehicleID<0 || vehicleID >= Short.MAX_VALUE){

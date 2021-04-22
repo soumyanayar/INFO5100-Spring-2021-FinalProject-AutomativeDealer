@@ -19,7 +19,7 @@ public class GUIUtil {
         JFrame f = new JFrame();
         f.setSize(1500, 500);
         f.setLocationRelativeTo(null);
-        CenterPanel cp = new CenterPanel(strechRate);
+        TestPanel cp = new TestPanel(strechRate);
         f.setContentPane(cp);
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         f.setVisible(true);
