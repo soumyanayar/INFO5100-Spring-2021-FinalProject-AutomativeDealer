@@ -104,16 +104,16 @@ public class ViewVehicleDetails {
 
         scrollPane = new JScrollPane();
         scrollPane.setBackground(new Color(-4473925));
-        scrollPane.setMaximumSize(new Dimension(916, 940));
-        scrollPane.setMinimumSize(new Dimension(916, 940));
-        scrollPane.setPreferredSize(new Dimension(916, 940));
+        scrollPane.setMaximumSize(new Dimension(916, 970));
+        scrollPane.setMinimumSize(new Dimension(916, 970));
+        scrollPane.setPreferredSize(new Dimension(916, 970));
 //        scrollPane.setBorder(new LineBorder(new Color(255,0,0)));
 
         innerPanel = new JPanel();
         innerPanel.setLayout(new BoxLayout(innerPanel, BoxLayout.Y_AXIS));
-        innerPanel.setPreferredSize(new Dimension(916, 940));
-        innerPanel.setMaximumSize(new Dimension(916, 940));
-        innerPanel.setMinimumSize(new Dimension(916, 940));
+        innerPanel.setPreferredSize(new Dimension(916, 970));
+        innerPanel.setMaximumSize(new Dimension(916, 970));
+        innerPanel.setMinimumSize(new Dimension(916, 970));
 //        innerPanel.setBorder(new LineBorder(new Color(0,255,0)
 //        ));
         scrollPane.setViewportView(innerPanel);
@@ -131,7 +131,7 @@ public class ViewVehicleDetails {
         innerPanel.add(additionalBlankPanel);
 
         frame.pack();
-        frame.setSize(new Dimension(950, 950));
+        frame.setSize(new Dimension(950, 980));
         frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         frame.setVisible(true);
         frame.setContentPane(scrollPane);
@@ -559,9 +559,9 @@ public class ViewVehicleDetails {
     public void createDealersInformationPanel(Dealer myDealer) {
         dealersInformationPanel = new JPanel();
         dealersInformationPanel.setLayout(new BoxLayout(dealersInformationPanel, BoxLayout.Y_AXIS));
-        dealersInformationPanel.setMaximumSize(new Dimension(916, 70));
-        dealersInformationPanel.setMinimumSize(new Dimension(916, 70));
-        dealersInformationPanel.setPreferredSize(new Dimension(916, 70));
+        dealersInformationPanel.setMaximumSize(new Dimension(916, 100));
+        dealersInformationPanel.setMinimumSize(new Dimension(916, 100));
+        dealersInformationPanel.setPreferredSize(new Dimension(916, 100));
 
         dealersInformationPanel.setBackground(new Color(187, 187, 187));
         dealersInformationPanel.setBorder(new LineBorder(new Color(0, 0, 0)));
@@ -573,15 +573,15 @@ public class ViewVehicleDetails {
         dealersInformationPane = new JScrollPane();
         dealersInformationPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         dealersInformationPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
-        dealersInformationPane.setMaximumSize(new Dimension(916, 60));
-        dealersInformationPane.setMinimumSize(new Dimension(916, 60));
-        dealersInformationPane.setPreferredSize(new Dimension(916, 60));
+        dealersInformationPane.setMaximumSize(new Dimension(916, 90));
+        dealersInformationPane.setMinimumSize(new Dimension(916, 90));
+        dealersInformationPane.setPreferredSize(new Dimension(916, 90));
         dealersInformationPane.setBackground(new Color(187, 187, 187));
 
         dealersInformationTextArea = new JTextArea();
-        dealersInformationTextArea.setMaximumSize(new Dimension(916, 100));
-        dealersInformationTextArea.setMinimumSize(new Dimension(916, 100));
-        dealersInformationTextArea.setPreferredSize(new Dimension(916, 100));
+        dealersInformationTextArea.setMaximumSize(new Dimension(916, 90));
+        dealersInformationTextArea.setMinimumSize(new Dimension(916, 90));
+        dealersInformationTextArea.setPreferredSize(new Dimension(916, 90));
         dealersInformationTextArea.setEditable(false);
         dealersInformationTextArea.setBorder(new EmptyBorder(0,10,0,10));
         dealersInformationTextArea.setBackground(new Color(238, 238, 238));
@@ -641,7 +641,7 @@ public class ViewVehicleDetails {
 //        myDealer.setPhoneNumber("(855) 661-4448");
 
 //        ViewVehicleDetails carDetails = new ViewVehicleDetails(myCar, myDealer);
-        ViewVehicleDetails carDetails = new ViewVehicleDetails("1");
+        ViewVehicleDetails carDetails = new ViewVehicleDetails("28");
         carDetails.showVehicleDetails();
     }
 
