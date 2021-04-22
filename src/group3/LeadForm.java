@@ -63,7 +63,8 @@ public class LeadForm extends JComponent implements MouseListener {
         zipCode.setText(lead.getZipCode());
         carModel.setText(lead.getCarModel());
         carColor.setText(lead.getCarColor());
-        // carStock.setText(lead.getCarStock());
+        carVinTextField.setText(lead.getCarVin());
+        carStock.setText(lead.getCarStock());
         setMessage.setText(lead.getMessage());
         mouseClicked(null);
     }
@@ -82,16 +83,6 @@ public class LeadForm extends JComponent implements MouseListener {
 
     JPanel getMainPanel() {
         return mainPanel;
-    }
-    public static void main(String[] args) {
-        JFrame frame = new JFrame("Leads List");
-        LeadForm leadForm = new LeadForm();
-        leadForm.init(null, null);
-        frame.setContentPane(leadForm.mainPanel);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.pack();
-        frame.setSize(750, 500);
-        frame.setVisible(true);
     }
 
     @Override
