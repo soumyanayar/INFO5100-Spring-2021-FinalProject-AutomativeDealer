@@ -4,7 +4,10 @@ import group2.dao.VehicleDAO;
 import group2.utils.Utils;
 import group6.FormActionDirectory;
 import group6.LeadFormController;
-import group8.*;
+import group8.Car;
+import group8.CarCategory;
+import group8.Dealer;
+import group8.Incentive;
 import group8.data.NewJDBC;
 
 import javax.swing.*;
@@ -13,8 +16,9 @@ import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.*;
+import java.util.Map;
 
 public class ViewVehicleDetails {
     private List<String> vehicleImageList;
@@ -38,8 +42,6 @@ public class ViewVehicleDetails {
     private JTextArea dealersInformationTextArea;
     private JLabel vehicleNameLabel;
     private JScrollPane scrollPane;
-    private JTextField vehicleNameTextField;
-    private JTextField vehicleMSRPTextField;
     private Dimension iconLabelDimension = new Dimension(60, 45);
     private Dimension imageLabelDimension = new Dimension(120, 45);
     private Dimension dataLabelDimension = new Dimension(196, 45);
@@ -78,17 +80,11 @@ public class ViewVehicleDetails {
         VehicleDAO vehicleDAO = new VehicleDAO();
 
         try {
-            final List<Map<String, Object>> res = vehicleDAO.getById(1);
+
+            final List<Map<String, Object>> res = vehicleDAO.getById(Integer.parseInt(vehicleId));
             this.car = Utils.transToCarV2(res.get(0));
             this.dealer = Utils.transToDealer(res.get(0));
             incentives = NewJDBC.getInstance().getAllIncentiveByCarVIN(this.car.getVIN());
-            incentives = new ArrayList<>();
-            incentives.add(new LoanIncentive("String id1", "String dealerId", new Date(), new Date(),
-                    "String title", "Loan description", "String disclaimer", new HashSet<>(),
-                    1.0, 12));
-            incentives.add(new LeasingIncentive("String id2", "String dealerId", new Date(), new Date(),
-                    "String title", "Leasing description", "String disclaimer", new HashSet<>(), 14,
-                    201.0, 90.0));
             vehicleImageList = new ArrayList<>();
             vehicleImageList = car.getImages();
 
@@ -97,28 +93,24 @@ public class ViewVehicleDetails {
         }
     }
 
-    public ViewVehicleDetails(Car myCar, Dealer myDealer) {
-        vehicleImageList = new ArrayList<>();
-        vehicleImageList.add(System.getProperty("user.dir") + "\\src\\group2\\Icons\\img1.jpg");
-        vehicleImageList.add(System.getProperty("user.dir") + "\\src\\group2\\Icons\\img2.jpg");
-        vehicleImageList.add(System.getProperty("user.dir") + "\\src\\group2\\Icons\\img3.jpg");
-        vehicleImageList.add(System.getProperty("user.dir") + "\\src\\group2\\Icons\\img4.jpg");
-        this.car = myCar;
-        this.dealer = myDealer;
-        try {
-            incentives = NewJDBC.getInstance().getAllIncentiveByCarVIN(this.car.getVIN());
-            incentives = new ArrayList<>();
-            incentives.add(new LoanIncentive("String id1", "String dealerId", new Date(), new Date(),
-                    "String title", "Loan description", "String disclaimer", new HashSet<>(),
-                    1.0, 12));
-            incentives.add(new LeasingIncentive("String id2", "String dealerId", new Date(), new Date(),
-                    "String title", "Leasing description", "String disclaimer", new HashSet<>(), 14,
-                    201.0, 90.0));
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-        this.car.setImages(vehicleImageList);
-    }
+//    public ViewVehicleDetails(Car myCar, Dealer myDealer) {
+//        vehicleImageList = new ArrayList<>();
+//        this.car = myCar;
+//        this.dealer = myDealer;
+//        try {
+//            incentives = NewJDBC.getInstance().getAllIncentiveByCarVIN(this.car.getVIN());
+//            incentives = new ArrayList<>();
+////            incentives.add(new LoanIncentive("String id1", "String dealerId", new Date(), new Date(),
+////                    "String title", "Loan description", "String disclaimer", new HashSet<>(),
+////                    1.0, 12));
+////            incentives.add(new LeasingIncentive("String id2", "String dealerId", new Date(), new Date(),
+////                    "String title", "Leasing description", "String disclaimer", new HashSet<>(), 14,
+////                    201.0, 90.0));
+//        } catch (Exception e) {
+//            System.out.println(e.getMessage());
+//        }
+//        this.car.setImages(vehicleImageList);
+//    }
 
     public void showVehicleDetails() {
         createVehicleShortDescriptionPanel(this.car);
@@ -202,6 +194,7 @@ public class ViewVehicleDetails {
 
         JLabel discountStaticLabel = new JLabel();
         discountStaticLabel.setText("After Incentive");
+        discountStaticLabel.setFont(new Font("Calibri", Font.PLAIN, 16));
         discountStaticLabel.setPreferredSize(new Dimension(200, 30));
         discountStaticLabel.setMinimumSize(new Dimension(200, 30));
         discountStaticLabel.setMaximumSize(new Dimension(200, 30));
@@ -224,7 +217,7 @@ public class ViewVehicleDetails {
 
         JLabel msrpStaticLabel = new JLabel();
         msrpStaticLabel.setText("MSRP");
-        msrpStaticLabel.setFont(new Font("Calibri", Font.BOLD, 16));
+        msrpStaticLabel.setFont(new Font("Calibri", Font.PLAIN, 16));
         msrpStaticLabel.setPreferredSize(new Dimension(176, 30));
         msrpStaticLabel.setMinimumSize(new Dimension(176, 30));
         msrpStaticLabel.setMaximumSize(new Dimension(176, 30));
@@ -379,7 +372,7 @@ public class ViewVehicleDetails {
             vehicleInfoPanel.add(vehicleColorLabelPanel);
         }
         if (validateCarInfoDetails(myCar.getstockNum())) {
-            vehicleStockNumberLabelPanel = createVehicleSubInfoPanel(stockNumberImage, "Stock #", myCar.getstockNum());
+            vehicleStockNumberLabelPanel = createVehicleSubInfoPanel(stockNumberImage, "Stock #", myCar.getStockNum());
             vehicleInfoPanel.add(vehicleStockNumberLabelPanel);
         }
         if (myCar.getMileage() >= 0) {
@@ -428,25 +421,19 @@ public class ViewVehicleDetails {
 
         ActionListener incentiveOptionsActionListener = new ActionListener() {
             public void actionPerformed(ActionEvent actionEvent) {
-                System.out.println("Selected: " + incentiveOptions.getSelectedIndex());
-//                System.out.println("ID : " + incentives.get(incentiveOptions.getSelectedIndex() - 1).getId());
                 if (incentiveOptions.getSelectedIndex() == 0) {
                     discountedPricePanel.setVisible(false);
                     return;
                 }
                 try {
                     discountedPrice = NewJDBC.getInstance().applyDiscount(incentives.get(incentiveOptions.getSelectedIndex() - 1), car);
-                    if (incentiveOptions.getSelectedIndex() == 1) {
-                        discountedPrice = "$ 123111";
-                    } else {
-                        discountedPrice = " ";
-                    }
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
                 }
                 discountedPricePanel.setVisible(true);
                 if (discountedPrice != null && discountedPrice.trim().length() > 0) {
                     discountPriceLabel.setText(discountedPrice);
+                    System.out.println(discountedPrice);
                 } else {
                     discountPriceLabel.setText("--");
                 }
@@ -598,8 +585,6 @@ public class ViewVehicleDetails {
             dealerInfo += "\nPhone" + myDealer.getPhoneNumber();
         }
         dealersInformationTextArea.setText(dealerInfo);
-        System.out.println(dealerInfo);
-//        dealersInformationTextArea.setText("Beautiful White Frost. Abel Chevrolet Buick. Many Financing Options available. Credit Challenged? We can help! We have great relationships with many lenders which allows us to offer financing that many others can't! We're here to help you get in the vehicle you want! At Abel, we do our best to offer you an unique experience when purchasing a New or Pre-Owned vehicle. Unlike traditional car dealers, we offer a non-pressured environment giving you the time and space to make an informed decision. Our advertised prices are our best deal upfront. No Games, just fair prices and outstanding customer service. We won't waste your time! Once you've found the Abel Vehicle you're looking for, on average, you'll go from test drive to driving home in less than an hour!");
         dealersInformationTextArea.setFont(new Font("Calibri", Font.PLAIN, 13));
 
         dealersInformationPane.setViewportView(dealersInformationTextArea);
@@ -636,7 +621,7 @@ public class ViewVehicleDetails {
         myDealer.setPhoneNumber("(855) 661-4448");
 
 //        ViewVehicleDetails carDetails = new ViewVehicleDetails(myCar, myDealer);
-        ViewVehicleDetails carDetails = new ViewVehicleDetails("1");
+        ViewVehicleDetails carDetails = new ViewVehicleDetails("2");
         carDetails.showVehicleDetails();
 
     }

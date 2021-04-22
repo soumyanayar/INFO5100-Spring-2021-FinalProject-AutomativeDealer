@@ -24,17 +24,6 @@ public class RespondDetailsUI {
     public RespondDetailsUI(Lead lead) {
         this.lead = lead;
     }
-
-    public static void main (String[] args) {
-
-        // use your own file routes
-
-
-        LeadDataAccessor dataAccessor = new LeadDataAccessor("D:\\NewVehicleData.csv");
-        RespondDetailsUI r = new RespondDetailsUI(dataAccessor.getLeads().get(0));
-        r.buildGUI();
-    }
-
     public void buildGUI () {
         theFrame = new JFrame("Respond Window");
         theFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

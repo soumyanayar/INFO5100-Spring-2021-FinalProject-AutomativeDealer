@@ -37,11 +37,28 @@ public class LeadForm extends JComponent implements MouseListener {
 
     private boolean isExpanded;
 
-    public void init(JFrame mainFrame, Lead lead) {
+    public void init(JFrame mainFrame,Lead lead) {
         isExpanded = true;
         this.lead = lead;
         this.mainFrame = mainFrame;
         firstName.addMouseListener(this);
+        mouseClicked(null);
+        setText();
+        implementRespond();
+    }
+    public void setText( ){
+        fn.setText(lead.getFirstName());
+        ln.setText(lead.getLastName());
+        em.setText(lead.getEmail());
+        phone.setText(lead.getPhoneNumber());
+        zipCode.setText(lead.getZipCode());
+        carModel.setText(lead.getCarModel());
+        carColor.setText(lead.getCarColor());
+        carVinTextField.setText(lead.getCarVin());
+        carStock.setText(lead.getCarStock());
+        setMessage.setText(lead.getMessage());
+    }
+    public void implementRespond(){
         respondButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -56,35 +73,7 @@ public class LeadForm extends JComponent implements MouseListener {
                 r.buildGUI();
             }
         });
-        fn.setText(lead.getFirstName());
-        ln.setText(lead.getLastName());
-        em.setText(lead.getEmail());
-        phone.setText(lead.getPhoneNumber());
-        zipCode.setText(lead.getZipCode());
-        carModel.setText(lead.getCarModel());
-        carColor.setText(lead.getCarColor());
-        carVinTextField.setText(lead.getCarVin());
-        carStock.setText(lead.getCarStock());
-        setMessage.setText(lead.getMessage());
-        mouseClicked(null);
     }
-
-    public JTextField getFirstName() {
-        return fn;
-    }
-
-    public JTextField getLastName() {
-        return ln;
-    }
-    public JTextField getEmail() {
-        return em;
-    }
-
-
-    JPanel getMainPanel() {
-        return mainPanel;
-    }
-
     @Override
     public void setVisible(boolean isVisible){
         super.setVisible(isVisible);
@@ -150,6 +139,19 @@ public class LeadForm extends JComponent implements MouseListener {
             }
         }
         mainPanel.updateUI();
+    }
+    public JTextField getFirstName() {
+        return fn;
+    }
+
+    public JTextField getLastName() {
+        return ln;
+    }
+    public JTextField getEmail() {
+        return em;
+    }
+    public JPanel getMainPanel() {
+        return mainPanel;
     }
 
     @Override
