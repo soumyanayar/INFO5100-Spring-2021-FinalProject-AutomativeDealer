@@ -51,13 +51,12 @@ public class Utils {
         car.setMileage(Integer.parseInt(String.valueOf(map.getOrDefault("miles", 0))));
         car.setRating(Integer.parseInt(String.valueOf(map.getOrDefault("rating", 0))));
         car.setDescription(String.valueOf(map.getOrDefault("description", "")));
-        String urls = String.valueOf(map.getOrDefault("image_urls", ""));
+        String urls = String.valueOf(map.getOrDefault("image_urls", "default_car_260.jpg"));
         final String[] arr = urls.split(",");
         for (int i = 0; i < arr.length; i++) {
             arr[i] = "img/" + arr[i];
         }
         car.setImages(Arrays.asList(arr));
-
         return car;
     }
 
@@ -95,12 +94,15 @@ public class Utils {
         car.setDescription(checkNull(String.valueOf(map.getOrDefault("description", ""))));
 
         String urls = String.valueOf(map.getOrDefault("image_urls", ""));
-        final String[] arr = urls.split(",");
-        for (int i = 0; i < arr.length; i++) {
-            arr[i] = "img/" + arr[i];
+        if(urls.equals(""))
+            car.setImages(null);
+        else {
+            final String[] arr = urls.split(",");
+            for (int i = 0; i < arr.length; i++) {
+                arr[i] = "img/" + arr[i];
+            }
+            car.setImages(Arrays.asList(arr));
         }
-        car.setImages(Arrays.asList(arr));
-
         return car;
     }
 
