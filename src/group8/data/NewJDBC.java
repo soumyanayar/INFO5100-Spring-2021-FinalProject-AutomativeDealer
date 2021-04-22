@@ -94,10 +94,11 @@ public class NewJDBC implements IDataProvider{
                 "rebateValue DECIMAL NOT NULL)");
     }
     
-    public String applyDiscount(Incentive incentive, Car c){
+   public String applyDiscount(Incentive incentive, Car c){
         String output = "";
         if(incentive instanceof CashDiscountIncentive){
-            output += ((CashDiscountIncentive)incentive).getValue();
+            double newPrice = c.getMSRP() - ((CashDiscountIncentive)incentive).getValue();
+            output += newPrice;
         }else if(incentive instanceof LeasingIncentive){
             output += "Down Payment: " + ((LeasingIncentive)incentive).getSigningPay();
             output += "\nMontly Payment: " + ((LeasingIncentive)incentive).getMonthlyPay();
@@ -108,7 +109,8 @@ public class NewJDBC implements IDataProvider{
         }else if(incentive instanceof RebateIncentive){
             HashMap<String, Double> rebateMap = ((RebateIncentive)incentive).getRebateMap();
             for(String key: rebateMap.keySet()){
-                output += "Discount Price For " + key + ": $" + rebateMap.get(key) + "\n";
+                double newPrice = c.getMSRP() - rebateMap.get(key);
+                output += "Discount Price For " + key + ": $" + newPrice + "\n";
             }
         }
         return output;
