@@ -122,9 +122,6 @@ public class LeadFormView extends JFrame {
                 LeadModel optional;
                 if (!textArea1.getText().matches("")) {
                     message = textArea1.getText();
-                    if (message.contains(",")) {
-                        message = message.replaceAll(",", "/");
-                    }
                 } else {
                     message = "No Comment";
                 }
