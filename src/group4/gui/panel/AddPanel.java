@@ -47,6 +47,9 @@ public class AddPanel extends JPanel {
     private TablePanel tablePanel;
     private MainFrame main;
 
+    private int makeID = 1;
+    private List<Model>  modelList;
+
     public AddPanel() {
         setLayout(null);
 
@@ -87,12 +90,25 @@ public class AddPanel extends JPanel {
         cmbMake.setBounds(600, 115, 155, 20);
         add(cmbMake);
 
+        cmbMake.addActionListener(new ActionListener(){
+            public void  actionPerformed(ActionEvent e){
+                Make make = (Make) cmbMake.getSelectedItem();
+                makeID = make.getMakeID();
+                modelList = modelDao.queryByMakeID(makeID);
+                remove(cmbModel);
+                cmbModel = new JComboBox(modelList.toArray());
+                cmbModel.setBounds(600, 140, 155, 20);
+                add(cmbModel);
+                revalidate();
+            }
+        });
+
         JLabel label_5 = new JLabel("Model:");
         label_5.setBounds(530, 140, 60, 20);
         add(label_5);
 
         modelDao = new ModelDaoImpl();
-        List<Model> modelList = modelDao.queryAll();
+        List<Model> modelList = modelDao.queryByMakeID(makeID);
         cmbModel = new JComboBox(modelList.toArray());
         cmbModel.setBounds(600, 140, 155, 20);
         add(cmbModel);
