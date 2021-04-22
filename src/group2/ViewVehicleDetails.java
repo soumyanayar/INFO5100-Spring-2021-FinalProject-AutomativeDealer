@@ -82,6 +82,7 @@ public class ViewVehicleDetails {
         VehicleDAO vehicleDAO = new VehicleDAO();
 
         try {
+
             final List<Map<String, Object>> res = vehicleDAO.getById(Integer.parseInt(vehicleId));
             this.car = Utils.transToCarV2(res.get(0));
             this.dealer = Utils.transToDealer(res.get(0));
@@ -636,4 +637,5 @@ public class ViewVehicleDetails {
         ViewVehicleDetails carDetails = new ViewVehicleDetails("1");
         carDetails.showVehicleDetails();
     }
+
 }
