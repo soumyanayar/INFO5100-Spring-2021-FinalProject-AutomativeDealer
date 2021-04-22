@@ -99,7 +99,7 @@ public class FilterAndBrowseUI extends JFrame implements ItemListener {
 
 		color = new JComboBox(filterAndSearchController.getValidOption("color", completeList));
 
-		mileage = new JComboBox(new String[] { "0-2000", "2000-3000", "3000-5000", "5000-6000" });
+		mileage = new JComboBox(new String[] { "0-20000", "20000-40000", "40000-60000", "60000-80000", "80000-200000"});
 
 		model = new JComboBox(filterAndSearchController.getValidOption("model", completeList));
 
