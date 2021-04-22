@@ -74,11 +74,12 @@ public class LeadFormView extends JFrame {
         buttonGroup.add(personalUseRadioButton);
         businessUseRadioButton.addActionListener(new ActionListener() {
             boolean flag = true;
+
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(businessUseRadioButton.isSelected() == flag){
-                    flag = !(flag) ;
-                }else{
+                if (businessUseRadioButton.isSelected() == flag) {
+                    flag = !(flag);
+                } else {
                     buttonGroup.clearSelection();
                     flag = true;
                 }
@@ -87,11 +88,12 @@ public class LeadFormView extends JFrame {
 
         personalUseRadioButton.addActionListener(new ActionListener() {
             boolean flag = true;
+
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(personalUseRadioButton.isSelected() == flag){
-                    flag = !(flag) ;
-                }else{
+                if (personalUseRadioButton.isSelected() == flag) {
+                    flag = !(flag);
+                } else {
                     buttonGroup.clearSelection();
                     flag = true;
                 }
@@ -195,10 +197,10 @@ public class LeadFormView extends JFrame {
                 LeadModel optional;
                 if (!textArea1.getText().matches("")) {
                     message = textArea1.getText();
-                    if(message.contains(",")){
-                        message = message.replaceAll(",","/");
+                    if (message.contains(",")) {
+                        message = message.replaceAll(",", "/");
                     }
-                }else{
+                } else {
                     message = "No Comment";
                 }
                 if (personalUseRadioButton.isSelected()) {
@@ -207,7 +209,7 @@ public class LeadFormView extends JFrame {
                 } else if (businessUseRadioButton.isSelected()) {
                     optional = new LeadModel(message, LeadModel.UseType.BUSINESS, user);
 
-                }else {
+                } else {
                     optional = new LeadModel(message, LeadModel.UseType.NO_USE_TYPE, user);
                 }
 
