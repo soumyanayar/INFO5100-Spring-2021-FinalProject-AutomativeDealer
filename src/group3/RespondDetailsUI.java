@@ -4,6 +4,7 @@ import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.*;
 import java.awt.event.*;
+import java.io.*;
 import java.util.ArrayList;
 
 
@@ -24,6 +25,17 @@ public class RespondDetailsUI {
     public RespondDetailsUI(Lead lead) {
         this.lead = lead;
     }
+
+    /*public static void main (String[] args) {
+
+        // use your own file routes
+
+
+        LeadDataAccessor dataAccessor = new LeadDataAccessor("D:\\NewVehicleData.csv");
+        RespondDetailsUI r = new RespondDetailsUI(dataAccessor.getLeads().get(0));
+        r.buildGUI();
+    }*/
+
     public void buildGUI () {
         theFrame = new JFrame("Respond Window");
         theFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -183,6 +195,8 @@ public class RespondDetailsUI {
                         lead.setContacted(true);
                         commentsMessageReplyTextArea.setText(null);
                         lead.setReplyMessage("");
+                        theFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                        theFrame.setVisible(false);
 
 
                     }
@@ -213,6 +227,24 @@ public class RespondDetailsUI {
     }
 
     private void sendMessage(Lead lead, String message) {
+
+        PrintWriter pw = null;
+        try {
+            pw = new PrintWriter(new FileOutputStream("RespondData.csv",true));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        StringBuilder csvData = new StringBuilder("");
+
+        // write data
+        csvData.append(lead.getFirstName()).append(",");
+        csvData.append(lead.getLastName()).append(",");
+        csvData.append(lead.getEmail()).append(",");
+        csvData.append(lead.getMessage()).append(",");
+        csvData.append(lead.getReplyMessage());
+        csvData.append('\n');
+        pw.write(csvData.toString());
+        pw.close();
 
     }
 
