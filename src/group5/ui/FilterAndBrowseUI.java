@@ -155,8 +155,7 @@ public class FilterAndBrowseUI extends JFrame implements ItemListener {
 
 		imagelabel = new JLabel();
 		BufferedImage image = null;
-		image = ImageIO.read(ClassLoader.getSystemResource("\\download.jfif"));
-		ImageIcon icon = new ImageIcon(image);
+		ImageIcon icon = new ImageIcon("src/group5/img/download.jfif");
 		imagelabel.setIcon(icon);
 
 		p = new JPanel();
@@ -353,7 +352,7 @@ public class FilterAndBrowseUI extends JFrame implements ItemListener {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
-					 new ViewVehicleDetails(dealerID);
+					 new ViewVehicleDetails(car.getstockNum());
 				} catch (Exception ex) {
 					ex.printStackTrace();
 				}
