@@ -192,8 +192,8 @@ public class FilterAndBrowseUI extends JFrame implements ItemListener {
 		p.add(yearLabel);
 		p.add(selectYear);
 		p.add(clearBtn);
-		p.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-		p2.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		p.setLayout(new FlowLayout(FlowLayout.LEFT,4,4));
+		p2.setLayout(new FlowLayout(FlowLayout.LEFT,4,4));
 		displayAllData(container, this.completeList);
 		frame.add(p3, BorderLayout.NORTH);
 		frame.add(p, BorderLayout.WEST);
@@ -352,7 +352,9 @@ public class FilterAndBrowseUI extends JFrame implements ItemListener {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
-					 new ViewVehicleDetails(car.getstockNum());
+					ViewVehicleDetails view= new ViewVehicleDetails(car.getstockNum());
+					view.showVehicleDetails();
+					 
 				} catch (Exception ex) {
 					ex.printStackTrace();
 				}
