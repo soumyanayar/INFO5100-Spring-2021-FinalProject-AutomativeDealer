@@ -155,7 +155,7 @@ public class ViewVehicleDetails {
 
         frame.pack();
         frame.setSize(new Dimension(950, 950));
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         frame.setVisible(true);
         frame.setContentPane(scrollPane);
     }
@@ -292,7 +292,6 @@ public class ViewVehicleDetails {
                 FormActionDirectory formAction = new FormActionDirectory(myCar);
                 LeadFormController leadFormRequest = new LeadFormController(myCar, formAction);
                 leadFormRequest.showLeadForm();
-                frame.dispose();
             }
         });
 
