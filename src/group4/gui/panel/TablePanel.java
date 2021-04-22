@@ -19,6 +19,7 @@ import javax.swing.table.TableColumnModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -48,6 +49,19 @@ public class TablePanel extends JPanel implements ActionListener {
             {
                 if (column == 0) return ImageIcon.class;
                 return Object.class;
+            }
+            public String getToolTipText(MouseEvent e) {
+                int row = TablePanel.this.table.rowAtPoint(e.getPoint());
+                int col = TablePanel.this.table.columnAtPoint(e.getPoint());
+                String tiptextString = null;
+                if (row > -1 && col > -1) {
+                    Object value = TablePanel.this.table.getValueAt(row, col);
+                    if (null != value && !"".equals(value)) {
+                        tiptextString = value.toString();
+                    }
+                }
+
+                return tiptextString;
             }
         };;
 
