@@ -93,7 +93,7 @@ public class GUIAndMap {
     }
 
     private JScrollPane dealerDisplay() {
-        JScrollPane output = new JScrollPane(dealerSearch.getDealerTable(),
+        JScrollPane output = new JScrollPane(dealerSearch.getListDealersPanel(),
                 ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
                 ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         output.setBackground(Color.WHITE);
