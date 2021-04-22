@@ -27,6 +27,7 @@ public class DealerSearch extends JFrame {
     private JLabel validationText;
     private JPanel searchPanel;
     private JPanel searchContainerPanel;
+    private JPanel listDealersPanel;
 
     public DealerSearch() throws HeadlessException {
         $$$setupUI$$$();
@@ -64,16 +65,42 @@ public class DealerSearch extends JFrame {
                         }
                     }
                     model.setRowCount(0);
+                    listDealersPanel.removeAll();
+                    listDealersPanel.setLayout(new BoxLayout(listDealersPanel, BoxLayout.Y_AXIS));
+
                     for (int i = 0; i < dealers.size(); i++) {
+                        listDealersPanel.add(new JLabel("<html><br/></html>"));
+
                         Dealer dealer = dealers.get(i);
-                        model.addRow(new Object[]{dealer.getName().toUpperCase()});
-                        String zip_code = "ZipCode: " + dealer.getZipcode();
-                        String dealer_address = "Address: " + dealer.getStreetAddress() + ", " + dealer.getCity();
-                        model.addRow(new Object[]{dealer_address});
-                        model.addRow(new Object[]{zip_code});
-                        model.addRow(new Object[]{});
-                        model.addRow(new Object[]{});
+                        JLabel tempLabelName = new JLabel();
+                        tempLabelName.setText(dealer.getName());
+                        tempLabelName.setAlignmentX(CENTER_ALIGNMENT);
+                        listDealersPanel.add(tempLabelName);
+                        listDealersPanel.add(new JLabel("<html><br/></html>"));
+
+                        String dealerAddress = dealer.getStreetAddress() + ", " + dealer.getCity() + ", " +  dealer.getZipcode();
+                        JLabel tempLabelAddress = new JLabel();
+                        tempLabelAddress.setText(dealerAddress);
+                        tempLabelAddress.setAlignmentX(CENTER_ALIGNMENT);
+                        listDealersPanel.add(tempLabelAddress);
+                        listDealersPanel.add(new JLabel("<html><br/></html>"));
+
+                        String dealerPhone = "Ph: " + dealer.getPhoneNumber();
+                        JLabel tempDealerPhone = new JLabel();
+                        tempDealerPhone.setText(dealerPhone);
+                        tempDealerPhone.setAlignmentX(CENTER_ALIGNMENT);
+                        listDealersPanel.add(tempDealerPhone);
+                        listDealersPanel.add(new JLabel("<html><br/></html>"));
+
+                        JButton inventoryButton = new JButton();
+                        inventoryButton.setText("Inventory");
+                        inventoryButton.addActionListener(new InventoryButtonActionListener(dealer));
+                        inventoryButton.setAlignmentX(CENTER_ALIGNMENT);
+                        listDealersPanel.add(inventoryButton);
+                        listDealersPanel.add(new JLabel("<html><br/></html>"));
+                        listDealersPanel.add(new JLabel("<html><br/></html>"));
                     }
+                    listDealersPanel.revalidate();
                     if (dealers.size() == 0 && isValidQuery) {
                         JOptionPane.showMessageDialog(null, "No dealers found. Please try again with a different search parameter", "InfoBox: " + "No Dealers found", JOptionPane.INFORMATION_MESSAGE);
                     }
@@ -112,32 +139,6 @@ public class DealerSearch extends JFrame {
                 clearQueryTextField();
                 setQueryTextFieldTooltip("Dealer name");
                 clearValidations();
-            }
-        });
-
-        dealerTable.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent evt) {
-                try {
-                    int row = dealerTable.rowAtPoint(evt.getPoint());
-                    int col = dealerTable.columnAtPoint(evt.getPoint());
-                    if (row % 5 == 0 && col >= 0) {
-                        Object dealerValueClicked = dealerTable.getValueAt(row, col);
-
-                        DealerDirectory dealerDirectory = new DealerDirectory();
-                        List<Dealer> dealers = new ArrayList<>();
-                        dealers = dealerDirectory.getDealerByDealerName(dealerValueClicked.toString());
-
-                        Dealer clickedDealer = dealers.get(0);
-                        String dealerID = clickedDealer.getDealerID();
-                        FilterAndBrowseUI filterAndBrowseUI = new FilterAndBrowseUI(clickedDealer);
-                        filterAndBrowseUI.buildUseCase2UI();
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    System.out.println(e);
-                    JOptionPane.showMessageDialog(mainPanel, "Error In Connectivity");
-                }
             }
         });
     }
@@ -189,6 +190,7 @@ public class DealerSearch extends JFrame {
         stateRadioButton = new JRadioButton();
         zipCodeRadioButton = new JRadioButton();
         dealerNameRadioButton = new JRadioButton();
+        listDealersPanel = new JPanel();
         dealerTable = new JTable(new DefaultTableModel(null, new String[]{""}));
         dealerTable.setOpaque(false);
         ((DefaultTableCellRenderer) dealerTable.getDefaultRenderer(Object.class)).setOpaque(false);
@@ -200,6 +202,10 @@ public class DealerSearch extends JFrame {
 
     public JTable getDealerTable() {
         return dealerTable;
+    }
+
+    public JPanel getListDealersPanel() {
+        return listDealersPanel;
     }
 
     public JPanel getSearchPanel() {
@@ -266,4 +272,22 @@ public class DealerSearch extends JFrame {
         return searchContainerPanel;
     }
 
+}
+
+class InventoryButtonActionListener implements ActionListener {
+    private Dealer dealer;
+
+    public InventoryButtonActionListener(Dealer dealer) {
+        this.dealer = dealer;
+    }
+
+    public void actionPerformed(ActionEvent e) {
+        FilterAndBrowseUI filterAndBrowseUI = null;
+        try {
+            filterAndBrowseUI = new FilterAndBrowseUI(dealer);
+            filterAndBrowseUI.buildUseCase2UI();
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+    }
 }
