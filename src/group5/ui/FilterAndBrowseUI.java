@@ -122,7 +122,7 @@ public class FilterAndBrowseUI extends JFrame implements ItemListener {
 
 		//creates the labels
 		startlabel = new JLabel("***NEW/USED VEHICLES***");
-		makeLabel = new JLabel("  make");
+		makeLabel = new JLabel("  Make");
 		modelLabel = new JLabel("  Model");
 		categoryLabel = new JLabel("  Category");
 		colorLabel = new JLabel("  Color");
@@ -135,16 +135,17 @@ public class FilterAndBrowseUI extends JFrame implements ItemListener {
 		//creates fonts and sets label fonts
 		Font font1 = new Font("Courier", Font.BOLD, 16);
 		Font font2 = new Font("Courier", Font.BOLD, 22);
-		makeLabel.setFont(font1);
-		modelLabel.setFont(font1);
-		categoryLabel.setFont(font1);
-		colorLabel.setFont(font1);
-		priceLabel.setFont(font1);
-		priceMinLabel.setFont(font1);
-		priceMaxLabel.setFont(font1);
-		yearLabel.setFont(font1);
-		mileageLabel.setFont(font1);
-		startlabel.setFont(font2);
+		makeLabel.setFont(makeLabel.getFont().deriveFont(14f));
+		modelLabel.setFont(makeLabel.getFont().deriveFont(14f));
+		categoryLabel.setFont(makeLabel.getFont().deriveFont(14f));
+		colorLabel.setFont(makeLabel.getFont().deriveFont(14f));
+		mileageLabel.setFont(makeLabel.getFont().deriveFont(14f));
+		priceLabel.setFont(makeLabel.getFont().deriveFont(14f));
+		priceMinLabel.setFont(makeLabel.getFont().deriveFont(14f));
+		priceMaxLabel.setFont(makeLabel.getFont().deriveFont(14f));
+		yearLabel.setFont(makeLabel.getFont().deriveFont(14f));
+		mileageLabel.setFont(makeLabel.getFont().deriveFont(14f));
+		startlabel.setFont(makeLabel.getFont().deriveFont(14f));
 
 	}
 
@@ -159,7 +160,7 @@ public class FilterAndBrowseUI extends JFrame implements ItemListener {
 		imagelabel.setIcon(icon);
 
 		p = new JPanel();
-		p.setPreferredSize(new Dimension(1500, 10));
+		p.setPreferredSize(new Dimension(1700, 10));
 		JPanel p1 = new JPanel();
 		p1.setBackground(Color.white);
 		p.setBackground(Color.LIGHT_GRAY);
@@ -167,6 +168,7 @@ public class FilterAndBrowseUI extends JFrame implements ItemListener {
 
 		p2 = new JPanel();
 		p3 = new JPanel();
+		
 		p3.setPreferredSize(new Dimension(1500, 80));
 		p3.setBackground(Color.WHITE);
 		p1.add(imagelabel);
@@ -192,8 +194,8 @@ public class FilterAndBrowseUI extends JFrame implements ItemListener {
 		p.add(yearLabel);
 		p.add(selectYear);
 		p.add(clearBtn);
-		p.setLayout(new FlowLayout(FlowLayout.LEFT,4,4));
-		p2.setLayout(new FlowLayout(FlowLayout.LEFT,4,4));
+		p.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		p2.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		displayAllData(container, this.completeList);
 		frame.add(p3, BorderLayout.NORTH);
 		frame.add(p, BorderLayout.WEST);
