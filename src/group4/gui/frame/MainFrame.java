@@ -2,6 +2,8 @@ package group4.gui.frame;
 
 import group4.gui.panel.AddPanel;
 import group4.gui.panel.TablePanel;
+import group7.ui.IncentiveManagerUI;
+import group8.data.NewJDBC;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -21,18 +23,31 @@ public class MainFrame extends JFrame {
     private TablePanel table;
     JTabbedPane tabs;
 
+    static Runnable run = new Runnable() {
+        public void run() {
+            try {
+                UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+                MainFrame frame = new MainFrame();
+                frame.setVisible(true);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    };
+
     public static void main(String[] args) {
 //        System.setProperty("java.net.useSystemProxies", "true");
-        EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    MainFrame frame = new MainFrame();
-                    frame.setVisible(true);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
+        EventQueue.invokeLater(run);
+    }
+
+    public void run() {
+        try {
+            UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+            MainFrame frame = new MainFrame();
+            frame.setVisible(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public MainFrame() {
@@ -60,7 +75,7 @@ public class MainFrame extends JFrame {
             }
         });
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(500, 500, 1500, 540);
+        setBounds(500, 500, 1500, 740);
         setTitle("Inventory Management System");
         contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));

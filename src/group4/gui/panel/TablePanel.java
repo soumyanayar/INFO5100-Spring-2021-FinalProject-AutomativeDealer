@@ -44,7 +44,7 @@ public class TablePanel extends JPanel implements ActionListener {
         model = new DefaultTableModel(new Object[][] {}, new String[] {"Vehicle ID", "VIN", "Dealer ID", "Make ID", "Model ID", "Year", "Category","Price","Color","Miles","Rating","Image", "Engine", "Description", "Transmission","Stock","Seat Count","Fuel"});
 
         table.setModel(model);
-        table.setRowHeight(40);
+        table.setRowHeight(100);
 
         scrollPane.setViewportView(table);
 
