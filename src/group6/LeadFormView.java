@@ -59,6 +59,11 @@ public class LeadFormView extends JFrame {
         return mainPanel;
     }
 
+    /**
+     * Constructor
+     * @param car
+     * @param formActionDirectory
+     */
     public LeadFormView(Car car, FormActionDirectory formActionDirectory) {
         this.car = car;
         this.setContentPane(this.mainPanel);
@@ -72,32 +77,93 @@ public class LeadFormView extends JFrame {
         buttonGroup = new ButtonGroup();
         buttonGroup.add(businessUseRadioButton);
         buttonGroup.add(personalUseRadioButton);
-        businessUseRadioButton.addActionListener(new ActionListener() {
-            boolean flag = true;
+        radioButtonActionListener();
+
+        textFieldFocusListener();
+
+        submitButtonActionListener(car);
+    }
+
+    private void submitButtonActionListener(Car car) {
+        submitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(businessUseRadioButton.isSelected() == flag){
-                    flag = !(flag) ;
-                }else{
-                    buttonGroup.clearSelection();
-                    flag = true;
+
+                String firstName = fName.getText();
+                if (firstName.isEmpty()) {
+                    showErrorMessage("Please enter First Name", fName);
+                    return;
                 }
+                String lastName = lName.getText();
+                if (lastName.isEmpty()) {
+                    showErrorMessage("Please enter Last Name", lName);
+                    return;
+                }
+                String emailId = eMail.getText();
+                if (emailId.isEmpty() || !isValidEmail(emailId)) {
+                    showErrorMessage("Please enter Valid email", eMail);
+                    return;
+                }
+                String phoneNo = ph_No.getText();
+                if (phoneNo.isEmpty() || !isValidPhone(phoneNo)) {
+                    showErrorMessage("Please enter Valid Phone Number", ph_No);
+                    return;
+                }
+                String zip = zipCode.getText();
+                if (zip.isEmpty() || !isValidZipCode(zip)) {
+                    showErrorMessage("Please enter Valid ZipCode", zipCode);
+                    return;
+                }
+                User user = new User(firstName, lastName, emailId, phoneNo, zip);
+
+                String message;
+                LeadModel optional;
+                if (!textArea1.getText().matches("")) {
+                    message = textArea1.getText();
+                    if (message.contains(",")) {
+                        message = message.replaceAll(",", "/");
+                    }
+                } else {
+                    message = "No Comment";
+                }
+                if (personalUseRadioButton.isSelected()) {
+                    optional = new LeadModel(message, LeadModel.UseType.PERSONAL, user);
+
+                } else if (businessUseRadioButton.isSelected()) {
+                    optional = new LeadModel(message, LeadModel.UseType.BUSINESS, user);
+
+                } else {
+                    optional = new LeadModel(message, LeadModel.UseType.NO_USE_TYPE, user);
+                }
+
+                user.setOptional(optional);
+                controller.submitLeadForm(user);
+                //write into file
+                info[0] = firstName;
+                info[1] = lastName;
+                info[2] = emailId;
+                info[3] = phoneNo;
+                info[4] = zip;
+                info[5] = optional.getUserType().toString();
+                info[6] = message;
+                info[7] = car.getModel();
+                info[8] = car.getColor();
+                info[9] = car.getVIN();
+                info[10] = car.getStockNum();
+                try {
+                    write(info);
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                }
+                //add a notification
+                JOptionPane.showMessageDialog(null, "Submit Successfully!");
+                clear();
+                dispose();
             }
         });
+    }
 
-        personalUseRadioButton.addActionListener(new ActionListener() {
-            boolean flag = true;
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if(personalUseRadioButton.isSelected() == flag){
-                    flag = !(flag) ;
-                }else{
-                    buttonGroup.clearSelection();
-                    flag = true;
-                }
-            }
-        });
-
+    private void textFieldFocusListener() {
         fName.addFocusListener(new FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
@@ -159,96 +225,49 @@ public class LeadFormView extends JFrame {
                 setDefaultBorder(zipCode);
             }
         });
+    }
 
-        submitButton.addActionListener(new ActionListener() {
+    private void radioButtonActionListener() {
+        businessUseRadioButton.addActionListener(new ActionListener() {
+            boolean flag = true;
+
             @Override
             public void actionPerformed(ActionEvent e) {
+                if (businessUseRadioButton.isSelected() == flag) {
+                    flag = !(flag);
+                } else {
+                    buttonGroup.clearSelection();
+                    flag = true;
+                }
+            }
+        });
 
-                String firstName = fName.getText();
-                if (firstName.isEmpty()) {
-                    showErrorMessage("Please enter First Name", fName);
-                    return;
-                }
-                String lastName = lName.getText();
-                if (lastName.isEmpty()) {
-                    showErrorMessage("Please enter Last Name", lName);
-                    return;
-                }
-                String emailId = eMail.getText();
-                if (emailId.isEmpty() || !isValidEmail(emailId)) {
-                    showErrorMessage("Please enter Valid email", eMail);
-                    return;
-                }
-                String phoneNo = ph_No.getText();
-                if (phoneNo.isEmpty() || !isValidPhone(phoneNo)) {
-                    showErrorMessage("Please enter Valid Phone Number", ph_No);
-                    return;
-                }
-                String zip = zipCode.getText();
-                if (zip.isEmpty() || !isValidZipCode(zip)) {
-                    showErrorMessage("Please enter Valid ZipCode", zipCode);
-                    return;
-                }
-                User user = new User(firstName, lastName, emailId, phoneNo, zip);
+        personalUseRadioButton.addActionListener(new ActionListener() {
+            boolean flag = true;
 
-                String message;
-                LeadModel optional;
-                if (!textArea1.getText().matches("")) {
-                    message = textArea1.getText();
-                    if(message.contains(",")){
-                        message = message.replaceAll(",","/");
-                    }
-                }else{
-                    message = "No Comment";
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (personalUseRadioButton.isSelected() == flag) {
+                    flag = !(flag);
+                } else {
+                    buttonGroup.clearSelection();
+                    flag = true;
                 }
-                if (personalUseRadioButton.isSelected()) {
-                    optional = new LeadModel(message, LeadModel.UseType.PERSONAL, user);
-
-                } else if (businessUseRadioButton.isSelected()) {
-                    optional = new LeadModel(message, LeadModel.UseType.BUSINESS, user);
-
-                }else {
-                    optional = new LeadModel(message, LeadModel.UseType.NO_USE_TYPE, user);
-                }
-
-                user.setOptional(optional);
-                controller.submitLeadForm(user);
-                //write into file
-                info[0] = firstName;
-                info[1] = lastName;
-                info[2] = emailId;
-                info[3] = phoneNo;
-                info[4] = zip;
-                info[5] = optional.getUserType().toString();
-                info[6] = message;
-                info[7] = car.getModel();
-                info[8] = car.getColor();
-                info[9] = car.getVIN();
-                info[10] = car.getStockNum();
-                try {
-                    write(info);
-                } catch (IOException ioException) {
-                    ioException.printStackTrace();
-                }
-                //add a notification
-                JOptionPane.showMessageDialog(null, "Submit Successfully!");
-                clear();
-                dispose();
             }
         });
     }
 
-    static boolean isValidEmail(String eMail) {
+    boolean isValidEmail(String eMail) {
         String regex = "^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$";
         return eMail.matches(regex);
     }
 
-    static boolean isValidPhone(String phoneNo) {
+    boolean isValidPhone(String phoneNo) {
         String regex = "^\\(?([0-9]{3})\\)?[-.\\s]?([0-9]{3})[-.\\s]?([0-9]{4})$";
         return phoneNo.matches(regex);
     }
 
-    static boolean isValidZipCode(String zipCode) {
+    boolean isValidZipCode(String zipCode) {
         String regex = "\\d{5}";
         return zipCode.matches(regex);
     }
@@ -287,7 +306,7 @@ public class LeadFormView extends JFrame {
 
         termsConditionLabel.setFont(DealerFont.getDescriptionFont());
     }
-
+    // Car details
     private void setValue() {
         carModelLabel.setText(car.getYear() + " " + car.getMake() + " " + car.getModel());
         carColorLabel.setText("Color: " + car.getColor());
@@ -296,7 +315,7 @@ public class LeadFormView extends JFrame {
         carVinLabel.setText("Vin: " + car.getVIN());
         mileageLabel.setText("Mileage: " + car.getMileage() + "Miles");
         instructionLabel.setText("<html>Fill out the contact form below and one of our friendly helpful sales staff will answer <br/> any questions you have about this vehicle.</html>");
-        termsConditionLabel.setText("<html>By submitting your request, you consent to be contacted at the phone number you <br/> provided-which may include auto-dials,text messages and/or pre-recorded calls.By <br/> subscribing to receive  recurring SMS offers, you consent to receive text messages <br/> sent  through an automatic telephone dialing system, and message and data rates may<br/> apply. This consent is not a condition of purchase. You may opt out at any time by <br/> replying STOP to a text message, or calling (206) 241-1888 to have your telephone<br/>number removed from our system.</html>");
+        termsConditionLabel.setText("<html>By submitting your request, you consent to be contacted at the phone number you <br/> provided-which may include auto-dials,text messages and/or pre-recorded calls.By <br/> subscribing to receive  recurring SMS offers, you consent to receive text messages <br/> sent  through an automatic telephone dialing system, and message and data rates may<br/> apply. This consent is not a condition of purchase. You may opt out at any time by <br/> replying STOP to a text message, or calling (xxx) xxx-xxxx to have your telephone<br/>number removed from our system.</html>");
 
         String imageName;
         imageName = "src/group6/car_placeholder.png";
@@ -316,6 +335,7 @@ public class LeadFormView extends JFrame {
         imageLabel.setText("");
     }
 
+    //after error message, border will change to Red color
     private void showErrorMessage(String error, JTextField textField) {
         if (isErrorDialogShown)
             return;
