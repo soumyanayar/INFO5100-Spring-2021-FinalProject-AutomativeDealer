@@ -9,19 +9,19 @@ import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-public class CenterPanel extends JPanel {
+public class TestPanel extends JPanel {
 
     private double rate;
     private JComponent c;
     private boolean strech;
 
-    public CenterPanel(double rate,boolean strech) {
+    public TestPanel(double rate, boolean strech) {
         this.setLayout(null);
         this.rate = rate;
         this.strech = strech;
     }
 
-    public CenterPanel(double rate) {
+    public TestPanel(double rate) {
         this(rate,true);
     }
 
@@ -54,7 +54,7 @@ public class CenterPanel extends JPanel {
         JFrame f = new JFrame();
         f.setSize(200, 200);
         f.setLocationRelativeTo(null);
-        CenterPanel cp = new CenterPanel(0.85,true);
+        TestPanel cp = new TestPanel(0.85,true);
         f.setContentPane(cp);
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         f.setVisible(true);
