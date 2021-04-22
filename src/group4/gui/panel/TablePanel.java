@@ -38,11 +38,17 @@ public class TablePanel extends JPanel implements ActionListener {
         JScrollPane scrollPane = new JScrollPane();
         add(scrollPane);
 
-        table = new JTable();
+        //table = new JTable();
+        //scrollPane.setColumnHeaderView(table);
+
+        model = new DefaultTableModel(new Object[][] {}, new String[] {"Image","Vehicle ID", "VIN", "Dealer ID", "Make", "Model", "Year", "Category","Price","Color","Miles","Rating","Image", "Engine", "Description", "Transmission","Stock","Seat Count","Fuel"});
+
+        this.table = new JTable(this.model) {
+            public Class getColumnClass(int column) {
+                return this.getValueAt(0, column).getClass();
+            }
+        };
         scrollPane.setColumnHeaderView(table);
-
-        model = new DefaultTableModel(new Object[][] {}, new String[] {"Vehicle ID", "VIN", "Dealer ID", "Make", "Model", "Year", "Category","Price","Color","Miles","Rating","Image", "Engine", "Description", "Transmission","Stock","Seat Count","Fuel"});
-
         table.setModel(model);
         table.setRowHeight(100);
 
@@ -209,26 +215,26 @@ public class TablePanel extends JPanel implements ActionListener {
                 }
 
                 Vehicle vehicle = new Vehicle();
-                vehicle.setVehicleID(Integer.valueOf(table.getValueAt(e.getLastRow(),0).toString()));
-                vehicle.setVin(Integer.valueOf(table.getValueAt(e.getLastRow(), 1).toString()));
-                vehicle.setDealerID(Integer.valueOf(table.getValueAt(e.getLastRow(), 2).toString()));
-                Make make = (Make) table.getValueAt(e.getLastRow(), 3);
+                vehicle.setVehicleID(Integer.valueOf(table.getValueAt(e.getLastRow(),1).toString()));
+                vehicle.setVin(Integer.valueOf(table.getValueAt(e.getLastRow(), 2).toString()));
+                vehicle.setDealerID(Integer.valueOf(table.getValueAt(e.getLastRow(), 3).toString()));
+                Make make = (Make) table.getValueAt(e.getLastRow(), 4);
                 vehicle.setMakeID(make.getMakeID());
-                Model model = (Model) table.getValueAt(e.getLastRow(), 4);
+                Model model = (Model) table.getValueAt(e.getLastRow(), 5);
                 vehicle.setModelID(model.getModelID());
-                vehicle.setYear(Integer.valueOf(table.getValueAt(e.getLastRow(), 5).toString()));
-                vehicle.setCategory(table.getValueAt(e.getLastRow(),6).toString());
-                vehicle.setPrice(Double.valueOf(table.getValueAt(e.getLastRow(),7).toString()));
-                vehicle.setColor(table.getValueAt(e.getLastRow(),8).toString());
-                vehicle.setMiles(Integer.valueOf(table.getValueAt(e.getLastRow(),9).toString()));
-                vehicle.setRating(Integer.valueOf(table.getValueAt(e.getLastRow(), 10).toString()));
-                vehicle.setImageUrls(table.getValueAt(e.getLastRow(), 11).toString());
-                vehicle.setEngine(table.getValueAt(e.getLastRow(), 12).toString());
-                vehicle.setDescription(table.getValueAt(e.getLastRow(), 13).toString());
-                vehicle.setTransmission(table.getValueAt(e.getLastRow(), 14).toString());
-                vehicle.setStock(Integer.valueOf(table.getValueAt(e.getLastRow(), 15).toString()));
-                vehicle.setSeatCount(Integer.valueOf(table.getValueAt(e.getLastRow(), 16).toString()));
-                vehicle.setFuel(table.getValueAt(e.getLastRow(), 17).toString());
+                vehicle.setYear(Integer.valueOf(table.getValueAt(e.getLastRow(), 6).toString()));
+                vehicle.setCategory(table.getValueAt(e.getLastRow(),7).toString());
+                vehicle.setPrice(Double.valueOf(table.getValueAt(e.getLastRow(),8).toString()));
+                vehicle.setColor(table.getValueAt(e.getLastRow(),9).toString());
+                vehicle.setMiles(Integer.valueOf(table.getValueAt(e.getLastRow(),10).toString()));
+                vehicle.setRating(Integer.valueOf(table.getValueAt(e.getLastRow(), 11).toString()));
+                vehicle.setImageUrls(table.getValueAt(e.getLastRow(), 12).toString());
+                vehicle.setEngine(table.getValueAt(e.getLastRow(), 13).toString());
+                vehicle.setDescription(table.getValueAt(e.getLastRow(), 14).toString());
+                vehicle.setTransmission(table.getValueAt(e.getLastRow(), 15).toString());
+                vehicle.setStock(Integer.valueOf(table.getValueAt(e.getLastRow(), 16).toString()));
+                vehicle.setSeatCount(Integer.valueOf(table.getValueAt(e.getLastRow(), 17).toString()));
+                vehicle.setFuel(table.getValueAt(e.getLastRow(), 18).toString());
 
                 vehicleDao.update(vehicle);
                 loadData();
@@ -271,8 +277,17 @@ public class TablePanel extends JPanel implements ActionListener {
 //                }
 //            }
             cmbModel.setSelectedItem(new Model(vehicle.getModelID()));
+            String urls = vehicle.getImageUrls();
+            String[] arr = urls.split(",");
+
+            for(int i = 0; i < arr.length; ++i) {
+                arr[i] = "img/" + arr[i];
+            }
+
+            ImageIcon imageicon1 = new ImageIcon(arr[0]);
+            ImageIcon imageicon2 = this.change(imageicon1, 0.5D);
             model.addRow(new Object[] {
-        vehicle.getVehicleID(),vehicle.getVin(),vehicle.getDealerID(),cmbMake.getSelectedItem(), cmbModel.getSelectedItem(),vehicle.getYear(),vehicle.getCategory(),vehicle.getPrice(),vehicle.getColor(),vehicle.getMiles(),vehicle.getRating(),vehicle.getImageUrls(),vehicle.getEngine(),vehicle.getDescription(),vehicle.getTransmission(),vehicle.getStock(),vehicle.getSeatCount(),vehicle.getFuel()
+                    imageicon2,vehicle.getVehicleID(),vehicle.getVin(),vehicle.getDealerID(),cmbMake.getSelectedItem(), cmbModel.getSelectedItem(),vehicle.getYear(),vehicle.getCategory(),vehicle.getPrice(),vehicle.getColor(),vehicle.getMiles(),vehicle.getRating(),vehicle.getImageUrls(),vehicle.getEngine(),vehicle.getDescription(),vehicle.getTransmission(),vehicle.getStock(),vehicle.getSeatCount(),vehicle.getFuel()
     });
 
 }
@@ -304,6 +319,11 @@ public class TablePanel extends JPanel implements ActionListener {
             del();
         }
 
+    }
+    public ImageIcon change(ImageIcon image, double i) {
+        Image img = image.getImage().getScaledInstance(60, 40, 1);
+        ImageIcon image2 = new ImageIcon(img);
+        return image2;
     }
 
     public static void main(String[] args) {
