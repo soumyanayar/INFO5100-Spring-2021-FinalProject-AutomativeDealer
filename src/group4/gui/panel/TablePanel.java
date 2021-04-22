@@ -17,11 +17,13 @@ import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-public class TablePanel extends JPanel{
+public class TablePanel extends JPanel implements ActionListener {
     public static TablePanel instance = new TablePanel();
     private JTable table;
     private DefaultTableModel model;
@@ -29,6 +31,7 @@ public class TablePanel extends JPanel{
     private MakeDao makeDao;
     private ModelDao modelDao;
     private String oldValue = "";
+    private JButton btnDel;
 
     public TablePanel() {
         setLayout(new BorderLayout(0,0));
@@ -49,6 +52,14 @@ public class TablePanel extends JPanel{
         modelDao = new ModelDaoImpl();
         vehicleDao = new VehicleDaoImpl();
         loadData();
+
+        btnDel = new JButton("Delete Selected");
+        JPanel flowPanel = new JPanel(new FlowLayout());
+        flowPanel.add(btnDel);
+        add(flowPanel,BorderLayout.SOUTH);
+        btnDel.setActionCommand("del");
+
+        btnDel.addActionListener(this);
 
         model.addTableModelListener(new TableModelListener() {
 
@@ -151,6 +162,20 @@ public class TablePanel extends JPanel{
             vehicleDao.delete(vehicleID);
             loadData();
         }
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        String command=e.getActionCommand();
+        System.out.println(command);
+        if(command.equals("del")){
+            if(table==null){
+                JOptionPane.showMessageDialog(null, "No data");
+                return;
+            }
+            del();
+        }
+
     }
 
     public static void main(String[] args) {
