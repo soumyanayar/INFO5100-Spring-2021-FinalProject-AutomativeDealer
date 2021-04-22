@@ -5,6 +5,7 @@ package group3;
  */
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.Scanner;
 
@@ -30,9 +31,10 @@ public class LeadDataAccessor {
         return leads;
     }
     private static Lead getRecordFromLine(String line) {
+
         Lead lead = new Lead();
         try (Scanner rowScanner = new Scanner(line)) {
-
+            Base64.Decoder decoder = Base64.getDecoder();
             rowScanner.useDelimiter(",");
             lead.setFirstName(rowScanner.next());
             lead.setLastName(rowScanner.next());
@@ -40,7 +42,7 @@ public class LeadDataAccessor {
             lead.setPhoneNumber(rowScanner.next());
             lead.setZipCode(rowScanner.next());
             rowScanner.next();
-            lead.setMessage(rowScanner.next());
+            lead.setMessage(new String(decoder.decode(rowScanner.next())));
             lead.setCarModel(rowScanner.next());
             lead.setCarColor(rowScanner.next());
             lead.setCarVin(rowScanner.next());
